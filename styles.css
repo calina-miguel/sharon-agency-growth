@@ -406,7 +406,7 @@ h2 {
 
 .landing-demo {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 480px);
+  grid-template-columns: minmax(0, 1fr) minmax(50%, 50%);
   align-items: start;
   gap: 24px;
   min-height: 560px;
