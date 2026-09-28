@@ -497,6 +497,7 @@ h2 {
   display: grid;
   grid-template-rows: minmax(46px, 1fr) auto;
   gap: 4px;
+  position: relative;
   width: 100%;
   min-height: 78px;
   margin-top: 16px;
@@ -565,11 +566,18 @@ h2 {
 }
 
 .metric-dot {
-  fill: var(--gold);
-  stroke: #ffffff;
-  stroke-width: 2;
+  position: absolute;
+  left: calc(9px + (var(--dot-x, 111.5) / 120) * (100% - 18px));
+  top: calc(8px + (var(--dot-y, 8) / 45) * 52px);
+  width: 8px;
+  height: 8px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: var(--gold);
   filter: drop-shadow(0 3px 5px rgba(23, 33, 31, 0.22));
   animation: dotPop 560ms var(--ease-pop) both;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
 }
 
 .metric-bubble {
@@ -1085,11 +1093,11 @@ textarea {
 @keyframes dotPop {
   from {
     opacity: 1;
-    transform: scale(0.5);
+    transform: translate(-50%, -50%) scale(0.5);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 

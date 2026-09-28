@@ -202,8 +202,8 @@ function updateOverview() {
     const lastPoint = points[points.length - 1];
     line.setAttribute("d", linePath);
     area.setAttribute("d", `${linePath} L ${lastPoint[0].toFixed(1)} 45 L ${firstPoint[0].toFixed(1)} 45 Z`);
-    dot.setAttribute("cx", lastPoint[0].toFixed(1));
-    dot.setAttribute("cy", lastPoint[1].toFixed(1));
+    dot.style.setProperty("--dot-x", lastPoint[0].toFixed(1));
+    dot.style.setProperty("--dot-y", lastPoint[1].toFixed(1));
   });
   updateMetricBubbles(current);
 }
