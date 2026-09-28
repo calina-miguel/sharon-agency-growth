@@ -65,6 +65,7 @@ button {
 .brand-upload {
   display: inline-grid;
   cursor: pointer;
+  position: relative;
 }
 
 .brand-upload input {
@@ -115,6 +116,24 @@ button {
 
 .brand-mark.has-photo span {
   display: none;
+}
+
+.brand-edit {
+  position: absolute;
+  right: -5px;
+  bottom: -5px;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #102d29;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--forest);
+  font-size: 0.74rem;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(23, 33, 31, 0.22);
 }
 
 .brand small,
