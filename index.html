@@ -4,13 +4,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sharon Agency Growth Demos</title>
-    <link rel="stylesheet" href="styles.css?v=20260928-2" />
+    <link rel="stylesheet" href="styles.css?v=20260928-3" />
   </head>
   <body>
     <aside class="sidebar" aria-label="Demo navigation">
       <div class="sidebar-head">
         <div class="brand">
-          <span class="brand-mark">SM</span>
+          <label class="brand-upload" title="Upload profile photo">
+            <input id="profile-upload" type="file" accept="image/*" />
+            <span class="brand-mark" id="brand-mark">
+              <img id="brand-photo" alt="" />
+              <span id="brand-initials">SM</span>
+            </span>
+          </label>
           <div>
             <strong>Sharon Growth</strong>
             <small>90-day pilot demos</small>
@@ -322,6 +328,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=20260928-2"></script>
+    <script src="app.js?v=20260928-3"></script>
   </body>
 </html>

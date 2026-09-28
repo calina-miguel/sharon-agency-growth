@@ -67,12 +67,35 @@ function showView(id) {
 const sidebar = document.querySelector(".sidebar");
 const menuToggle = document.querySelector(".menu-toggle");
 const pipeline = document.querySelector("#pipeline");
+const profileUpload = document.querySelector("#profile-upload");
+const brandMark = document.querySelector("#brand-mark");
+const brandPhoto = document.querySelector("#brand-photo");
+const profilePhotoKey = "sharonDemoProfilePhoto";
 let touchDrag = null;
 
 function setMenuOpen(isOpen) {
   if (!sidebar || !menuToggle) return;
   sidebar.classList.toggle("menu-open", isOpen);
   menuToggle.setAttribute("aria-expanded", String(isOpen));
+}
+
+function setBrandPhoto(dataUrl) {
+  if (!brandMark || !brandPhoto) return;
+  if (dataUrl) {
+    brandPhoto.src = dataUrl;
+    brandMark.classList.add("has-photo");
+  } else {
+    brandPhoto.removeAttribute("src");
+    brandMark.classList.remove("has-photo");
+  }
+}
+
+function restoreBrandPhoto() {
+  try {
+    setBrandPhoto(localStorage.getItem(profilePhotoKey));
+  } catch {
+    setBrandPhoto("");
+  }
 }
 
 function renderPhasePanel() {
@@ -328,6 +351,25 @@ document.querySelectorAll(".nav-item").forEach((button) => {
 
 menuToggle?.addEventListener("click", () => {
   setMenuOpen(!sidebar?.classList.contains("menu-open"));
+});
+
+profileUpload?.addEventListener("change", () => {
+  const file = profileUpload.files?.[0];
+  if (!file || !file.type.startsWith("image/")) {
+    setBrandPhoto("");
+    return;
+  }
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    const dataUrl = String(reader.result || "");
+    setBrandPhoto(dataUrl);
+    try {
+      localStorage.setItem(profilePhotoKey, dataUrl);
+    } catch {
+      // The preview still works even if browser storage is full or unavailable.
+    }
+  });
+  reader.readAsDataURL(file);
 });
 
 document.querySelectorAll("[data-open]").forEach((card) => {
@@ -617,6 +659,7 @@ document.querySelector("#shuffle-content").addEventListener("click", () => {
   renderContent(contentOffset);
 });
 
+restoreBrandPhoto();
 renderContent();
 renderFunnel();
 refresh();
