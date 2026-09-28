@@ -631,6 +631,9 @@ textarea {
   position: relative;
   box-shadow: 0 1px 0 rgba(23, 33, 31, 0.06);
   transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  touch-action: pinch-zoom;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .lead-card::before {
@@ -663,6 +666,13 @@ textarea {
   opacity: 0.58;
 }
 
+.lead-card.touch-dragging {
+  z-index: 30;
+  pointer-events: none;
+  opacity: 0.9;
+  box-shadow: 0 14px 28px rgba(23, 33, 31, 0.18);
+}
+
 .pipeline-column.drop-target {
   border-color: var(--teal);
   background: #eef6f3;
@@ -675,6 +685,7 @@ textarea {
   border-radius: 8px;
   padding: 8px 10px;
   font-weight: 800;
+  touch-action: manipulation;
 }
 
 .report-controls {
