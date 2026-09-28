@@ -235,6 +235,10 @@ h1 {
   margin-bottom: 0;
 }
 
+.topbar h1 {
+  margin-bottom: .5em;
+}
+
 h2 {
   font-size: clamp(1.7rem, 3vw, 2.6rem);
   line-height: 1.05;
