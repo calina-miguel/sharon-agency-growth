@@ -560,7 +560,8 @@ h2 {
   stroke: var(--teal);
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 1.5;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
   stroke-dasharray: 180;
   animation: lineDraw 760ms var(--ease-standard) both;
 }
