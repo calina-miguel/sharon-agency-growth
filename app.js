@@ -252,7 +252,7 @@ function renderPipeline() {
     const cards = state.leads
       .filter((lead) => lead.stage === stage)
       .map((lead) => `
-        <article class="lead-card ${lead.id === state.selectedLeadId ? "selected" : ""}" draggable="true" data-lead-id="${lead.id}">
+        <article class="lead-card ${lead.id === state.selectedLeadId ? "selected" : ""}" data-lead-id="${lead.id}">
           <strong>${lead.name}</strong>
           <p>${lead.concern}</p>
           <small>${lead.time} | ${lead.quality}</small>
@@ -427,6 +427,22 @@ function highlightPipelineTarget(column) {
   document.querySelectorAll(".pipeline-column").forEach((item) => item.classList.toggle("drop-target", item === column));
 }
 
+function nearestPipelineColumn(clientX, clientY) {
+  let bestColumn = null;
+  let bestDistance = Infinity;
+  document.querySelectorAll(".pipeline-column").forEach((column) => {
+    const rect = column.getBoundingClientRect();
+    const x = Math.max(rect.left, Math.min(clientX, rect.right));
+    const y = Math.max(rect.top, Math.min(clientY, rect.bottom));
+    const distance = Math.hypot(clientX - x, clientY - y);
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      bestColumn = column;
+    }
+  });
+  return bestDistance < 90 ? bestColumn : null;
+}
+
 function moveLeadToStage(leadId, stage) {
   const lead = state.leads.find((item) => item.id === leadId);
   if (!lead || !stage) return;
@@ -436,7 +452,7 @@ function moveLeadToStage(leadId, stage) {
   refresh();
 }
 
-function startHoldDrag({ card, leadId, pointerId, startX, startY }) {
+function startHoldDrag({ card, leadId, pointerId, startX, startY, delay = holdDelay }) {
   cancelHoldDrag();
   touchDrag = {
     card,
@@ -452,7 +468,7 @@ function startHoldDrag({ card, leadId, pointerId, startX, startY }) {
       if (!touchDrag || touchDrag.card !== card) return;
       touchDrag.armed = true;
       card.classList.add("hold-ready", "dragging", "touch-dragging");
-    }, holdDelay)
+    }, delay)
   };
 }
 
@@ -467,6 +483,8 @@ function cancelHoldDrag() {
 
 function updateHoldDrag(clientX, clientY) {
   if (!touchDrag) return false;
+  const viewportBuffer = 82;
+  const scrollStep = 16;
   const dx = clientX - touchDrag.startX;
   const dy = clientY - touchDrag.startY;
   if (!touchDrag.armed) {
@@ -474,9 +492,11 @@ function updateHoldDrag(clientX, clientY) {
     return false;
   }
   touchDrag.moved = true;
+  if (clientY > window.innerHeight - viewportBuffer) window.scrollBy({ top: scrollStep, behavior: "auto" });
+  if (clientY < viewportBuffer) window.scrollBy({ top: -scrollStep, behavior: "auto" });
   touchDrag.card.style.transform = `translate(${dx}px, ${dy}px)`;
   const element = document.elementFromPoint(clientX, clientY);
-  const column = element?.closest?.(".pipeline-column");
+  const column = element?.closest?.(".pipeline-column") || nearestPipelineColumn(clientX, clientY);
   touchDrag.targetColumn = column;
   highlightPipelineTarget(column);
   return true;
@@ -610,53 +630,18 @@ pipeline.addEventListener("click", (event) => {
   renderLeadManager();
 });
 
-pipeline.addEventListener("dragstart", (event) => {
-  const card = event.target.closest(".lead-card");
-  if (!card) return;
-  event.dataTransfer.setData("text/plain", card.dataset.leadId);
-  event.dataTransfer.effectAllowed = "move";
-  card.classList.add("dragging");
-});
-
-pipeline.addEventListener("dragend", (event) => {
-  const card = event.target.closest(".lead-card");
-  if (card) card.classList.remove("dragging");
-  clearPipelineTargets();
-});
-
-pipeline.addEventListener("dragover", (event) => {
-  const column = event.target.closest(".pipeline-column");
-  if (!column) return;
-  event.preventDefault();
-  event.dataTransfer.dropEffect = "move";
-  highlightPipelineTarget(column);
-});
-
-pipeline.addEventListener("dragleave", (event) => {
-  const column = event.target.closest(".pipeline-column");
-  if (!column || column.contains(event.relatedTarget)) return;
-  column.classList.remove("drop-target");
-});
-
-pipeline.addEventListener("drop", (event) => {
-  const column = event.target.closest(".pipeline-column");
-  if (!column) return;
-  event.preventDefault();
-  const leadId = Number(event.dataTransfer.getData("text/plain"));
-  moveLeadToStage(leadId, column.dataset.stage);
-});
-
 pipeline.addEventListener("pointerdown", (event) => {
-  if (event.pointerType === "mouse") return;
   if (event.target.closest("button")) return;
   const card = event.target.closest(".lead-card");
   if (!card) return;
+  event.preventDefault();
   startHoldDrag({
     card,
     leadId: Number(card.dataset.leadId),
     pointerId: event.pointerId,
     startX: event.clientX,
-    startY: event.clientY
+    startY: event.clientY,
+    delay: event.pointerType === "mouse" ? 0 : holdDelay
   });
   try {
     card.setPointerCapture?.(event.pointerId);
