@@ -990,16 +990,6 @@ textarea {
   background: #eef6f3;
 }
 
-.lead-card button {
-  margin-top: 10px;
-  color: var(--forest);
-  background: #e4f0ed;
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-weight: 800;
-  touch-action: manipulation;
-}
-
 .report-controls {
   display: flex;
   gap: 12px;

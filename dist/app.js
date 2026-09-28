@@ -257,7 +257,6 @@ function renderPipeline() {
           <p>${lead.concern}</p>
           <small>${lead.time} | ${lead.quality}</small>
           <small>${lead.followUps.length ? `Next: ${lead.followUps[0].date}` : "No follow-up scheduled"}</small>
-          <button type="button" data-select="${lead.id}">Select</button>
         </article>
       `).join("");
     return `<section class="pipeline-column" data-stage="${stage}"><h3>${stage}</h3>${cards || "<p class='fineprint'>No leads in this stage.</p>"}</section>`;
@@ -623,9 +622,9 @@ pipeline.addEventListener("click", (event) => {
     touchDrag = null;
     return;
   }
-  const button = event.target.closest("[data-select]");
-  if (!button) return;
-  state.selectedLeadId = Number(button.dataset.select);
+  const card = event.target.closest(".lead-card");
+  if (!card) return;
+  state.selectedLeadId = Number(card.dataset.leadId);
   renderPipeline();
   renderLeadManager();
 });
