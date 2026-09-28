@@ -525,6 +525,22 @@ h2 {
   fill: rgba(45, 138, 130, 0.14);
 }
 
+.metric-days {
+  fill: rgba(23, 33, 31, 0.48);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-anchor: middle;
+}
+
+.metric-days text:first-child {
+  text-anchor: start;
+}
+
+.metric-days text:last-child {
+  text-anchor: end;
+}
+
 .metric-line {
   fill: none;
   stroke: var(--teal);

@@ -190,7 +190,7 @@ function updateOverview() {
   Object.entries(metricSeries).forEach(([id, values]) => {
     const points = values.map((value, index) => {
       const x = 8 + index * 34.5;
-      const y = 50 - Math.max((value / max) * 42, 4);
+      const y = 42 - Math.max((value / max) * 34, 4);
       return [x, y];
     });
     const line = document.querySelector(`#graph-${id}-line`);
@@ -201,7 +201,7 @@ function updateOverview() {
     const firstPoint = points[0];
     const lastPoint = points[points.length - 1];
     line.setAttribute("d", linePath);
-    area.setAttribute("d", `${linePath} L ${lastPoint[0].toFixed(1)} 54 L ${firstPoint[0].toFixed(1)} 54 Z`);
+    area.setAttribute("d", `${linePath} L ${lastPoint[0].toFixed(1)} 45 L ${firstPoint[0].toFixed(1)} 45 Z`);
     dot.setAttribute("cx", lastPoint[0].toFixed(1));
     dot.setAttribute("cy", lastPoint[1].toFixed(1));
   });
