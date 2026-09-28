@@ -59,6 +59,25 @@ const contentIdeas = [
   ["Short video", "Common cost misconceptions", "Address affordability concerns with approved, general language."]
 ];
 
+const metricCopy = {
+  qualified: {
+    label: "Qualified inquiries",
+    note: "People who matched the target area and gave permission for Sharon's team to follow up."
+  },
+  booked: {
+    label: "Consultations booked",
+    note: "Qualified leads who moved into a confirmed conversation through the booking flow."
+  },
+  attended: {
+    label: "Attended meetings",
+    note: "Booked consultations that became useful live conversations with Sharon."
+  },
+  policies: {
+    label: "Placed policies",
+    note: "Closed policy outcomes, shown separately from pending applications."
+  }
+};
+
 function showView(id) {
   document.querySelectorAll(".view").forEach((view) => view.classList.toggle("active", view.id === id));
   document.querySelectorAll(".nav-item").forEach((item) => item.classList.toggle("active", item.dataset.view === id));
@@ -76,6 +95,7 @@ const holdDelay = 280;
 const holdMoveTolerance = 18;
 let touchDrag = null;
 let parallaxFrame = 0;
+let activeMetric = "";
 
 function setMenuOpen(isOpen) {
   if (!sidebar || !menuToggle) return;
@@ -160,12 +180,13 @@ function updateOverview() {
   document.querySelector("#metric-attended").textContent = current.attended;
   document.querySelector("#metric-policies").textContent = current.policies;
   const max = Math.max(current.qualified, 1);
-  [
-    ["qualified", [state.baseline.qualified * 0.72, state.baseline.qualified * 0.86, state.baseline.qualified, current.qualified]],
-    ["booked", [state.baseline.booked * 0.7, state.baseline.booked * 0.86, state.baseline.booked, current.booked]],
-    ["attended", [state.baseline.attended * 0.68, state.baseline.attended * 0.84, state.baseline.attended, current.attended]],
-    ["policies", [state.baseline.policies * 0.62, state.baseline.policies * 0.78, state.baseline.policies, current.policies]]
-  ].forEach(([id, values]) => {
+  const metricSeries = {
+    qualified: [state.baseline.qualified * 0.72, state.baseline.qualified * 0.86, state.baseline.qualified, current.qualified],
+    booked: [state.baseline.booked * 0.7, state.baseline.booked * 0.86, state.baseline.booked, current.booked],
+    attended: [state.baseline.attended * 0.68, state.baseline.attended * 0.84, state.baseline.attended, current.attended],
+    policies: [state.baseline.policies * 0.62, state.baseline.policies * 0.78, state.baseline.policies, current.policies]
+  };
+  Object.entries(metricSeries).forEach(([id, values]) => {
     const points = values.map((value, index) => {
       const x = 8 + index * 34.5;
       const y = 50 - Math.max((value / max) * 42, 4);
@@ -182,6 +203,45 @@ function updateOverview() {
     area.setAttribute("d", `${linePath} L ${lastPoint[0].toFixed(1)} 54 L ${firstPoint[0].toFixed(1)} 54 Z`);
     dot.setAttribute("cx", lastPoint[0].toFixed(1));
     dot.setAttribute("cy", lastPoint[1].toFixed(1));
+  });
+  updateMetricBubbles(current);
+}
+
+function updateMetricBubbles(current) {
+  Object.entries(metricCopy).forEach(([id, detail]) => {
+    const bubble = document.querySelector(`#metric-${id}-bubble`);
+    if (!bubble) return;
+    const baseline = state.baseline[id] || 0;
+    const value = current[id] || 0;
+    const lift = value - baseline;
+    bubble.innerHTML = `
+      <strong>${detail.label}: ${value}</strong>
+      <p>${detail.note}</p>
+      <dl>
+        <dt>Starting point</dt>
+        <dd>${baseline}</dd>
+        <dt>Added in demo</dt>
+        <dd>+${lift}</dd>
+      </dl>
+    `;
+  });
+}
+
+function showMetricBubble(id) {
+  activeMetric = activeMetric === id ? "" : id;
+  document.querySelectorAll(".metric").forEach((metric) => {
+    const isActive = metric.dataset.metric === activeMetric;
+    metric.classList.toggle("show-detail", isActive);
+    metric.querySelector(".metric-chart")?.setAttribute("aria-expanded", String(isActive));
+  });
+}
+
+function closeMetricBubbles() {
+  if (!activeMetric) return;
+  activeMetric = "";
+  document.querySelectorAll(".metric.show-detail").forEach((metric) => {
+    metric.classList.remove("show-detail");
+    metric.querySelector(".metric-chart")?.setAttribute("aria-expanded", "false");
   });
 }
 
@@ -479,6 +539,30 @@ document.querySelectorAll(".phase").forEach((button) => {
     state.selectedPhase = button.dataset.phase;
     renderPhasePanel();
   });
+});
+
+document.querySelector(".metric-grid").addEventListener("click", (event) => {
+  const chart = event.target.closest("[data-metric-chart]");
+  if (!chart) return;
+  event.stopPropagation();
+  showMetricBubble(chart.dataset.metricChart);
+});
+
+document.querySelector(".metric-grid").addEventListener("keydown", (event) => {
+  if (!["Enter", " "].includes(event.key)) return;
+  const chart = event.target.closest("[data-metric-chart]");
+  if (!chart) return;
+  event.preventDefault();
+  showMetricBubble(chart.dataset.metricChart);
+});
+
+document.addEventListener("click", (event) => {
+  if (event.target.closest(".metric")) return;
+  closeMetricBubbles();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeMetricBubbles();
 });
 
 document.querySelector("#phase-panel").addEventListener("click", (event) => {

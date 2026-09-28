@@ -411,6 +411,7 @@ h2 {
 .demo-card,
 .score-card,
 .content-card {
+  position: relative;
   padding: 18px;
 }
 
@@ -456,6 +457,21 @@ h2 {
     linear-gradient(180deg, rgba(45, 138, 130, 0.08), rgba(217, 164, 65, 0.08)),
     repeating-linear-gradient(0deg, transparent 0 17px, rgba(23, 33, 31, 0.06) 17px 18px);
   overflow: visible;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.metric-chart:focus-visible {
+  outline: 3px solid rgba(217, 164, 65, 0.36);
+  outline-offset: 4px;
+}
+
+.metric-chart:hover,
+.metric-chart[aria-expanded="true"] {
+  border-color: rgba(45, 138, 130, 0.42);
+  box-shadow: inset 0 0 0 1px rgba(45, 138, 130, 0.12), 0 8px 18px rgba(23, 33, 31, 0.08);
+  transform: translateY(-1px);
 }
 
 .metric-area {
@@ -478,6 +494,74 @@ h2 {
   stroke-width: 2;
   filter: drop-shadow(0 3px 5px rgba(23, 33, 31, 0.22));
   animation: dotPop 520ms ease both;
+}
+
+.metric-bubble {
+  position: absolute;
+  right: 18px;
+  bottom: 86px;
+  z-index: 4;
+  width: min(250px, calc(100% - 36px));
+  padding: 13px 14px;
+  border: 1px solid rgba(45, 138, 130, 0.2);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(23, 33, 31, 0.16);
+  color: var(--ink);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px) scale(0.98);
+  transform-origin: bottom right;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.metric-bubble::after {
+  position: absolute;
+  right: 22px;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  border-right: 1px solid rgba(45, 138, 130, 0.2);
+  border-bottom: 1px solid rgba(45, 138, 130, 0.2);
+  background: #ffffff;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.metric.show-detail .metric-bubble {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.metric-bubble strong {
+  display: block;
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+}
+
+.metric-bubble p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.metric-bubble dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 5px 12px;
+  margin: 10px 0 0;
+  font-size: 0.8rem;
+}
+
+.metric-bubble dt {
+  color: var(--muted);
+}
+
+.metric-bubble dd {
+  margin: 0;
+  font-weight: 800;
 }
 
 .demo-card {
@@ -1043,6 +1127,12 @@ textarea {
   .score-grid,
   .content-board {
     grid-template-columns: 1fr;
+  }
+
+  .metric-bubble {
+    left: 18px;
+    right: 18px;
+    width: auto;
   }
 
   .sidebar.menu-open nav {
