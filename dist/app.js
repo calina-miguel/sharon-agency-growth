@@ -157,6 +157,17 @@ function updateOverview() {
   document.querySelector("#metric-booked").textContent = current.booked;
   document.querySelector("#metric-attended").textContent = current.attended;
   document.querySelector("#metric-policies").textContent = current.policies;
+  const max = Math.max(current.qualified, 1);
+  [
+    ["#graph-qualified", current.qualified],
+    ["#graph-booked", current.booked],
+    ["#graph-attended", current.attended],
+    ["#graph-policies", current.policies]
+  ].forEach(([selector, value]) => {
+    const bar = document.querySelector(selector);
+    if (!bar) return;
+    bar.style.height = `${Math.max((value / max) * 100, 8)}%`;
+  });
 }
 
 function renderPipeline() {

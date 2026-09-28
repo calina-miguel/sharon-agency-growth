@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sharon Agency Growth Demos</title>
-    <link rel="stylesheet" href="styles.css?v=20260928-7" />
+    <link rel="stylesheet" href="styles.css?v=20260928-8" />
   </head>
   <body>
     <aside class="sidebar" aria-label="Demo navigation">
@@ -79,21 +79,45 @@
             <span>Qualified inquiries</span>
             <strong id="metric-qualified">42</strong>
             <small>Within service area and agreed to contact</small>
+            <div class="metric-chart" aria-hidden="true">
+              <span style="height: 36%"></span>
+              <span style="height: 54%"></span>
+              <span style="height: 68%"></span>
+              <span id="graph-qualified"></span>
+            </div>
           </article>
           <article class="metric">
             <span>Consultations booked</span>
             <strong id="metric-booked">18</strong>
             <small>Confirmed through the booking flow</small>
+            <div class="metric-chart" aria-hidden="true">
+              <span style="height: 24%"></span>
+              <span style="height: 38%"></span>
+              <span style="height: 46%"></span>
+              <span id="graph-booked"></span>
+            </div>
           </article>
           <article class="metric">
             <span>Attended meetings</span>
             <strong id="metric-attended">13</strong>
             <small>Useful conversations with Sharon</small>
+            <div class="metric-chart" aria-hidden="true">
+              <span style="height: 20%"></span>
+              <span style="height: 30%"></span>
+              <span style="height: 34%"></span>
+              <span id="graph-attended"></span>
+            </div>
           </article>
           <article class="metric">
             <span>Placed policies</span>
             <strong id="metric-policies">4</strong>
             <small>Separated from pending applications</small>
+            <div class="metric-chart" aria-hidden="true">
+              <span style="height: 8%"></span>
+              <span style="height: 12%"></span>
+              <span style="height: 16%"></span>
+              <span id="graph-policies"></span>
+            </div>
           </article>
         </div>
 
@@ -329,6 +353,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=20260928-7"></script>
+    <script src="app.js?v=20260928-8"></script>
   </body>
 </html>

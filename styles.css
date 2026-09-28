@@ -440,6 +440,39 @@ h2 {
   margin: 8px 0;
 }
 
+.metric small {
+  display: block;
+  min-height: 34px;
+}
+
+.metric-chart {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: end;
+  gap: 7px;
+  height: 58px;
+  margin-top: 16px;
+  padding: 8px 9px;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(45, 138, 130, 0.08), rgba(217, 164, 65, 0.08)),
+    repeating-linear-gradient(0deg, transparent 0 17px, rgba(23, 33, 31, 0.06) 17px 18px);
+}
+
+.metric-chart span {
+  align-self: end;
+  min-height: 7px;
+  border-radius: 999px 999px 4px 4px;
+  background: #b8cbc5;
+  transform-origin: bottom;
+  animation: barRise 620ms ease both;
+}
+
+.metric-chart span:last-child {
+  background: linear-gradient(180deg, var(--gold), var(--teal));
+  box-shadow: 0 5px 12px rgba(45, 138, 130, 0.2);
+}
+
 .demo-card {
   text-align: left;
 }
@@ -862,6 +895,17 @@ textarea {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes barRise {
+  from {
+    transform: scaleY(0.18);
+    opacity: 0.35;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
   }
 }
 
