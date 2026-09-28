@@ -71,7 +71,9 @@ const profileUpload = document.querySelector("#profile-upload");
 const brandMark = document.querySelector("#brand-mark");
 const brandPhoto = document.querySelector("#brand-photo");
 const profilePhotoKey = "sharonDemoProfilePhoto";
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 let touchDrag = null;
+let parallaxFrame = 0;
 
 function setMenuOpen(isOpen) {
   if (!sidebar || !menuToggle) return;
@@ -96,6 +98,19 @@ function restoreBrandPhoto() {
   } catch {
     setBrandPhoto("");
   }
+}
+
+function updateParallax() {
+  parallaxFrame = 0;
+  const y = window.scrollY;
+  document.documentElement.style.setProperty("--parallax-fast", `${Math.round(y * 0.04)}px`);
+  document.documentElement.style.setProperty("--parallax-slow", `${Math.round(y * 0.025)}px`);
+}
+
+function requestParallaxUpdate() {
+  if (reduceMotion.matches || parallaxFrame) return;
+  const schedule = window.requestAnimationFrame || ((callback) => window.setTimeout(callback, 16));
+  parallaxFrame = schedule(updateParallax);
 }
 
 function renderPhasePanel() {
@@ -659,7 +674,13 @@ document.querySelector("#shuffle-content").addEventListener("click", () => {
   renderContent(contentOffset);
 });
 
+window.addEventListener("scroll", requestParallaxUpdate, { passive: true });
+reduceMotion.addEventListener?.("change", () => {
+  if (!reduceMotion.matches) requestParallaxUpdate();
+});
+
 restoreBrandPhoto();
+requestParallaxUpdate();
 renderContent();
 renderFunnel();
 refresh();

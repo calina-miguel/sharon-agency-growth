@@ -9,6 +9,8 @@
   --gold: #d9a441;
   --rose: #bc6c64;
   --blue: #3d6f9f;
+  --parallax-fast: 0px;
+  --parallax-slow: 0px;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -20,9 +22,14 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--ink);
-  background: var(--paper);
+  background:
+    radial-gradient(circle at 78% calc(12% - var(--parallax-fast)), rgba(217, 164, 65, 0.16), transparent 25vw),
+    radial-gradient(circle at 22% calc(82% - var(--parallax-slow)), rgba(45, 138, 130, 0.12), transparent 28vw),
+    var(--paper);
+  background-attachment: fixed;
   display: grid;
   grid-template-columns: 280px 1fr;
+  scroll-behavior: smooth;
 }
 
 button,
@@ -47,6 +54,7 @@ button {
   gap: 28px;
   position: sticky;
   top: 0;
+  box-shadow: 14px 0 36px rgba(16, 45, 41, 0.08);
 }
 
 .sidebar-head {
@@ -188,11 +196,16 @@ nav {
   text-align: left;
   color: #e7efec;
   background: transparent;
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
 .nav-item:hover,
 .nav-item.active {
   background: rgba(255, 255, 255, 0.12);
+}
+
+.nav-item:hover {
+  transform: translateX(3px);
 }
 
 .proposal-note {
@@ -264,11 +277,14 @@ h2 {
   padding: 9px 12px;
   color: var(--muted);
   white-space: nowrap;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
 .phase:hover {
   border-color: var(--teal);
   color: var(--forest);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(23, 33, 31, 0.08);
 }
 
 .phase.done {
@@ -291,6 +307,7 @@ h2 {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
+  animation: riseIn 520ms ease both;
 }
 
 .phase-panel h2 {
@@ -335,10 +352,13 @@ h2 {
 .view {
   display: none;
   margin-top: 28px;
+  opacity: 0;
+  transform: translateY(14px);
 }
 
 .view.active {
   display: block;
+  animation: viewIn 480ms ease both;
 }
 
 .band,
@@ -355,6 +375,8 @@ h2 {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
+  box-shadow: 0 1px 0 rgba(23, 33, 31, 0.04);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 .band {
@@ -392,6 +414,18 @@ h2 {
   padding: 18px;
 }
 
+.metric:hover,
+.score-card:hover,
+.content-card:hover,
+.chart-panel:hover,
+.detail-panel:hover,
+.generated-link-panel:hover,
+.manager-form:hover {
+  border-color: #c3d2cd;
+  box-shadow: 0 10px 24px rgba(23, 33, 31, 0.08);
+  transform: translateY(-2px);
+}
+
 .metric span,
 .score-card span,
 .content-card span {
@@ -408,12 +442,12 @@ h2 {
 
 .demo-card {
   text-align: left;
-  transition: transform 160ms ease, border-color 160ms ease;
 }
 
 .demo-card:hover {
   transform: translateY(-2px);
   border-color: var(--teal);
+  box-shadow: 0 12px 26px rgba(23, 33, 31, 0.1);
 }
 
 .demo-icon {
@@ -437,9 +471,13 @@ h2 {
   border-radius: 8px;
   background:
     linear-gradient(90deg, rgba(16, 45, 41, 0.94), rgba(16, 45, 41, 0.64)),
-    radial-gradient(circle at 85% 22%, rgba(217, 164, 65, 0.55), transparent 22%),
+    radial-gradient(circle at 85% calc(22% - var(--parallax-slow)), rgba(217, 164, 65, 0.55), transparent 22%),
     linear-gradient(135deg, #436c64, #f0eadc);
   color: #ffffff;
+  background-size: 100% 100%, 120% 120%, 120% 120%;
+  background-position: center, center calc(50% - var(--parallax-slow)), center;
+  overflow: hidden;
+  animation: riseIn 540ms ease both;
 }
 
 .landing-copy {
@@ -803,6 +841,44 @@ textarea {
   background: #e4f0ed;
   color: var(--forest);
   font-weight: 800;
+}
+
+@keyframes viewIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.992);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+
+  body,
+  .landing-demo {
+    background-attachment: scroll;
+  }
 }
 
 @media (max-width: 980px) {
