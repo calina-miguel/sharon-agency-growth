@@ -72,6 +72,8 @@ const brandMark = document.querySelector("#brand-mark");
 const brandPhoto = document.querySelector("#brand-photo");
 const profilePhotoKey = "sharonDemoProfilePhoto";
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const holdDelay = 280;
+const holdMoveTolerance = 18;
 let touchDrag = null;
 let parallaxFrame = 0;
 
@@ -360,6 +362,63 @@ function moveLeadToStage(leadId, stage) {
   refresh();
 }
 
+function startHoldDrag({ card, leadId, pointerId, startX, startY }) {
+  cancelHoldDrag();
+  touchDrag = {
+    card,
+    leadId,
+    pointerId,
+    startX,
+    startY,
+    targetColumn: null,
+    moved: false,
+    armed: false,
+    suppressClick: false,
+    holdTimer: window.setTimeout(() => {
+      if (!touchDrag || touchDrag.card !== card) return;
+      touchDrag.armed = true;
+      card.classList.add("hold-ready", "dragging", "touch-dragging");
+    }, holdDelay)
+  };
+}
+
+function cancelHoldDrag() {
+  if (!touchDrag || touchDrag.suppressClick) return;
+  window.clearTimeout(touchDrag.holdTimer);
+  touchDrag.card?.classList.remove("hold-ready", "dragging", "touch-dragging");
+  if (touchDrag.card) touchDrag.card.style.transform = "";
+  clearPipelineTargets();
+  touchDrag = null;
+}
+
+function updateHoldDrag(clientX, clientY) {
+  if (!touchDrag) return false;
+  const dx = clientX - touchDrag.startX;
+  const dy = clientY - touchDrag.startY;
+  if (!touchDrag.armed) {
+    if (Math.hypot(dx, dy) > holdMoveTolerance) cancelHoldDrag();
+    return false;
+  }
+  touchDrag.moved = true;
+  touchDrag.card.style.transform = `translate(${dx}px, ${dy}px)`;
+  const element = document.elementFromPoint(clientX, clientY);
+  const column = element?.closest?.(".pipeline-column");
+  touchDrag.targetColumn = column;
+  highlightPipelineTarget(column);
+  return true;
+}
+
+function finishHoldDrag() {
+  if (!touchDrag) return;
+  const { card, leadId, targetColumn, moved, armed } = touchDrag;
+  window.clearTimeout(touchDrag.holdTimer);
+  card.classList.remove("hold-ready", "dragging", "touch-dragging");
+  card.style.transform = "";
+  clearPipelineTargets();
+  touchDrag = armed ? { suppressClick: true } : null;
+  if (armed && moved && targetColumn) moveLeadToStage(leadId, targetColumn.dataset.stage);
+}
+
 function refresh() {
   renderPhasePanel();
   updateOverview();
@@ -494,18 +553,13 @@ pipeline.addEventListener("pointerdown", (event) => {
   if (event.target.closest("button")) return;
   const card = event.target.closest(".lead-card");
   if (!card) return;
-  touchDrag = {
+  startHoldDrag({
     card,
     leadId: Number(card.dataset.leadId),
     pointerId: event.pointerId,
     startX: event.clientX,
-    startY: event.clientY,
-    x: 0,
-    y: 0,
-    targetColumn: null,
-    moved: false,
-    suppressClick: false
-  };
+    startY: event.clientY
+  });
   try {
     card.setPointerCapture?.(event.pointerId);
   } catch {
@@ -515,42 +569,23 @@ pipeline.addEventListener("pointerdown", (event) => {
 
 pipeline.addEventListener("pointermove", (event) => {
   if (!touchDrag || event.pointerId !== touchDrag.pointerId) return;
-  const dx = event.clientX - touchDrag.startX;
-  const dy = event.clientY - touchDrag.startY;
-  if (!touchDrag.moved && Math.hypot(dx, dy) < 8) return;
-  event.preventDefault();
-  touchDrag.moved = true;
-  touchDrag.x = dx;
-  touchDrag.y = dy;
-  touchDrag.card.classList.add("dragging", "touch-dragging");
-  touchDrag.card.style.transform = `translate(${dx}px, ${dy}px)`;
-  const element = document.elementFromPoint(event.clientX, event.clientY);
-  const column = element?.closest?.(".pipeline-column");
-  touchDrag.targetColumn = column;
-  highlightPipelineTarget(column);
+  if (updateHoldDrag(event.clientX, event.clientY)) event.preventDefault();
 });
 
 pipeline.addEventListener("pointerup", (event) => {
   if (!touchDrag || event.pointerId !== touchDrag.pointerId) return;
-  const { card, leadId, targetColumn, moved } = touchDrag;
+  const { card } = touchDrag;
   try {
     if (card.hasPointerCapture?.(event.pointerId)) card.releasePointerCapture?.(event.pointerId);
   } catch {
     // If capture was lost mid-gesture, still finish the drop cleanup.
   }
-  card.classList.remove("dragging", "touch-dragging");
-  card.style.transform = "";
-  clearPipelineTargets();
-  touchDrag = moved ? { suppressClick: true } : null;
-  if (moved && targetColumn) moveLeadToStage(leadId, targetColumn.dataset.stage);
+  finishHoldDrag();
 });
 
 pipeline.addEventListener("pointercancel", (event) => {
   if (!touchDrag || event.pointerId !== touchDrag.pointerId) return;
-  touchDrag.card.classList.remove("dragging", "touch-dragging");
-  touchDrag.card.style.transform = "";
-  clearPipelineTargets();
-  touchDrag = null;
+  cancelHoldDrag();
 });
 
 pipeline.addEventListener("touchstart", (event) => {
@@ -559,54 +594,34 @@ pipeline.addEventListener("touchstart", (event) => {
   const card = event.target.closest(".lead-card");
   if (!card) return;
   const touch = event.touches[0];
-  touchDrag = {
+  startHoldDrag({
     card,
     leadId: Number(card.dataset.leadId),
     pointerId: "touch",
     startX: touch.clientX,
-    startY: touch.clientY,
-    x: 0,
-    y: 0,
-    targetColumn: null,
-    moved: false,
-    suppressClick: false
-  };
+    startY: touch.clientY
+  });
 }, { passive: true });
 
 pipeline.addEventListener("touchmove", (event) => {
   if (!touchDrag || touchDrag.pointerId !== "touch" || event.touches.length !== 1) return;
   const touch = event.touches[0];
-  const dx = touch.clientX - touchDrag.startX;
-  const dy = touch.clientY - touchDrag.startY;
-  if (!touchDrag.moved && Math.hypot(dx, dy) < 8) return;
-  event.preventDefault();
-  touchDrag.moved = true;
-  touchDrag.x = dx;
-  touchDrag.y = dy;
-  touchDrag.card.classList.add("dragging", "touch-dragging");
-  touchDrag.card.style.transform = `translate(${dx}px, ${dy}px)`;
-  const element = document.elementFromPoint(touch.clientX, touch.clientY);
-  const column = element?.closest?.(".pipeline-column");
-  touchDrag.targetColumn = column;
-  highlightPipelineTarget(column);
+  if (updateHoldDrag(touch.clientX, touch.clientY)) event.preventDefault();
 }, { passive: false });
 
 pipeline.addEventListener("touchend", () => {
   if (!touchDrag || touchDrag.pointerId !== "touch") return;
-  const { card, leadId, targetColumn, moved } = touchDrag;
-  card.classList.remove("dragging", "touch-dragging");
-  card.style.transform = "";
-  clearPipelineTargets();
-  touchDrag = moved ? { suppressClick: true } : null;
-  if (moved && targetColumn) moveLeadToStage(leadId, targetColumn.dataset.stage);
+  finishHoldDrag();
 });
 
 pipeline.addEventListener("touchcancel", () => {
   if (!touchDrag || touchDrag.pointerId !== "touch") return;
-  touchDrag.card.classList.remove("dragging", "touch-dragging");
-  touchDrag.card.style.transform = "";
-  clearPipelineTargets();
-  touchDrag = null;
+  cancelHoldDrag();
+});
+
+pipeline.addEventListener("contextmenu", (event) => {
+  if (!event.target.closest(".lead-card")) return;
+  event.preventDefault();
 });
 
 document.querySelector("#lead-table").addEventListener("click", (event) => {
