@@ -153,8 +153,7 @@ main {
 
 .topbar,
 .section-head,
-.split,
-.landing-demo {
+.split {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -362,10 +361,13 @@ h2 {
 }
 
 .landing-demo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 480px);
+  align-items: start;
+  gap: 24px;
   min-height: 560px;
   padding: 36px;
   border-radius: 8px;
-  flex-wrap: wrap;
   background:
     linear-gradient(90deg, rgba(16, 45, 41, 0.94), rgba(16, 45, 41, 0.64)),
     radial-gradient(circle at 85% 22%, rgba(217, 164, 65, 0.55), transparent 22%),
@@ -374,7 +376,6 @@ h2 {
 }
 
 .landing-copy {
-  flex: 1 1 100%;
   max-width: 760px;
 }
 
@@ -389,7 +390,6 @@ h2 {
 }
 
 .booking-form {
-  flex: 1 1 100%;
   width: 100%;
   max-width: none;
   padding: 22px;
@@ -777,9 +777,13 @@ textarea {
 
   .topbar,
   .section-head,
-  .split,
-  .landing-demo {
+  .split {
     flex-direction: column;
+  }
+
+  .landing-demo {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
   }
 
   .phase-panel {
