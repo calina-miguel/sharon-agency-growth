@@ -161,14 +161,27 @@ function updateOverview() {
   document.querySelector("#metric-policies").textContent = current.policies;
   const max = Math.max(current.qualified, 1);
   [
-    ["#graph-qualified", current.qualified],
-    ["#graph-booked", current.booked],
-    ["#graph-attended", current.attended],
-    ["#graph-policies", current.policies]
-  ].forEach(([selector, value]) => {
-    const bar = document.querySelector(selector);
-    if (!bar) return;
-    bar.style.height = `${Math.max((value / max) * 100, 8)}%`;
+    ["qualified", [state.baseline.qualified * 0.72, state.baseline.qualified * 0.86, state.baseline.qualified, current.qualified]],
+    ["booked", [state.baseline.booked * 0.7, state.baseline.booked * 0.86, state.baseline.booked, current.booked]],
+    ["attended", [state.baseline.attended * 0.68, state.baseline.attended * 0.84, state.baseline.attended, current.attended]],
+    ["policies", [state.baseline.policies * 0.62, state.baseline.policies * 0.78, state.baseline.policies, current.policies]]
+  ].forEach(([id, values]) => {
+    const points = values.map((value, index) => {
+      const x = 8 + index * 34.5;
+      const y = 50 - Math.max((value / max) * 42, 4);
+      return [x, y];
+    });
+    const line = document.querySelector(`#graph-${id}-line`);
+    const area = document.querySelector(`#graph-${id}-area`);
+    const dot = document.querySelector(`#graph-${id}-dot`);
+    if (!line || !area || !dot) return;
+    const linePath = points.map(([x, y], index) => `${index ? "L" : "M"} ${x.toFixed(1)} ${y.toFixed(1)}`).join(" ");
+    const firstPoint = points[0];
+    const lastPoint = points[points.length - 1];
+    line.setAttribute("d", linePath);
+    area.setAttribute("d", `${linePath} L ${lastPoint[0].toFixed(1)} 54 L ${firstPoint[0].toFixed(1)} 54 Z`);
+    dot.setAttribute("cx", lastPoint[0].toFixed(1));
+    dot.setAttribute("cy", lastPoint[1].toFixed(1));
   });
 }
 

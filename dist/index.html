@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sharon Agency Growth Demos</title>
-    <link rel="stylesheet" href="styles.css?v=20260928-10" />
+    <link rel="stylesheet" href="styles.css?v=20260928-11" />
   </head>
   <body>
     <aside class="sidebar" aria-label="Demo navigation">
@@ -79,45 +79,41 @@
             <span>Qualified inquiries</span>
             <strong id="metric-qualified">42</strong>
             <small>Within service area and agreed to contact</small>
-            <div class="metric-chart" aria-hidden="true">
-              <span style="height: 36%"></span>
-              <span style="height: 54%"></span>
-              <span style="height: 68%"></span>
-              <span id="graph-qualified"></span>
-            </div>
+            <svg class="metric-chart" viewBox="0 0 120 58" preserveAspectRatio="none" aria-hidden="true">
+              <path class="metric-area" id="graph-qualified-area"></path>
+              <path class="metric-line" id="graph-qualified-line"></path>
+              <circle class="metric-dot" id="graph-qualified-dot" r="3"></circle>
+            </svg>
           </article>
           <article class="metric">
             <span>Consultations booked</span>
             <strong id="metric-booked">18</strong>
             <small>Confirmed through the booking flow</small>
-            <div class="metric-chart" aria-hidden="true">
-              <span style="height: 24%"></span>
-              <span style="height: 38%"></span>
-              <span style="height: 46%"></span>
-              <span id="graph-booked"></span>
-            </div>
+            <svg class="metric-chart" viewBox="0 0 120 58" preserveAspectRatio="none" aria-hidden="true">
+              <path class="metric-area" id="graph-booked-area"></path>
+              <path class="metric-line" id="graph-booked-line"></path>
+              <circle class="metric-dot" id="graph-booked-dot" r="3"></circle>
+            </svg>
           </article>
           <article class="metric">
             <span>Attended meetings</span>
             <strong id="metric-attended">13</strong>
             <small>Useful conversations with Sharon</small>
-            <div class="metric-chart" aria-hidden="true">
-              <span style="height: 20%"></span>
-              <span style="height: 30%"></span>
-              <span style="height: 34%"></span>
-              <span id="graph-attended"></span>
-            </div>
+            <svg class="metric-chart" viewBox="0 0 120 58" preserveAspectRatio="none" aria-hidden="true">
+              <path class="metric-area" id="graph-attended-area"></path>
+              <path class="metric-line" id="graph-attended-line"></path>
+              <circle class="metric-dot" id="graph-attended-dot" r="3"></circle>
+            </svg>
           </article>
           <article class="metric">
             <span>Placed policies</span>
             <strong id="metric-policies">4</strong>
             <small>Separated from pending applications</small>
-            <div class="metric-chart" aria-hidden="true">
-              <span style="height: 8%"></span>
-              <span style="height: 12%"></span>
-              <span style="height: 16%"></span>
-              <span id="graph-policies"></span>
-            </div>
+            <svg class="metric-chart" viewBox="0 0 120 58" preserveAspectRatio="none" aria-hidden="true">
+              <path class="metric-area" id="graph-policies-area"></path>
+              <path class="metric-line" id="graph-policies-line"></path>
+              <circle class="metric-dot" id="graph-policies-dot" r="3"></circle>
+            </svg>
           </article>
         </div>
 
@@ -353,6 +349,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=20260928-10"></script>
+    <script src="app.js?v=20260928-11"></script>
   </body>
 </html>
