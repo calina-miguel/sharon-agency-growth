@@ -11,6 +11,9 @@
   --blue: #3d6f9f;
   --parallax-fast: 0px;
   --parallax-slow: 0px;
+  --overview-lift: 0px;
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-pop: cubic-bezier(0.18, 0.88, 0.28, 1.14);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -98,7 +101,7 @@ button {
   overflow: hidden;
   position: relative;
   box-shadow: 0 0 0 0 rgba(217, 164, 65, 0);
-  transition: box-shadow 160ms ease, transform 160ms ease;
+  transition: box-shadow 220ms var(--ease-standard), transform 220ms var(--ease-pop);
 }
 
 .brand-upload:hover .brand-mark,
@@ -196,7 +199,7 @@ nav {
   text-align: left;
   color: #e7efec;
   background: transparent;
-  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+  transition: background-color 220ms var(--ease-standard), color 220ms var(--ease-standard), transform 220ms var(--ease-pop);
 }
 
 .nav-item:hover,
@@ -277,7 +280,7 @@ h2 {
   padding: 9px 12px;
   color: var(--muted);
   white-space: nowrap;
-  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  transition: background-color 240ms var(--ease-standard), border-color 240ms var(--ease-standard), color 240ms var(--ease-standard), transform 240ms var(--ease-pop), box-shadow 240ms var(--ease-standard);
 }
 
 .phase:hover {
@@ -307,7 +310,7 @@ h2 {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
-  animation: riseIn 520ms ease both;
+  animation: riseIn 520ms var(--ease-standard) both;
 }
 
 .phase-panel h2 {
@@ -358,7 +361,7 @@ h2 {
 
 .view.active {
   display: block;
-  animation: viewIn 480ms ease both;
+  animation: viewIn 480ms var(--ease-standard) both;
 }
 
 .band,
@@ -376,7 +379,7 @@ h2 {
   border: 1px solid var(--line);
   border-radius: 8px;
   box-shadow: 0 1px 0 rgba(23, 33, 31, 0.04);
-  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  transition: border-color 220ms var(--ease-standard), box-shadow 220ms var(--ease-standard), transform 220ms var(--ease-pop);
 }
 
 .band {
@@ -415,6 +418,23 @@ h2 {
   padding: 18px;
 }
 
+.metric {
+  animation: metricFloatIn 620ms var(--ease-standard) both;
+  transform: translateY(var(--overview-lift));
+}
+
+.metric:nth-child(2) {
+  animation-delay: 70ms;
+}
+
+.metric:nth-child(3) {
+  animation-delay: 140ms;
+}
+
+.metric:nth-child(4) {
+  animation-delay: 210ms;
+}
+
 .metric:hover,
 .score-card:hover,
 .content-card:hover,
@@ -424,7 +444,7 @@ h2 {
 .manager-form:hover {
   border-color: #c3d2cd;
   box-shadow: 0 10px 24px rgba(23, 33, 31, 0.08);
-  transform: translateY(-2px);
+  transform: translateY(calc(var(--overview-lift) - 2px));
 }
 
 .metric span,
@@ -459,7 +479,7 @@ h2 {
   overflow: visible;
   cursor: pointer;
   touch-action: manipulation;
-  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  transition: border-color 220ms var(--ease-standard), box-shadow 220ms var(--ease-standard), transform 220ms var(--ease-pop), background 320ms var(--ease-standard);
 }
 
 .metric-chart:focus-visible {
@@ -471,7 +491,7 @@ h2 {
 .metric-chart[aria-expanded="true"] {
   border-color: rgba(45, 138, 130, 0.42);
   box-shadow: inset 0 0 0 1px rgba(45, 138, 130, 0.12), 0 8px 18px rgba(23, 33, 31, 0.08);
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.01);
 }
 
 .metric-area {
@@ -485,7 +505,7 @@ h2 {
   stroke-linejoin: round;
   stroke-width: 3;
   stroke-dasharray: 180;
-  animation: lineDraw 720ms ease both;
+  animation: lineDraw 760ms var(--ease-standard) both;
 }
 
 .metric-dot {
@@ -493,7 +513,7 @@ h2 {
   stroke: #ffffff;
   stroke-width: 2;
   filter: drop-shadow(0 3px 5px rgba(23, 33, 31, 0.22));
-  animation: dotPop 520ms ease both;
+  animation: dotPop 560ms var(--ease-pop) both;
 }
 
 .metric-bubble {
@@ -510,9 +530,9 @@ h2 {
   color: var(--ink);
   opacity: 0;
   pointer-events: none;
-  transform: translateY(8px) scale(0.98);
+  transform: translateY(10px) scale(0.96);
   transform-origin: bottom right;
-  transition: opacity 180ms ease, transform 180ms ease;
+  transition: opacity 220ms var(--ease-standard), transform 220ms var(--ease-pop);
 }
 
 .metric-bubble::after {
@@ -529,6 +549,7 @@ h2 {
 }
 
 .metric.show-detail .metric-bubble {
+  animation: bubbleFloat 420ms var(--ease-pop) both;
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0) scale(1);
@@ -995,6 +1016,17 @@ textarea {
   }
 }
 
+@keyframes metricFloatIn {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--overview-lift) + 14px)) scale(0.986);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(var(--overview-lift)) scale(1);
+  }
+}
+
 @keyframes lineDraw {
   from {
     stroke-dashoffset: 180;
@@ -1012,6 +1044,21 @@ textarea {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes bubbleFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 

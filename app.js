@@ -127,6 +127,7 @@ function updateParallax() {
   const y = window.scrollY;
   document.documentElement.style.setProperty("--parallax-fast", `${Math.round(y * 0.04)}px`);
   document.documentElement.style.setProperty("--parallax-slow", `${Math.round(y * 0.025)}px`);
+  document.documentElement.style.setProperty("--overview-lift", `${Math.round(Math.min(y * 0.018, 8)) * -1}px`);
 }
 
 function requestParallaxUpdate() {
