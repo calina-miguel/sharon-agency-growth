@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sharon Growth Demo Presentation</title>
-    <link rel="stylesheet" href="presentation.css?v=20260929-01" />
+    <link rel="stylesheet" href="presentation.css?v=20260929-02" />
   </head>
   <body>
     <header class="deck-header">
@@ -62,6 +62,16 @@
             <li>Metric line graphs with weekday labels</li>
             <li>Tap each graph for a color-coded detail bubble</li>
           </ul>
+          <div class="feature-demo graph-demo" aria-hidden="true">
+            <div class="mini-chart">
+              <span></span>
+              <svg viewBox="0 0 160 60" preserveAspectRatio="none">
+                <path d="M8 44 L56 34 L104 24 L152 14"></path>
+              </svg>
+              <i></i>
+            </div>
+            <p>Tap a graph to show more detail</p>
+          </div>
           <button class="demo-focus" type="button" data-demo-target="overview">Show overview</button>
         </div>
         <div class="live-frame">
@@ -96,6 +106,13 @@
             <li>Record notes after each conversation</li>
             <li>Schedule follow-ups directly from the selected record</li>
           </ul>
+          <div class="feature-demo lead-demo" aria-hidden="true">
+            <div class="lead-demo-card">
+              <strong>New lead record</strong>
+              <span>Note added</span>
+              <em>Follow-up scheduled</em>
+            </div>
+          </div>
           <button class="demo-focus" type="button" data-demo-target="leads">Show lead manager</button>
         </div>
         <div class="live-frame">
@@ -113,6 +130,15 @@
             <li>Mobile tap-and-hold drag with stacked stages</li>
             <li>Card tap selects the lead without a separate select button</li>
           </ul>
+          <div class="feature-demo pipeline-demo" aria-hidden="true">
+            <div class="pipeline-stage"><span>New inquiry</span></div>
+            <div class="pipeline-stage"><span>Contacted</span></div>
+            <div class="pipeline-stage"><span>Booked</span></div>
+            <div class="moving-lead">
+              <strong>Maya Chen</strong>
+              <small>Protecting my family</small>
+            </div>
+          </div>
           <button class="demo-focus" type="button" data-demo-target="workflow">Show pipeline</button>
         </div>
         <div class="live-frame">
@@ -130,6 +156,10 @@
             <li>Generate a shareable campaign URL</li>
             <li>Copy link or open an email draft</li>
           </ul>
+          <div class="feature-demo funnel-demo" aria-hidden="true">
+            <span>young-family-protection</span>
+            <strong>Link generated</strong>
+          </div>
           <button class="demo-focus" type="button" data-demo-target="funnels">Show funnel builder</button>
         </div>
         <div class="live-frame">
@@ -177,6 +207,6 @@
       <nav class="dots" id="slide-dots" aria-label="Slide shortcuts"></nav>
     </footer>
 
-    <script src="presentation.js?v=20260929-01"></script>
+    <script src="presentation.js?v=20260929-02"></script>
   </body>
 </html>
