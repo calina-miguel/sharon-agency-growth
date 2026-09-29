@@ -653,6 +653,9 @@ h2 {
 
 .demo-card {
   text-align: left;
+  display: grid;
+  align-content: start;
+  gap: 12px;
 }
 
 .demo-card:hover {
@@ -670,6 +673,51 @@ h2 {
   background: #e4f0ed;
   color: var(--forest);
   font-weight: 800;
+}
+
+.demo-section-head {
+  max-width: 780px;
+  margin: 34px 0 0;
+}
+
+.demo-section-head h2 {
+  margin-bottom: 0.5em;
+}
+
+.demo-section-head p:not(.eyebrow) {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.demo-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.demo-actions button {
+  min-height: 38px;
+  border-radius: 8px;
+  padding: 9px 11px;
+  color: #ffffff;
+  background: var(--forest);
+  font-size: 0.84rem;
+  font-weight: 850;
+  text-align: left;
+  transition: background-color 180ms var(--ease-standard), box-shadow 180ms var(--ease-standard), transform 180ms var(--ease-pop);
+}
+
+.demo-actions button.secondary {
+  color: var(--forest);
+  background: #e4f0ed;
+}
+
+.demo-actions button:hover {
+  box-shadow: 0 8px 18px rgba(23, 33, 31, 0.1);
+  transform: translateY(-1px);
 }
 
 .landing-demo {

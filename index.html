@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sharon Agency Growth Demos</title>
-    <link rel="stylesheet" href="styles.css?v=20260928-23" />
+    <link rel="stylesheet" href="styles.css?v=20260929-01" />
   </head>
   <body>
     <aside class="sidebar" aria-label="Demo navigation">
@@ -133,36 +133,66 @@
           </article>
         </div>
 
+        <div class="demo-section-head">
+          <p class="eyebrow">Working demo path</p>
+          <h2>Walk through the client journey</h2>
+          <p>Use these demos in sequence to show how a prospect moves from a campaign click to consultation, follow-up, reporting, and future campaign support.</p>
+        </div>
+
         <div class="demo-grid">
           <article class="demo-card" data-open="landing">
             <span class="demo-icon">01</span>
             <h3>Focused landing page</h3>
             <p>Young family offer, needs-based copy, and a consultation request form.</p>
+            <div class="demo-actions">
+              <button type="button" data-open="landing">Open consultation form</button>
+              <button class="secondary" type="button" data-open="workflow">Next: Follow-up workflow</button>
+            </div>
           </article>
           <article class="demo-card" data-open="workflow">
             <span class="demo-icon">02</span>
             <h3>Lead follow-up workflow</h3>
             <p>Inquiry tracking, reminders, and next-action states for Sharon's team.</p>
+            <div class="demo-actions">
+              <button type="button" data-open="workflow">Open pipeline</button>
+              <button class="secondary" type="button" data-open="reporting">Next: Performance report</button>
+            </div>
           </article>
           <article class="demo-card" data-open="reporting">
             <span class="demo-icon">03</span>
             <h3>Performance report</h3>
             <p>Costs, conversion rates, applications, and retained commission estimates.</p>
+            <div class="demo-actions">
+              <button type="button" data-open="reporting">Open report</button>
+              <button class="secondary" type="button" data-open="content">Next: Content plan</button>
+            </div>
           </article>
           <article class="demo-card" data-open="content">
             <span class="demo-icon">04</span>
             <h3>Educational content calendar</h3>
             <p>Posts and short video ideas answering common insurance questions.</p>
+            <div class="demo-actions">
+              <button type="button" data-open="content">Open content plan</button>
+              <button class="secondary" type="button" data-open="leads">Next: Lead records</button>
+            </div>
           </article>
           <article class="demo-card" data-open="leads">
             <span class="demo-icon">05</span>
             <h3>Lead records and notes</h3>
             <p>Add lead details, record notes, and schedule the next follow-up.</p>
+            <div class="demo-actions">
+              <button type="button" data-open="leads">Open lead manager</button>
+              <button class="secondary" type="button" data-open="funnels">Next: Funnel links</button>
+            </div>
           </article>
           <article class="demo-card" data-open="funnels">
             <span class="demo-icon">06</span>
             <h3>Click funnel links</h3>
             <p>Generate a campaign link and email-ready invitation copy.</p>
+            <div class="demo-actions">
+              <button type="button" data-open="funnels">Open link builder</button>
+              <button class="secondary" type="button" data-open="landing">Restart at step 01</button>
+            </div>
           </article>
         </div>
       </section>
@@ -365,6 +395,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=20260928-23"></script>
+    <script src="app.js?v=20260929-01"></script>
   </body>
 </html>

@@ -551,7 +551,10 @@ profileUpload?.addEventListener("change", () => {
 });
 
 document.querySelectorAll("[data-open]").forEach((card) => {
-  card.addEventListener("click", () => showView(card.dataset.open));
+  card.addEventListener("click", (event) => {
+    event.stopPropagation();
+    showView(card.dataset.open);
+  });
 });
 
 document.querySelectorAll(".phase").forEach((button) => {
