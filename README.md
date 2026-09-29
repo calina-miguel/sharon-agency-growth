@@ -10,6 +10,7 @@ Standalone web project based on the 90-day growth proposal for Sharon's life ins
 - Follow-up and booking pipeline
 - Performance scorecard and conversion funnel
 - Educational content calendar
+- Interactive prospect presentation slideshow
 
 ## Run locally
 
@@ -23,6 +24,12 @@ Then open:
 
 ```text
 http://127.0.0.1:5177
+```
+
+Presentation route:
+
+```text
+http://127.0.0.1:5177/presentation.html
 ```
 
 ## Deployment

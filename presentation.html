@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sharon Growth Demo Presentation</title>
+    <link rel="stylesheet" href="presentation.css?v=20260929-01" />
+  </head>
+  <body>
+    <header class="deck-header">
+      <a class="brand-link" href="index.html" target="_blank" rel="noreferrer">Sharon Growth Demo</a>
+      <div class="deck-controls" aria-label="Presentation controls">
+        <button class="icon-button" id="prev-slide" type="button" aria-label="Previous slide">Back</button>
+        <span id="slide-count" aria-live="polite">1 / 9</span>
+        <button class="icon-button" id="next-slide" type="button" aria-label="Next slide">Next</button>
+      </div>
+    </header>
+
+    <main class="deck" aria-live="polite">
+      <section class="slide active cover" data-title="Sharon Growth Pilot">
+        <div class="cover-copy">
+          <p class="eyebrow">Client walkthrough</p>
+          <h1>Sharon Agency Growth Demo Suite</h1>
+          <p>Working demos for inquiry capture, follow-up, funnel links, reporting, and content planning.</p>
+          <div class="cover-actions">
+            <a href="index.html" target="_blank" rel="noreferrer">Open full demo</a>
+            <button type="button" data-jump="1">Start walkthrough</button>
+          </div>
+        </div>
+        <div class="cover-frame">
+          <iframe title="Live overview demo" src="index.html?presentation=overview"></iframe>
+        </div>
+      </section>
+
+      <section class="slide split-slide" data-title="Pilot scope">
+        <div class="slide-copy">
+          <p class="eyebrow">90-day pilot</p>
+          <h2>A practical growth system</h2>
+          <p>The demo turns the proposal into a client-ready workflow that Sharon can use to explain the campaign, capture leads, follow up, and review early results.</p>
+          <ul>
+            <li>Focused landing page for consultation requests</li>
+            <li>Lead records, notes, and scheduled follow-ups</li>
+            <li>Pipeline stages for inquiry follow-through</li>
+            <li>Reporting views for conversion and acquisition cost</li>
+          </ul>
+        </div>
+        <div class="feature-strip">
+          <article><strong>01</strong><span>Campaign overview</span></article>
+          <article><strong>02</strong><span>Lead capture</span></article>
+          <article><strong>03</strong><span>Follow-up workflow</span></article>
+          <article><strong>04</strong><span>Performance report</span></article>
+        </div>
+      </section>
+
+      <section class="slide demo-slide" data-demo="overview" data-title="Overview dashboard">
+        <div class="slide-copy">
+          <p class="eyebrow">Dashboard</p>
+          <h2>Campaign performance at a glance</h2>
+          <p>The overview gives the prospect a quick read on lead flow, booked consultations, attended meetings, and placed policies.</p>
+          <ul>
+            <li>Interactive 90-day phase controls</li>
+            <li>Metric line graphs with weekday labels</li>
+            <li>Tap each graph for a color-coded detail bubble</li>
+          </ul>
+          <button class="demo-focus" type="button" data-demo-target="overview">Show overview</button>
+        </div>
+        <div class="live-frame">
+          <iframe title="Overview dashboard live demo" src="index.html?slide=overview"></iframe>
+        </div>
+      </section>
+
+      <section class="slide demo-slide" data-demo="landing" data-title="Landing page">
+        <div class="slide-copy">
+          <p class="eyebrow">Lead capture</p>
+          <h2>Consultation request flow</h2>
+          <p>The landing page shows how a campaign click becomes a simple inquiry Sharon’s team can follow up on.</p>
+          <ul>
+            <li>Two-column desktop layout and stacked mobile layout</li>
+            <li>Consultation form with need and timing fields</li>
+            <li>Submitted inquiries move into the follow-up workflow</li>
+          </ul>
+          <button class="demo-focus" type="button" data-demo-target="landing">Show landing page</button>
+        </div>
+        <div class="live-frame">
+          <iframe title="Landing page live demo" src="index.html?slide=landing"></iframe>
+        </div>
+      </section>
+
+      <section class="slide demo-slide" data-demo="leads" data-title="Lead manager">
+        <div class="slide-copy">
+          <p class="eyebrow">Lead records</p>
+          <h2>Details, notes, and follow-ups</h2>
+          <p>The lead manager turns inquiries into organized records with next actions and conversation history.</p>
+          <ul>
+            <li>Add leads with contact details and source</li>
+            <li>Record notes after each conversation</li>
+            <li>Schedule follow-ups directly from the selected record</li>
+          </ul>
+          <button class="demo-focus" type="button" data-demo-target="leads">Show lead manager</button>
+        </div>
+        <div class="live-frame">
+          <iframe title="Lead manager live demo" src="index.html?slide=leads"></iframe>
+        </div>
+      </section>
+
+      <section class="slide demo-slide" data-demo="workflow" data-title="Follow-up pipeline">
+        <div class="slide-copy">
+          <p class="eyebrow">Follow-up workflow</p>
+          <h2>Draggable inquiry pipeline</h2>
+          <p>The pipeline gives Sharon’s team a simple way to move leads from new inquiry to outcome.</p>
+          <ul>
+            <li>Desktop drag between stages</li>
+            <li>Mobile tap-and-hold drag with stacked stages</li>
+            <li>Card tap selects the lead without a separate select button</li>
+          </ul>
+          <button class="demo-focus" type="button" data-demo-target="workflow">Show pipeline</button>
+        </div>
+        <div class="live-frame">
+          <iframe title="Follow-up pipeline live demo" src="index.html?slide=workflow"></iframe>
+        </div>
+      </section>
+
+      <section class="slide demo-slide" data-demo="funnels" data-title="Funnel links">
+        <div class="slide-copy">
+          <p class="eyebrow">Campaign links</p>
+          <h2>Send-ready funnel links</h2>
+          <p>The funnel builder creates trackable campaign links and email copy the team can send quickly.</p>
+          <ul>
+            <li>Choose audience, offer, and destination</li>
+            <li>Generate a shareable campaign URL</li>
+            <li>Copy link or open an email draft</li>
+          </ul>
+          <button class="demo-focus" type="button" data-demo-target="funnels">Show funnel builder</button>
+        </div>
+        <div class="live-frame">
+          <iframe title="Funnel link live demo" src="index.html?slide=funnels"></iframe>
+        </div>
+      </section>
+
+      <section class="slide demo-slide" data-demo="reporting" data-title="Reporting">
+        <div class="slide-copy">
+          <p class="eyebrow">Reporting</p>
+          <h2>90-day scorecard</h2>
+          <p>The reporting view explains whether the pilot is producing useful conversations at a reasonable cost.</p>
+          <ul>
+            <li>Adjust ad spend and agency fee assumptions</li>
+            <li>Review acquisition cost and projected commission</li>
+            <li>Show conversion from inquiry to policy outcome</li>
+          </ul>
+          <button class="demo-focus" type="button" data-demo-target="reporting">Show scorecard</button>
+        </div>
+        <div class="live-frame">
+          <iframe title="Reporting live demo" src="index.html?slide=reporting"></iframe>
+        </div>
+      </section>
+
+      <section class="slide demo-slide" data-demo="content" data-title="Content plan">
+        <div class="slide-copy">
+          <p class="eyebrow">Content support</p>
+          <h2>Educational publishing plan</h2>
+          <p>The content board gives Sharon practical topics for posts and short videos that support the campaign.</p>
+          <ul>
+            <li>Plain-language insurance education topics</li>
+            <li>Post and short-video formats</li>
+            <li>Refreshable idea set for planning conversations</li>
+          </ul>
+          <button class="demo-focus" type="button" data-demo-target="content">Show content plan</button>
+        </div>
+        <div class="live-frame">
+          <iframe title="Content plan live demo" src="index.html?slide=content"></iframe>
+        </div>
+      </section>
+    </main>
+
+    <footer class="deck-footer">
+      <div class="progress-track"><span id="progress-bar"></span></div>
+      <nav class="dots" id="slide-dots" aria-label="Slide shortcuts"></nav>
+    </footer>
+
+    <script src="presentation.js?v=20260929-01"></script>
+  </body>
+</html>
