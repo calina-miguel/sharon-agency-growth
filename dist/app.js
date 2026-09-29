@@ -79,6 +79,7 @@ const metricCopy = {
 };
 
 function showView(id) {
+  if (!validViewIds.has(id)) return;
   document.querySelectorAll(".view").forEach((view) => view.classList.toggle("active", view.id === id));
   document.querySelectorAll(".nav-item").forEach((item) => item.classList.toggle("active", item.dataset.view === id));
 }
@@ -93,9 +94,15 @@ const profilePhotoKey = "sharonDemoProfilePhoto";
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const holdDelay = 280;
 const holdMoveTolerance = 18;
+const validViewIds = new Set(Array.from(document.querySelectorAll(".view")).map((view) => view.id));
 let touchDrag = null;
 let parallaxFrame = 0;
 let activeMetric = "";
+
+function requestedView() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("presentationView") || params.get("slide") || params.get("view") || params.get("presentation");
+}
 
 function setMenuOpen(isOpen) {
   if (!sidebar || !menuToggle) return;
@@ -795,3 +802,4 @@ requestParallaxUpdate();
 renderContent();
 renderFunnel();
 refresh();
+showView(requestedView() || "overview");

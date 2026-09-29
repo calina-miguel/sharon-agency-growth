@@ -8,24 +8,7 @@ let currentSlide = 0;
 
 function setIframeView(iframe, view) {
   if (!iframe || !view) return;
-  const applyView = () => {
-    try {
-      const doc = iframe.contentDocument;
-      if (!doc) return;
-      doc.querySelectorAll(".view").forEach((section) => section.classList.toggle("active", section.id === view));
-      doc.querySelectorAll(".nav-item").forEach((item) => item.classList.toggle("active", item.dataset.view === view));
-      doc.querySelector(".sidebar")?.classList.remove("menu-open");
-      doc.querySelector(".menu-toggle")?.setAttribute("aria-expanded", "false");
-      doc.defaultView?.scrollTo({ top: 0, behavior: "auto" });
-    } catch {
-      iframe.src = `index.html?slide=${view}`;
-    }
-  };
-  if (iframe.contentDocument?.readyState === "complete") {
-    applyView();
-  } else {
-    iframe.addEventListener("load", applyView, { once: true });
-  }
+  iframe.src = `index.html?presentationView=${encodeURIComponent(view)}&v=${Date.now()}`;
 }
 
 function updateSlide(index) {
