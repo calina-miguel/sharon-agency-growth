@@ -1,9 +1,9 @@
-const stages = ["New inquiry", "Contacted", "Booked", "Outcome"];
+const stages = ["New Inquiry", "Contacted", "Booked", "Outcome"];
 
 const phases = {
   foundation: {
     label: "Days 1-30",
-    title: "Build the foundation",
+    title: "Build The Foundation",
     focus: "Audience selection, campaign offer, landing page, tracking, and follow-up setup.",
     milestone: "Campaign ready to launch with baseline measures recorded.",
     actions: ["Confirm primary audience", "Prepare landing page and inquiry tracking", "Approve first educational content"],
@@ -11,7 +11,7 @@ const phases = {
   },
   launch: {
     label: "Days 31-60",
-    title: "Launch and learn",
+    title: "Launch And Learn",
     focus: "Run the first campaign, publish educational content, monitor inquiry quality, and review booking attendance.",
     milestone: "Initial evidence of which messages generate useful conversations.",
     actions: ["Review new inquiries", "Advance leads through follow-up", "Compare booked and attended consultations"],
@@ -19,7 +19,7 @@ const phases = {
   },
   evaluate: {
     label: "Days 61-90",
-    title: "Improve and evaluate",
+    title: "Improve And Evaluate",
     focus: "Refine targeting, address follow-up gaps, assess sales outcomes, and estimate acquisition costs.",
     milestone: "Documented recommendation to expand, adjust, or stop each activity.",
     actions: ["Inspect acquisition costs", "Separate pending applications from placed policies", "Prepare next-step recommendation"],
@@ -31,7 +31,7 @@ const state = {
   selectedPhase: "launch",
   selectedLeadId: 1,
   leads: [
-    { id: 1, name: "Maya Chen", email: "maya@example.com", phone: "(555) 014-1189", area: "Plano", source: "Landing page", concern: "Protecting my family", time: "Weekday afternoon", stage: "New inquiry", quality: "Qualified", notes: ["Needs coverage for spouse and two children."], followUps: [{ date: "2026-09-28", type: "Call", note: "Confirm budget range and preferred consultation time." }] },
+    { id: 1, name: "Maya Chen", email: "maya@example.com", phone: "(555) 014-1189", area: "Plano", source: "Landing page", concern: "Protecting my family", time: "Weekday afternoon", stage: "New Inquiry", quality: "Qualified", notes: ["Needs coverage for spouse and two children."], followUps: [{ date: "2026-09-28", type: "Call", note: "Confirm budget range and preferred consultation time." }] },
     { id: 2, name: "Andre Brooks", email: "andre@example.com", phone: "(555) 018-2044", area: "Frisco", source: "Facebook campaign", concern: "Mortgage protection", time: "Early evening", stage: "Contacted", quality: "Qualified", notes: ["Asked whether mortgage protection should be separate from family coverage."], followUps: [{ date: "2026-09-29", type: "Email", note: "Send approved explainer and booking link." }] },
     { id: 3, name: "Priya Shah", email: "priya@example.com", phone: "(555) 016-0081", area: "McKinney", source: "Referral", concern: "Understanding my options", time: "Weekday morning", stage: "Booked", quality: "Qualified", notes: ["Booked a needs conversation for next week."], followUps: [] },
     { id: 4, name: "Sam Rivera", email: "sam@example.com", phone: "(555) 011-7761", area: "Dallas", source: "Landing page", concern: "Business continuity", time: "Weekday afternoon", stage: "Outcome", quality: "Application pending", notes: ["Business owner. Application pending underwriting."], followUps: [{ date: "2026-10-02", type: "Task", note: "Check application status." }] },
@@ -49,31 +49,31 @@ const state = {
 };
 
 const contentIdeas = [
-  ["Post", "How much life insurance do young families usually consider?", "Simple framing around income, debts, dependents, and budget."],
-  ["Short video", "What happens during a first consultation?", "A calm walkthrough of the conversation and what Sharon will ask."],
-  ["Post", "Life insurance terms in plain English", "Define beneficiary, premium, term, and underwriting without sales pressure."],
-  ["Short video", "Mortgage protection vs. family protection", "Explain the overlap and why needs can change over time."],
-  ["Post", "Three moments when coverage is worth revisiting", "New child, new home, self-employment, or major income change."],
-  ["Post", "Why online quotes are only a starting point", "Position Sharon's role as clarification, not instant product advice."],
-  ["Post", "Questions to ask before buying coverage", "Encourage prepared, informed conversations."],
-  ["Short video", "Common cost misconceptions", "Address affordability concerns with approved, general language."]
+  ["Post", "How Much Life Insurance Do Young Families Usually Consider?", "Simple framing around income, debts, dependents, and budget."],
+  ["Short Video", "What Happens During A First Consultation?", "A calm walkthrough of the conversation and what Sharon will ask."],
+  ["Post", "Life Insurance Terms In Plain English", "Define beneficiary, premium, term, and underwriting without sales pressure."],
+  ["Short Video", "Mortgage Protection Vs. Family Protection", "Explain the overlap and why needs can change over time."],
+  ["Post", "Three Moments When Coverage Is Worth Revisiting", "New child, new home, self-employment, or major income change."],
+  ["Post", "Why Online Quotes Are Only A Starting Point", "Position Sharon's role as clarification, not instant product advice."],
+  ["Post", "Questions To Ask Before Buying Coverage", "Encourage prepared, informed conversations."],
+  ["Short Video", "Common Cost Misconceptions", "Address affordability concerns with approved, general language."]
 ];
 
 const metricCopy = {
   qualified: {
-    label: "Qualified inquiries",
+    label: "Qualified Inquiries",
     note: "People who matched the target area and gave permission for Sharon's team to follow up."
   },
   booked: {
-    label: "Consultations booked",
+    label: "Consultations Booked",
     note: "Qualified leads who moved into a confirmed conversation through the booking flow."
   },
   attended: {
-    label: "Attended meetings",
+    label: "Attended Meetings",
     note: "Booked consultations that became useful live conversations with Sharon."
   },
   policies: {
-    label: "Placed policies",
+    label: "Placed Policies",
     note: "Closed policy outcomes, shown separately from pending applications."
   }
 };
@@ -226,9 +226,9 @@ function updateMetricBubbles(current) {
       <strong>${detail.label}: ${value}</strong>
       <p>${detail.note}</p>
       <dl>
-        <dt>Starting point</dt>
+        <dt>Starting Point</dt>
         <dd>${baseline}</dd>
-        <dt>Added in demo</dt>
+        <dt>Added In Demo</dt>
         <dd>+${lift}</dd>
       </dl>
     `;
@@ -281,7 +281,7 @@ function renderLeadManager() {
       <span>Name</span>
       <span>Need</span>
       <span>Source</span>
-      <span>Next follow-up</span>
+      <span>Next Follow-Up</span>
       <span>Status</span>
     </div>
     ${state.leads.map((lead) => `
@@ -305,7 +305,7 @@ function renderLeadManager() {
   detail.innerHTML = `
     <div class="detail-header">
       <div>
-        <p class="eyebrow">Selected lead</p>
+        <p class="eyebrow">Selected Lead</p>
         <h3>${lead.name}</h3>
       </div>
       <span class="status-pill">${lead.quality}</span>
@@ -346,7 +346,7 @@ function renderLeadManager() {
     <div class="activity-list">
       <h4>Notes</h4>
       ${lead.notes.map((note) => `<p>${note}</p>`).join("") || "<p>No notes yet.</p>"}
-      <h4>Scheduled follow-ups</h4>
+      <h4>Scheduled Follow-Ups</h4>
       ${lead.followUps.map((item) => `<p><strong>${item.date}</strong> - ${item.type}: ${item.note}</p>`).join("") || "<p>No follow-ups scheduled.</p>"}
     </div>
   `;
@@ -363,18 +363,18 @@ function renderReport() {
   const roi = ((retained - totalCost) / Math.max(totalCost, 1)) * 100;
 
   document.querySelector("#score-grid").innerHTML = [
-    ["Cost per qualified inquiry", `$${Math.round(costPerQualified)}`, "Ad spend plus agency fee"],
-    ["Cost per placed policy", `$${Math.round(costPerClient)}`, "Uses policies placed in force"],
-    ["Estimated retained commission", `$${retained.toLocaleString()}`, "Demo figure for evaluation"],
-    ["Pilot return estimate", `${Math.round(roi)}%`, "Before servicing costs or reversals"]
+    ["Cost Per Qualified Inquiry", `$${Math.round(costPerQualified)}`, "Ad spend plus agency fee"],
+    ["Cost Per Placed Policy", `$${Math.round(costPerClient)}`, "Uses policies placed in force"],
+    ["Estimated Retained Commission", `$${retained.toLocaleString()}`, "Demo figure for evaluation"],
+    ["Pilot Return Estimate", `${Math.round(roi)}%`, "Before servicing costs or reversals"]
   ].map(([label, value, note]) => `<article class="score-card"><span>${label}</span><strong>${value}</strong><small>${note}</small></article>`).join("");
 
   const rows = [
-    ["Qualified inquiries", current.qualified],
-    ["Consultations booked", current.booked],
-    ["Attended meetings", current.attended],
+    ["Qualified Inquiries", current.qualified],
+    ["Consultations Booked", current.booked],
+    ["Attended Meetings", current.attended],
     ["Applications", current.applications],
-    ["Policies placed", current.policies]
+    ["Policies Placed", current.policies]
   ];
   const max = rows[0][1];
   document.querySelector("#funnel").innerHTML = rows.map(([label, value]) => `
@@ -613,7 +613,7 @@ document.querySelector("#booking-form").addEventListener("submit", (event) => {
     source: "Landing page",
     concern: form.get("concern"),
     time: form.get("time"),
-    stage: "New inquiry",
+    stage: "New Inquiry",
     quality: "Qualified",
     notes: ["Submitted consultation request from the landing page."],
     followUps: []
