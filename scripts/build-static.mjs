@@ -10,3 +10,4 @@ for (const file of files) {
 }
 
 await cp("data", "dist/data", { recursive: true });
+await cp("assets", "dist/assets", { recursive: true });

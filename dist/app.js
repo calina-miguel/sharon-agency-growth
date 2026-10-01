@@ -1,5 +1,6 @@
 const profilePhotoKey = "sharonLeadSystemProfilePhoto";
 const sidebarWidthKey = "sharonLeadSystemSidebarWidth";
+const defaultProfilePhoto = "assets/sharon.png";
 const validViewIds = new Set(Array.from(document.querySelectorAll(".view")).map((view) => view.id));
 
 const customerMessages = [
@@ -672,13 +673,8 @@ function setBrandPhoto(dataUrl) {
   const brandMark = document.querySelector("#brand-mark");
   const brandPhoto = document.querySelector("#brand-photo");
   if (!brandMark || !brandPhoto) return;
-  if (dataUrl) {
-    brandPhoto.src = dataUrl;
-    brandMark.classList.add("has-photo");
-  } else {
-    brandPhoto.removeAttribute("src");
-    brandMark.classList.remove("has-photo");
-  }
+  brandPhoto.src = dataUrl || defaultProfilePhoto;
+  brandMark.classList.add("has-photo");
 }
 
 function setSidebarWidth(width) {
@@ -900,9 +896,9 @@ document.querySelector("#generate-campaign").addEventListener("click", renderCam
 document.querySelector("#campaign-form").addEventListener("input", renderCampaign);
 
 try {
-  setBrandPhoto(localStorage.getItem(profilePhotoKey));
+  setBrandPhoto(localStorage.getItem(profilePhotoKey) || defaultProfilePhoto);
 } catch {
-  setBrandPhoto("");
+  setBrandPhoto(defaultProfilePhoto);
 }
 
 restoreSidebarWidth();
