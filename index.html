@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sharon Lead Acquisition System</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="styles.css?v=20261001-02" />
+    <link rel="stylesheet" href="styles.css?v=20261001-04" />
   </head>
   <body>
     <aside class="sidebar" aria-label="Application navigation">
@@ -42,6 +42,7 @@
         <button class="nav-item" data-view="agent">Lead Intake</button>
         <button class="nav-item" data-view="approval">Approval Queue</button>
         <button class="nav-item" data-view="pipeline">Lead Manager</button>
+        <button class="nav-item" data-view="schedule">Schedule</button>
         <button class="nav-item" data-view="social">Social Hub</button>
         <button class="nav-item" data-view="compliance">Compliance Watch</button>
         <button class="nav-item" data-view="aeo">AEO Studio</button>
@@ -52,6 +53,7 @@
         <span>New Direction</span>
         <p>Built around two outcomes: customer leads for policies and recruiting leads for sales agents.</p>
       </div>
+      <div class="sidebar-resizer" id="sidebar-resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar"></div>
     </aside>
 
     <main>
@@ -85,22 +87,22 @@
         </div>
 
         <div class="metric-grid">
-          <article class="metric">
+          <article class="metric metric-link" role="button" tabindex="0" data-metric-view="pipeline" data-lead-type="customer" aria-label="Open customer leads">
             <span>Customer Leads</span>
             <strong id="metric-customers">0</strong>
             <small>Insurance buyers captured and scored</small>
           </article>
-          <article class="metric">
+          <article class="metric metric-link" role="button" tabindex="0" data-metric-view="pipeline" data-lead-type="recruit" aria-label="Open agent leads">
             <span>Agent Leads</span>
             <strong id="metric-agents">0</strong>
             <small>Recruiting prospects captured and scored</small>
           </article>
-          <article class="metric">
+          <article class="metric metric-link" role="button" tabindex="0" data-metric-view="approval" aria-label="Open leads needing approval">
             <span>Needs Approval</span>
             <strong id="metric-approval">0</strong>
             <small>Lead summaries waiting for human review</small>
           </article>
-          <article class="metric">
+          <article class="metric metric-link" role="button" tabindex="0" data-metric-view="schedule" data-schedule-filter="approved" aria-label="Open approved lead schedule">
             <span>Approved</span>
             <strong id="metric-approved">0</strong>
             <small>Ready for callback, email, or booking</small>
@@ -290,6 +292,56 @@
         </div>
       </section>
 
+      <section class="view" id="schedule">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Scheduling System</p>
+            <h2>Calendar, Notes, And Lead Outcomes</h2>
+          </div>
+          <p class="approval-note">Schedule callbacks, recruiting conversations, and follow-up outcomes from one place.</p>
+        </div>
+        <div class="schedule-layout">
+          <section class="schedule-panel">
+            <h3>Follow-Up Calendar</h3>
+            <div class="schedule-list" id="schedule-list"></div>
+          </section>
+          <form class="schedule-panel schedule-form" id="schedule-form">
+            <h3>Schedule Details</h3>
+            <label>
+              Lead
+              <select id="schedule-lead"></select>
+            </label>
+            <div class="schedule-fields">
+              <label>
+                Date
+                <input id="schedule-date" type="date" />
+              </label>
+              <label>
+                Time
+                <input id="schedule-time" type="time" />
+              </label>
+            </div>
+            <label>
+              Outcome / Status
+              <select id="schedule-outcome">
+                <option>Needs Approval</option>
+                <option>Callback Scheduled</option>
+                <option>Consultation Booked</option>
+                <option>Interview Scheduled</option>
+                <option>Follow-Up Needed</option>
+                <option>Closed</option>
+                <option>Rejected</option>
+              </select>
+            </label>
+            <label>
+              Notes
+              <textarea id="schedule-note" rows="6"></textarea>
+            </label>
+            <button type="submit">Save Schedule</button>
+          </form>
+        </div>
+      </section>
+
       <section class="view" id="social">
         <div class="section-head">
           <div>
@@ -466,6 +518,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=20261001-02"></script>
+    <script src="app.js?v=20261001-04"></script>
   </body>
 </html>

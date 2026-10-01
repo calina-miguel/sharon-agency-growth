@@ -1,4 +1,5 @@
 const profilePhotoKey = "sharonLeadSystemProfilePhoto";
+const sidebarWidthKey = "sharonLeadSystemSidebarWidth";
 const validViewIds = new Set(Array.from(document.querySelectorAll(".view")).map((view) => view.id));
 
 const customerMessages = [
@@ -19,6 +20,7 @@ const state = {
   selectedLeadManagerType: "customer",
   complianceFeed: null,
   selectedLeadId: 1,
+  selectedScheduleId: 1,
   leads: [
     {
       id: 1,
@@ -205,6 +207,33 @@ function leadTypeLabel(type) {
   return type === "customer" ? "Insurance Customer" : "Sales Agent";
 }
 
+function defaultFollowUpDate(index = 0) {
+  const date = new Date();
+  date.setDate(date.getDate() + index + 1);
+  return date.toISOString().slice(0, 10);
+}
+
+function ensureLeadSchedule(lead, index = 0) {
+  if (!lead.followUpDate) lead.followUpDate = defaultFollowUpDate(index);
+  if (!lead.followUpTime) lead.followUpTime = lead.type === "customer" ? "10:00" : "14:00";
+  if (!lead.outcome) {
+    lead.outcome = lead.status === "Approved"
+      ? (lead.type === "customer" ? "Callback Scheduled" : "Interview Scheduled")
+      : lead.status;
+  }
+  if (!lead.note) lead.note = lead.nextStep || "Review next step before outreach.";
+  return lead;
+}
+
+function formatScheduleDate(dateValue) {
+  const date = new Date(`${dateValue}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return { day: "--", month: "Date" };
+  return {
+    day: String(date.getDate()).padStart(2, "0"),
+    month: date.toLocaleDateString(undefined, { month: "short" })
+  };
+}
+
 function leadStageGroup(lead) {
   if (lead.status === "Needs Approval") return "Needs Approval";
   if (lead.status === "Rejected") return "Rejected";
@@ -368,6 +397,44 @@ function renderPipeline() {
   }
   overview.innerHTML = renderLeadManagerOverview(type);
   document.querySelector("#lead-manager-pipeline").innerHTML = renderStageColumns(type, stages);
+}
+
+function renderSchedule() {
+  state.leads.forEach((lead, index) => ensureLeadSchedule(lead, index));
+  if (!state.leads.some((lead) => lead.id === state.selectedScheduleId)) {
+    state.selectedScheduleId = state.leads[0]?.id || null;
+  }
+  const selected = state.leads.find((lead) => lead.id === state.selectedScheduleId) || state.leads[0];
+  const sortedLeads = [...state.leads].sort((a, b) => {
+    const aTime = `${a.followUpDate || ""} ${a.followUpTime || ""}`;
+    const bTime = `${b.followUpDate || ""} ${b.followUpTime || ""}`;
+    return aTime.localeCompare(bTime);
+  });
+
+  document.querySelector("#schedule-list").innerHTML = sortedLeads.map((lead) => {
+    const date = formatScheduleDate(lead.followUpDate);
+    return `
+      <button class="schedule-card ${lead.id === state.selectedScheduleId ? "active" : ""}" type="button" data-schedule-lead="${lead.id}">
+        <span class="schedule-date-chip"><span>${date.month}</span>${date.day}</span>
+        <span>
+          <strong>${lead.name}</strong>
+          <p>${leadTypeLabel(lead.type)} · ${lead.followUpTime || "Set time"}</p>
+          <small>${lead.outcome || lead.status}</small>
+        </span>
+      </button>
+    `;
+  }).join("");
+
+  const leadSelect = document.querySelector("#schedule-lead");
+  leadSelect.innerHTML = state.leads.map((lead) => `<option value="${lead.id}">${lead.name} · ${leadTypeLabel(lead.type)}</option>`).join("");
+
+  if (selected) {
+    leadSelect.value = String(selected.id);
+    document.querySelector("#schedule-date").value = selected.followUpDate || "";
+    document.querySelector("#schedule-time").value = selected.followUpTime || "";
+    document.querySelector("#schedule-outcome").value = selected.outcome || selected.status;
+    document.querySelector("#schedule-note").value = selected.note || "";
+  }
 }
 
 function renderLeadManagerOverview(type) {
@@ -597,6 +664,7 @@ function refresh() {
   renderComplianceWatch();
   renderApprovalQueue();
   renderPipeline();
+  renderSchedule();
   renderReport();
 }
 
@@ -613,6 +681,21 @@ function setBrandPhoto(dataUrl) {
   }
 }
 
+function setSidebarWidth(width) {
+  const nextWidth = Math.min(Math.max(width, 280), 460);
+  document.documentElement.style.setProperty("--sidebar-width", `${nextWidth}px`);
+  return nextWidth;
+}
+
+function restoreSidebarWidth() {
+  try {
+    const savedWidth = Number(localStorage.getItem(sidebarWidthKey));
+    if (savedWidth) setSidebarWidth(savedWidth);
+  } catch {
+    // Resizing still works for the current session when storage is unavailable.
+  }
+}
+
 document.querySelectorAll(".nav-item").forEach((button) => {
   button.addEventListener("click", () => showView(button.dataset.view));
 });
@@ -621,11 +704,54 @@ document.querySelectorAll("button[data-view]:not(.nav-item)").forEach((button) =
   button.addEventListener("click", () => showView(button.dataset.view));
 });
 
+document.querySelectorAll("[data-metric-view]").forEach((card) => {
+  const openMetricTarget = () => {
+    if (card.dataset.leadType) state.selectedLeadManagerType = card.dataset.leadType;
+    showView(card.dataset.metricView);
+    refresh();
+  };
+  card.addEventListener("click", openMetricTarget);
+  card.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openMetricTarget();
+    }
+  });
+});
+
 document.querySelector(".menu-toggle")?.addEventListener("click", () => {
   const sidebar = document.querySelector(".sidebar");
   const isOpen = !sidebar.classList.contains("menu-open");
   sidebar.classList.toggle("menu-open", isOpen);
   document.querySelector(".menu-toggle").setAttribute("aria-expanded", String(isOpen));
+});
+
+document.querySelector("#sidebar-resizer")?.addEventListener("pointerdown", (event) => {
+  if (window.matchMedia("(max-width: 1100px)").matches) return;
+  event.preventDefault();
+  const resizer = event.currentTarget;
+  resizer.setPointerCapture(event.pointerId);
+  document.body.classList.add("sidebar-resizing");
+
+  const onPointerMove = (moveEvent) => {
+    const width = setSidebarWidth(moveEvent.clientX);
+    try {
+      localStorage.setItem(sidebarWidthKey, String(width));
+    } catch {
+      // Width remains applied even if persistence is blocked.
+    }
+  };
+
+  const onPointerUp = () => {
+    document.body.classList.remove("sidebar-resizing");
+    resizer.removeEventListener("pointermove", onPointerMove);
+    resizer.removeEventListener("pointerup", onPointerUp);
+    resizer.removeEventListener("pointercancel", onPointerUp);
+  };
+
+  resizer.addEventListener("pointermove", onPointerMove);
+  resizer.addEventListener("pointerup", onPointerUp);
+  resizer.addEventListener("pointercancel", onPointerUp);
 });
 
 document.querySelector("#profile-upload")?.addEventListener("change", (event) => {
@@ -653,6 +779,34 @@ document.querySelectorAll("[data-open]").forEach((button) => {
 
 document.querySelectorAll("[data-sim-type]").forEach((button) => {
   button.addEventListener("click", () => setSimType(button.dataset.simType));
+});
+
+document.querySelector("#schedule-list")?.addEventListener("click", (event) => {
+  const card = event.target.closest("[data-schedule-lead]");
+  if (!card) return;
+  state.selectedScheduleId = Number(card.dataset.scheduleLead);
+  renderSchedule();
+});
+
+document.querySelector("#schedule-lead")?.addEventListener("change", (event) => {
+  state.selectedScheduleId = Number(event.target.value);
+  renderSchedule();
+});
+
+document.querySelector("#schedule-form")?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const lead = state.leads.find((item) => item.id === state.selectedScheduleId);
+  if (!lead) return;
+  lead.followUpDate = document.querySelector("#schedule-date").value;
+  lead.followUpTime = document.querySelector("#schedule-time").value;
+  lead.outcome = document.querySelector("#schedule-outcome").value;
+  lead.note = document.querySelector("#schedule-note").value.trim();
+  if (["Rejected", "Closed"].includes(lead.outcome)) lead.status = lead.outcome;
+  if (["Callback Scheduled", "Consultation Booked", "Interview Scheduled", "Follow-Up Needed"].includes(lead.outcome)) {
+    lead.status = "Approved";
+    lead.stage = lead.outcome;
+  }
+  refresh();
 });
 
 document.querySelector("#chat-form").addEventListener("submit", (event) => {
@@ -734,6 +888,7 @@ try {
   setBrandPhoto("");
 }
 
+restoreSidebarWidth();
 setSimType("customer");
 renderCampaign();
 refresh();
