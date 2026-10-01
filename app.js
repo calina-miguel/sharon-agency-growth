@@ -787,11 +787,11 @@ document.querySelector("#profile-upload")?.addEventListener("change", (event) =>
   reader.readAsDataURL(file);
 });
 
-document.querySelectorAll("[data-open]").forEach((button) => {
-  button.addEventListener("click", () => {
-    if (button.dataset.agentType) setSimType(button.dataset.agentType);
-    showView(button.dataset.open);
-  });
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-open]");
+  if (!button) return;
+  if (button.dataset.agentType) setSimType(button.dataset.agentType);
+  showView(button.dataset.open);
 });
 
 document.querySelectorAll("[data-sim-type]").forEach((button) => {
