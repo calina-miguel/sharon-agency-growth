@@ -15,17 +15,28 @@
             <span class="app-logo" aria-hidden="true">LA</span>
             <p class="app-kicker">Lead Acquisition<br />System</p>
           </div>
-          <div class="brand">
-            <label class="brand-upload" title="Upload profile photo">
-              <input id="profile-upload" type="file" accept="image/*" />
+          <div class="profile-menu">
+            <button class="brand profile-trigger" id="profile-trigger" type="button" aria-expanded="false" aria-controls="profile-dropdown">
               <span class="brand-mark has-photo" id="brand-mark">
                 <img id="brand-photo" src="assets/sharon.png" alt="Sharon Martin" />
                 <span id="brand-initials">SM</span>
               </span>
-              <span class="brand-edit" aria-hidden="true">Edit</span>
-            </label>
-            <div>
-              <strong>Sharon Martin</strong>
+              <strong id="profile-display-name">Sharon Martin</strong>
+            </button>
+            <div class="profile-dropdown" id="profile-dropdown" aria-label="Profile customization panel">
+              <label>
+                Display Name
+                <input id="profile-name-input" type="text" value="Sharon Martin" />
+              </label>
+              <label class="profile-upload-control">
+                Portrait Image
+                <input id="profile-upload" type="file" accept="image/*" />
+              </label>
+              <div class="profile-settings">
+                <span>Settings</span>
+                <label><input id="compact-motion-toggle" type="checkbox" /> Reduce Motion</label>
+              </div>
+              <button type="button" id="profile-reset">Reset Profile</button>
             </div>
           </div>
         </div>

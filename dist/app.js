@@ -1,6 +1,9 @@
 const profilePhotoKey = "sharonLeadSystemProfilePhoto";
+const profileNameKey = "sharonLeadSystemProfileName";
+const reducedMotionKey = "sharonLeadSystemReducedMotion";
 const sidebarWidthKey = "sharonLeadSystemSidebarWidth";
 const defaultProfilePhoto = "assets/sharon.png";
+const defaultProfileName = "Sharon Martin";
 const validViewIds = new Set(Array.from(document.querySelectorAll(".view")).map((view) => view.id));
 
 const customerMessages = [
@@ -677,6 +680,30 @@ function setBrandPhoto(dataUrl) {
   brandMark.classList.add("has-photo");
 }
 
+function setProfileName(name) {
+  const nextName = name.trim() || defaultProfileName;
+  const display = document.querySelector("#profile-display-name");
+  const input = document.querySelector("#profile-name-input");
+  const initials = document.querySelector("#brand-initials");
+  if (display) display.textContent = nextName;
+  if (input) input.value = nextName;
+  if (initials) {
+    initials.textContent = nextName
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase() || "SM";
+  }
+}
+
+function setReducedMotionPreference(enabled) {
+  document.body.classList.toggle("reduce-motion", enabled);
+  const toggle = document.querySelector("#compact-motion-toggle");
+  if (toggle) toggle.checked = enabled;
+}
+
 function setSidebarWidth(width) {
   const nextWidth = Math.min(Math.max(width, 280), 460);
   document.documentElement.style.setProperty("--sidebar-width", `${nextWidth}px`);
@@ -781,6 +808,56 @@ document.querySelector("#profile-upload")?.addEventListener("change", (event) =>
     }
   });
   reader.readAsDataURL(file);
+});
+
+document.querySelector("#profile-trigger")?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  const dropdown = document.querySelector("#profile-dropdown");
+  const isOpen = !dropdown.classList.contains("open");
+  dropdown.classList.toggle("open", isOpen);
+  document.querySelector("#profile-trigger").setAttribute("aria-expanded", String(isOpen));
+});
+
+document.querySelector("#profile-dropdown")?.addEventListener("click", (event) => {
+  event.stopPropagation();
+});
+
+document.addEventListener("click", () => {
+  const dropdown = document.querySelector("#profile-dropdown");
+  if (!dropdown?.classList.contains("open")) return;
+  dropdown.classList.remove("open");
+  document.querySelector("#profile-trigger")?.setAttribute("aria-expanded", "false");
+});
+
+document.querySelector("#profile-name-input")?.addEventListener("input", (event) => {
+  setProfileName(event.target.value);
+  try {
+    localStorage.setItem(profileNameKey, event.target.value.trim());
+  } catch {
+    // Name still updates for the current session.
+  }
+});
+
+document.querySelector("#compact-motion-toggle")?.addEventListener("change", (event) => {
+  setReducedMotionPreference(event.target.checked);
+  try {
+    localStorage.setItem(reducedMotionKey, String(event.target.checked));
+  } catch {
+    // Preference still updates for the current session.
+  }
+});
+
+document.querySelector("#profile-reset")?.addEventListener("click", () => {
+  setBrandPhoto(defaultProfilePhoto);
+  setProfileName(defaultProfileName);
+  setReducedMotionPreference(false);
+  try {
+    localStorage.removeItem(profilePhotoKey);
+    localStorage.removeItem(profileNameKey);
+    localStorage.removeItem(reducedMotionKey);
+  } catch {
+    // Reset still applies for the current session.
+  }
 });
 
 document.addEventListener("click", (event) => {
@@ -897,8 +974,12 @@ document.querySelector("#campaign-form").addEventListener("input", renderCampaig
 
 try {
   setBrandPhoto(localStorage.getItem(profilePhotoKey) || defaultProfilePhoto);
+  setProfileName(localStorage.getItem(profileNameKey) || defaultProfileName);
+  setReducedMotionPreference(localStorage.getItem(reducedMotionKey) === "true");
 } catch {
   setBrandPhoto(defaultProfilePhoto);
+  setProfileName(defaultProfileName);
+  setReducedMotionPreference(false);
 }
 
 restoreSidebarWidth();
