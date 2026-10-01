@@ -478,7 +478,8 @@ h3 {
   color: #34423e;
 }
 
-.segmented-control {
+.segmented-control,
+.lead-manager-tabs {
   display: flex;
   gap: 8px;
   padding: 5px;
@@ -487,14 +488,57 @@ h3 {
   background: #ffffff;
 }
 
-.segmented-control button {
+.segmented-control button,
+.lead-manager-tabs button {
   color: var(--forest);
   background: transparent;
 }
 
-.segmented-control button.active {
+.segmented-control button.active,
+.lead-manager-tabs button.active {
   color: #ffffff;
   background: var(--forest);
+}
+
+.lead-manager-tabs {
+  width: max-content;
+  margin-top: 16px;
+}
+
+.lead-manager-panel {
+  margin-top: 16px;
+}
+
+.lead-manager-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--panel);
+}
+
+.lead-manager-head h3 {
+  margin-bottom: 0;
+}
+
+.lead-manager-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.lead-manager-stats span {
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: var(--forest);
+  background: #e4f0ed;
+  font-size: 0.84rem;
+  font-weight: 850;
 }
 
 .agent-layout,
@@ -1009,6 +1053,18 @@ textarea {
 
   .sidebar.menu-open nav {
     grid-template-columns: 1fr;
+  }
+
+  .lead-manager-tabs,
+  .lead-manager-head {
+    width: 100%;
+  }
+
+  .lead-manager-tabs,
+  .lead-manager-head,
+  .lead-manager-stats {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .system-status {

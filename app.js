@@ -16,6 +16,7 @@ const recruitMessages = [
 const state = {
   simType: "customer",
   selectedSocial: "facebook",
+  selectedLeadManagerType: "customer",
   complianceFeed: null,
   selectedLeadId: 1,
   leads: [
@@ -321,8 +322,25 @@ function renderApprovalQueue() {
 function renderPipeline() {
   const customerStages = ["Callback Ready", "Consultation Booked", "Quoted", "Policy Opportunity"];
   const recruitStages = ["Interview Ready", "Licensing Review", "Contracting", "Agent Opportunity"];
-  document.querySelector("#customer-pipeline").innerHTML = renderStageColumns("customer", customerStages);
-  document.querySelector("#agent-pipeline").innerHTML = renderStageColumns("recruit", recruitStages);
+  const isCustomer = state.selectedLeadManagerType === "customer";
+  const type = isCustomer ? "customer" : "recruit";
+  const stages = isCustomer ? customerStages : recruitStages;
+  const leadCount = state.leads.filter((lead) => lead.type === type).length;
+  const approvedCount = state.leads.filter((lead) => lead.type === type && lead.status === "Approved").length;
+  document.querySelectorAll("[data-lead-manager-tab]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.leadManagerTab === state.selectedLeadManagerType);
+  });
+  document.querySelector("#lead-manager-head").innerHTML = `
+    <div>
+      <p class="eyebrow">${isCustomer ? "Customers / Clients" : "Sales Agents"}</p>
+      <h3>${isCustomer ? "Insurance Customer Follow-Up" : "Recruiting Follow-Up"}</h3>
+    </div>
+    <div class="lead-manager-stats">
+      <span>${leadCount} Total</span>
+      <span>${approvedCount} Approved</span>
+    </div>
+  `;
+  document.querySelector("#lead-manager-pipeline").innerHTML = renderStageColumns(type, stages);
 }
 
 function renderStageColumns(type, stages) {
@@ -608,6 +626,13 @@ document.querySelector("#approval-grid").addEventListener("click", (event) => {
   const reject = event.target.closest("[data-reject]");
   if (approve) approveLead(Number(approve.dataset.approve));
   if (reject) rejectLead(Number(reject.dataset.reject));
+});
+
+document.querySelectorAll("[data-lead-manager-tab]").forEach((button) => {
+  button.addEventListener("click", () => {
+    state.selectedLeadManagerType = button.dataset.leadManagerTab;
+    renderPipeline();
+  });
 });
 
 document.querySelector("#social").addEventListener("click", (event) => {

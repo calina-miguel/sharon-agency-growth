@@ -35,7 +35,7 @@
         <button class="nav-item" data-view="engines">Lead Engines</button>
         <button class="nav-item" data-view="agent">AI Intake</button>
         <button class="nav-item" data-view="approval">Approval Queue</button>
-        <button class="nav-item" data-view="pipeline">Lead Pipeline</button>
+        <button class="nav-item" data-view="pipeline">Lead Manager</button>
         <button class="nav-item" data-view="social">Social Hub</button>
         <button class="nav-item" data-view="compliance">Compliance Watch</button>
         <button class="nav-item" data-view="campaigns">Campaign Builder</button>
@@ -267,20 +267,18 @@
       <section class="view" id="pipeline">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Lead Pipeline</p>
-            <h2>Customers And Agents Routed Separately</h2>
+            <p class="eyebrow">Lead Manager</p>
+            <h2>Customers And Sales Agents Routed Separately</h2>
           </div>
-          <p class="approval-note">Approved leads move into the right follow-up lane.</p>
+          <p class="approval-note">Use the sub-nav to manage each lead type separately.</p>
         </div>
-        <div class="dual-pipeline">
-          <section>
-            <h3>Insurance Customers</h3>
-            <div class="pipeline" id="customer-pipeline"></div>
-          </section>
-          <section>
-            <h3>Sales Agents</h3>
-            <div class="pipeline" id="agent-pipeline"></div>
-          </section>
+        <div class="lead-manager-tabs" aria-label="Lead manager lead type">
+          <button class="active" type="button" data-lead-manager-tab="customer">Customers / Clients</button>
+          <button type="button" data-lead-manager-tab="recruit">Sales Agents</button>
+        </div>
+        <div class="lead-manager-panel">
+          <div class="lead-manager-head" id="lead-manager-head"></div>
+          <div class="pipeline" id="lead-manager-pipeline"></div>
         </div>
       </section>
 
