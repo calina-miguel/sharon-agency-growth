@@ -74,15 +74,38 @@ button {
 
 .brand-stack {
   display: grid;
+  gap: 0;
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
   gap: 10px;
+  padding-bottom: 18px;
+}
+
+.app-logo {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(223, 234, 230, 0.22);
+  border-radius: 8px;
+  color: #102d29;
+  background: linear-gradient(135deg, var(--gold), #f2d891);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+  font-size: 0.78rem;
+  font-weight: 950;
 }
 
 .app-kicker {
   margin: 0;
   color: #dfeae6;
-  font-size: 0.78rem;
+  font-size: 1.08rem;
   font-weight: 950;
-  letter-spacing: 0.08em;
+  line-height: 1.12;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
 }
 
