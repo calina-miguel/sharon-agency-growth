@@ -1,6 +1,7 @@
 const profilePhotoKey = "sharonLeadSystemProfilePhoto";
 const profileNameKey = "sharonLeadSystemProfileName";
 const reducedMotionKey = "sharonLeadSystemReducedMotion";
+const themeKey = "sharonLeadSystemTheme";
 const sidebarWidthKey = "sharonLeadSystemSidebarWidth";
 const defaultProfilePhoto = "assets/sharon.png";
 const defaultProfileName = "Sharon Martin";
@@ -704,6 +705,16 @@ function setReducedMotionPreference(enabled) {
   if (toggle) toggle.checked = enabled;
 }
 
+function setThemePreference(theme) {
+  const isDark = theme === "dark";
+  document.body.classList.toggle("dark-mode", isDark);
+  const toggle = document.querySelector("#theme-toggle");
+  if (toggle) {
+    toggle.setAttribute("aria-pressed", String(isDark));
+    toggle.querySelector("span").textContent = isDark ? "☀" : "☾";
+  }
+}
+
 function setSidebarWidth(width) {
   const nextWidth = Math.min(Math.max(width, 280), 460);
   document.documentElement.style.setProperty("--sidebar-width", `${nextWidth}px`);
@@ -720,7 +731,7 @@ function restoreSidebarWidth() {
 }
 
 function initMotionReveal() {
-  const revealItems = document.querySelectorAll(".metric, .hero-panel, .engine-card, .approval-card, .pipeline-column, .manager-module, .account-card, .source-card, .recommendation-list article, .aeo-panel, .schedule-panel, .schedule-card, .score-card, .chart-panel");
+  const revealItems = document.querySelectorAll(".metric-link, .schedule-card, .account-card, .nav-item, .feature-focus");
   if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     revealItems.forEach((item) => item.classList.add("is-visible"));
     return;
@@ -847,14 +858,26 @@ document.querySelector("#compact-motion-toggle")?.addEventListener("change", (ev
   }
 });
 
+document.querySelector("#theme-toggle")?.addEventListener("click", () => {
+  const nextTheme = document.body.classList.contains("dark-mode") ? "light" : "dark";
+  setThemePreference(nextTheme);
+  try {
+    localStorage.setItem(themeKey, nextTheme);
+  } catch {
+    // Theme still updates for the current session.
+  }
+});
+
 document.querySelector("#profile-reset")?.addEventListener("click", () => {
   setBrandPhoto(defaultProfilePhoto);
   setProfileName(defaultProfileName);
   setReducedMotionPreference(false);
+  setThemePreference("light");
   try {
     localStorage.removeItem(profilePhotoKey);
     localStorage.removeItem(profileNameKey);
     localStorage.removeItem(reducedMotionKey);
+    localStorage.removeItem(themeKey);
   } catch {
     // Reset still applies for the current session.
   }
@@ -976,10 +999,12 @@ try {
   setBrandPhoto(localStorage.getItem(profilePhotoKey) || defaultProfilePhoto);
   setProfileName(localStorage.getItem(profileNameKey) || defaultProfileName);
   setReducedMotionPreference(localStorage.getItem(reducedMotionKey) === "true");
+  setThemePreference(localStorage.getItem(themeKey) || "light");
 } catch {
   setBrandPhoto(defaultProfilePhoto);
   setProfileName(defaultProfileName);
   setReducedMotionPreference(false);
+  setThemePreference("light");
 }
 
 restoreSidebarWidth();
