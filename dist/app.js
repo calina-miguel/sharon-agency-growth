@@ -16,6 +16,7 @@ const recruitMessages = [
 const state = {
   simType: "customer",
   selectedSocial: "facebook",
+  complianceFeed: null,
   selectedLeadId: 1,
   leads: [
     {
@@ -144,6 +145,27 @@ const socialAccounts = {
     topPost: "First Consultation Walkthrough",
     recommendation: "Add lead links below educational videos and send form fills into approval."
   }
+};
+
+const fallbackComplianceFeed = {
+  lastChecked: "Pending Scheduled Check",
+  summary: {
+    status: "Ready",
+    note: "The monitor watches life insurance advertising, lead-generation consent, social media communications, producer licensing, and telemarketing guidance."
+  },
+  recommendations: [
+    "Use separate acquisition pages for insurance customers and sales agent recruiting so each form has clear intent and consent.",
+    "Keep AI-generated outreach behind human approval before sending messages, booking calls, or confirming next steps.",
+    "Avoid guarantees, exaggerated claims, misleading role titles, or product-specific advice in public acquisition content.",
+    "Keep proof of consent, source, timestamp, and campaign context for every lead routed to calling, texting, or email follow-up."
+  ],
+  sources: [
+    { name: "NAIC Life Insurance Advertising", authority: "NAIC", status: "Watched", matchedTopics: ["life insurance advertising", "misleading claims", "guarantees"], url: "https://content.naic.org/es/node/5321", snippet: "Model guidance for life insurance and annuity advertising." },
+    { name: "NAIC Producer Licensing", authority: "NAIC", status: "Watched", matchedTopics: ["producer licensing", "sales and marketing"], url: "https://content.naic.org/insurance-topics/producer-licensing", snippet: "Producer licensing and state oversight context." },
+    { name: "FINRA Social Media", authority: "FINRA", status: "Watched", matchedTopics: ["social media", "balanced communications", "approval"], url: "https://www.finra.org/rules-guidance/key-topics/social-media", snippet: "Communications must follow rules regardless of medium." },
+    { name: "FTC Telemarketing Sales Rule", authority: "FTC", status: "Watched", matchedTopics: ["telemarketing", "lead generators", "permission"], url: "https://www.ftc.gov/business-guidance/resources/complying-telemarketing-sales-rule", snippet: "Telemarketing and seller permission guidance." },
+    { name: "FCC TCPA Lead Generation", authority: "FCC", status: "Watched", matchedTopics: ["consent", "robocalls", "robotexts"], url: "https://www.federalregister.gov/documents/2024/01/26/2023-28832/targeting-and-eliminating-unlawful-text-messages-implementation-of-the-telephone-consumer-protection", snippet: "Lead-generation consent and TCPA-related updates." }
+  ]
 };
 
 function showView(id) {
@@ -405,6 +427,43 @@ function renderSocialHub() {
   `;
 }
 
+function renderComplianceWatch() {
+  const feed = state.complianceFeed || fallbackComplianceFeed;
+  document.querySelector("#compliance-summary").innerHTML = `
+    <p class="eyebrow">Last Checked</p>
+    <h3>${feed.lastChecked}</h3>
+    <p>${feed.summary?.note || "Monitoring acquisition and compliance sources for updates."}</p>
+    <div class="recommendation-list">
+      ${(feed.recommendations || []).map((item) => `<article><span>Review</span><p>${item}</p></article>`).join("")}
+    </div>
+  `;
+  document.querySelector("#compliance-sources").innerHTML = (feed.sources || []).map((source) => `
+    <article class="source-card">
+      <div class="card-topline">
+        <span>${source.authority || "Source"}</span>
+        <strong>${source.status || "Watched"}</strong>
+      </div>
+      <h4>${source.name}</h4>
+      <p>${source.snippet || "Source monitored for relevant acquisition guidance."}</p>
+      <div class="topic-list">
+        ${(source.matchedTopics || []).slice(0, 4).map((topic) => `<span>${topic}</span>`).join("")}
+      </div>
+      <a href="${source.url}" target="_blank" rel="noreferrer">Open Source</a>
+    </article>
+  `).join("");
+}
+
+async function loadComplianceWatch() {
+  try {
+    const response = await fetch("data/compliance-watch.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`Watchlist unavailable: ${response.status}`);
+    state.complianceFeed = await response.json();
+  } catch {
+    state.complianceFeed = fallbackComplianceFeed;
+  }
+  renderComplianceWatch();
+}
+
 function renderCampaign() {
   const form = new FormData(document.querySelector("#campaign-form"));
   const stream = form.get("stream");
@@ -450,6 +509,7 @@ function seedLead(type) {
 function refresh() {
   renderMetrics();
   renderSocialHub();
+  renderComplianceWatch();
   renderApprovalQueue();
   renderPipeline();
   renderReport();
@@ -567,6 +627,8 @@ document.querySelector("#sync-social").addEventListener("click", () => {
   renderSocialHub();
 });
 
+document.querySelector("#refresh-compliance").addEventListener("click", loadComplianceWatch);
+
 document.querySelector("#generate-campaign").addEventListener("click", renderCampaign);
 document.querySelector("#campaign-form").addEventListener("input", renderCampaign);
 
@@ -579,4 +641,5 @@ try {
 setSimType("customer");
 renderCampaign();
 refresh();
+loadComplianceWatch();
 showView(requestedView() || "overview");

@@ -37,6 +37,7 @@
         <button class="nav-item" data-view="approval">Approval Queue</button>
         <button class="nav-item" data-view="pipeline">Lead Pipeline</button>
         <button class="nav-item" data-view="social">Social Hub</button>
+        <button class="nav-item" data-view="compliance">Compliance Watch</button>
         <button class="nav-item" data-view="campaigns">Campaign Builder</button>
         <button class="nav-item" data-view="reporting">Reporting</button>
       </nav>
@@ -296,6 +297,26 @@
           <section class="social-panel">
             <div class="social-tabs" id="social-tabs" aria-label="Social account tabs"></div>
             <div class="social-overview" id="social-overview"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="compliance">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Compliance Watch</p>
+            <h2>Acquisition Methods Monitored For Life Insurance</h2>
+          </div>
+          <button type="button" id="refresh-compliance">Load Latest Watchlist</button>
+        </div>
+        <div class="compliance-layout">
+          <section class="compliance-summary" id="compliance-summary">
+            <h3>Monitoring Trusted Sources</h3>
+            <p>The system checks regulator and platform-adjacent guidance, then flags anything that should be reviewed before changing acquisition campaigns.</p>
+          </section>
+          <section class="compliance-panel">
+            <h3>Source Watchlist</h3>
+            <div class="source-list" id="compliance-sources"></div>
           </section>
         </div>
       </section>

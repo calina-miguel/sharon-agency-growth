@@ -1,0 +1,29 @@
+name: Compliance Watch
+
+on:
+  schedule:
+    - cron: "17 11 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-watchlist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Update compliance watch data
+        run: node scripts/compliance-watch.mjs
+      - name: Build static site
+        run: node scripts/build-static.mjs
+      - name: Commit updates
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update compliance watch data
+          file_pattern: data/compliance-watch.json dist/data/compliance-watch.json

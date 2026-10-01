@@ -8,3 +8,5 @@ await mkdir("dist", { recursive: true });
 for (const file of files) {
   await cp(file, `dist/${file}`);
 }
+
+await cp("data", "dist/data", { recursive: true });

@@ -1,0 +1,184 @@
+{
+  "lastChecked": "2026-10-01T02:28:58.791Z",
+  "summary": {
+    "status": "No Source Changes Detected",
+    "changedCount": 0,
+    "note": "No monitored source changes were detected. Continue routing new tactics through human compliance review."
+  },
+  "recommendations": [
+    "Separate insurance customer acquisition from sales agent recruiting so each page, ad, and consent path has a clear purpose.",
+    "Keep AI-generated scripts, replies, and booking invitations behind human approval before they reach prospects.",
+    "Avoid public claims that imply guaranteed results, guaranteed policy outcomes, investment performance, or product advice without licensed review.",
+    "Capture proof of source, timestamp, disclosure, opt-in language, and campaign context before calling, texting, or emailing leads.",
+    "Route social comments and direct messages into intake, but do not let automation confirm appointments or recruiting steps without review."
+  ],
+  "sources": [
+    {
+      "name": "NAIC Model Laws",
+      "authority": "NAIC",
+      "url": "https://content.naic.org/es/node/5321",
+      "topics": [
+        "life insurance advertising",
+        "annuities",
+        "model regulation",
+        "misleading",
+        "disclosure"
+      ],
+      "status": "HTTP 403",
+      "title": "Just a moment...",
+      "hash": "ae0b26c68939e821",
+      "changedSinceLastRun": false,
+      "matchedTopics": [],
+      "snippet": "Just a moment... Enable JavaScript and cookies to continue"
+    },
+    {
+      "name": "NAIC Producer Licensing",
+      "authority": "NAIC",
+      "url": "https://content.naic.org/insurance-topics/producer-licensing",
+      "topics": [
+        "producer licensing",
+        "sales and marketing",
+        "state insurance departments",
+        "solicit",
+        "negotiate"
+      ],
+      "status": "HTTP 403",
+      "title": "Just a moment...",
+      "hash": "ae0b26c68939e821",
+      "changedSinceLastRun": false,
+      "matchedTopics": [],
+      "snippet": "Just a moment... Enable JavaScript and cookies to continue"
+    },
+    {
+      "name": "NAIC Life Insurance Illustrations",
+      "authority": "NAIC",
+      "url": "https://content.naic.org/insurance-topics/life-insurance-illustrations",
+      "topics": [
+        "life insurance illustrations",
+        "marketing",
+        "guaranteed",
+        "non-guaranteed",
+        "consumer"
+      ],
+      "status": "HTTP 403",
+      "title": "Just a moment...",
+      "hash": "ae0b26c68939e821",
+      "changedSinceLastRun": false,
+      "matchedTopics": [],
+      "snippet": "Just a moment... Enable JavaScript and cookies to continue"
+    },
+    {
+      "name": "FINRA Social Media",
+      "authority": "FINRA",
+      "url": "https://www.finra.org/rules-guidance/key-topics/social-media",
+      "topics": [
+        "social media",
+        "communications",
+        "misleading",
+        "balanced",
+        "approval"
+      ],
+      "status": "Watched",
+      "title": "Social Media | FINRA.org",
+      "hash": "54491e73a27fb22d",
+      "changedSinceLastRun": false,
+      "matchedTopics": [
+        "social media",
+        "communications",
+        "misleading",
+        "balanced",
+        "approval"
+      ],
+      "snippet": "Social Media | FINRA.org Skip to main content FINRA Utility Menu About Us Careers BrokerCheck Data Media Center For Firms For the Public FINRA DATA FINRA Data provides non-commercial use of data, specifically the ability to save data views and create and manag"
+    },
+    {
+      "name": "FINRA Advertising Filing Guide",
+      "authority": "FINRA",
+      "url": "https://www.finra.org/about/how-we-operate/advertising-regulation/what-when-to-file",
+      "topics": [
+        "retail communications",
+        "public media",
+        "social media",
+        "principal approval",
+        "filing"
+      ],
+      "status": "Watched",
+      "title": "What and When to File with Advertising Regulation | FINRA.org",
+      "hash": "7620dd72d91be634",
+      "changedSinceLastRun": false,
+      "matchedTopics": [
+        "retail communications",
+        "public media",
+        "social media",
+        "principal approval",
+        "filing"
+      ],
+      "snippet": "based on membership status and communication types. New Member Firms WHAT WHEN FINRA RULE Retail communications published or used in any public media including: websites print or electronic communications audio/TV/podcast digital display/signs/billboards motio"
+    },
+    {
+      "name": "FTC Telemarketing Sales Rule",
+      "authority": "FTC",
+      "url": "https://www.ftc.gov/business-guidance/resources/complying-telemarketing-sales-rule",
+      "topics": [
+        "telemarketing",
+        "lead generator",
+        "permission",
+        "seller",
+        "written permission"
+      ],
+      "status": "Watched",
+      "title": "Complying with the Telemarketing Sales Rule | Federal Trade Commission",
+      "hash": "a2037a73b962b388",
+      "changedSinceLastRun": false,
+      "matchedTopics": [
+        "telemarketing",
+        "lead generator",
+        "permission",
+        "seller",
+        "written permission"
+      ],
+      "snippet": "Complying with the Telemarketing Sales Rule | Federal Trade Commission Skip to main content An official website of the United States government Here’s how you know Here's how you know The .gov means it’s official. Federal government websites often end in .gov"
+    },
+    {
+      "name": "FTC Lead Generation Bait And Switch",
+      "authority": "FTC",
+      "url": "https://consumer.ftc.gov/consumer-alerts/2019/04/lead-generation-bait-switch",
+      "topics": [
+        "lead generation",
+        "bait-and-switch",
+        "unwanted calls",
+        "phone numbers",
+        "consumer"
+      ],
+      "status": "Watched",
+      "title": "The lead-generation bait-and-switch | Consumer Advice",
+      "hash": "34102f512e9a67df",
+      "changedSinceLastRun": false,
+      "matchedTopics": [
+        "bait-and-switch",
+        "unwanted calls",
+        "phone numbers",
+        "consumer"
+      ],
+      "snippet": "The lead-generation bait-and-switch | Consumer Advice Skip to main content An official website of the United States government Here’s how you know Here's how you know The .gov means it’s official. Federal government websites often end in .gov or .mil. Before s"
+    },
+    {
+      "name": "FCC TCPA Lead Generation Consent",
+      "authority": "FCC",
+      "url": "https://www.federalregister.gov/documents/2024/01/26/2023-28832/targeting-and-eliminating-unlawful-text-messages-implementation-of-the-telephone-consumer-protection",
+      "topics": [
+        "lead generator",
+        "consent",
+        "robocall",
+        "robotext",
+        "clear and conspicuous"
+      ],
+      "status": "Watched",
+      "title": "Federal Register :: Request Access",
+      "hash": "fc128f65ca713c60",
+      "changedSinceLastRun": false,
+      "matchedTopics": [],
+      "snippet": "Federal Register :: Request Access Request Access Due to aggressive automated scraping of FederalRegister.gov and eCFR.gov, programmatic access to these sites is limited to access to our extensive developer APIs. Please "
+    }
+  ]
+}
