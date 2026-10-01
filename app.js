@@ -6,6 +6,26 @@ const sidebarWidthKey = "sharonLeadSystemSidebarWidth";
 const defaultProfilePhoto = "assets/sharon.png";
 const defaultProfileName = "Sharon Martin";
 const validViewIds = new Set(Array.from(document.querySelectorAll(".view")).map((view) => view.id));
+const maxProfilePhotoBytes = 750000;
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[character]);
+}
+
+function safeExternalUrl(value) {
+  try {
+    const url = new URL(String(value || ""), window.location.href);
+    return ["http:", "https:"].includes(url.protocol) ? url.href : "#";
+  } catch {
+    return "#";
+  }
+}
 
 const customerMessages = [
   "Captured buyer signal: clicked the mortgage protection ad, watched the family coverage video, and requested a protection review after 5 PM.",
@@ -308,7 +328,7 @@ function renderChat(message = document.querySelector("#lead-message")?.value || 
   document.querySelector("#chat-window").innerHTML = `
     <div class="chat-message inbound">
       <span>${channel}</span>
-      <p>${message}</p>
+      <p>${escapeHTML(message)}</p>
     </div>
     <div class="chat-message outbound">
       <span>Intake Assistant</span>
@@ -329,11 +349,11 @@ function renderAiSummary(lead) {
   }
   panel.innerHTML = `
     <p class="eyebrow">${leadTypeLabel(lead.type)}</p>
-    <h3>${lead.name}</h3>
+    <h3>${escapeHTML(lead.name)}</h3>
     <div class="score-ring">${lead.score}</div>
-    <p><strong>Lead Summary:</strong> ${lead.summary}</p>
-    <p><strong>Recommended Next Step:</strong> ${lead.nextStep}</p>
-    <div class="draft-box">${lead.aiDraft}</div>
+    <p><strong>Lead Summary:</strong> ${escapeHTML(lead.summary)}</p>
+    <p><strong>Recommended Next Step:</strong> ${escapeHTML(lead.nextStep)}</p>
+    <div class="draft-box">${escapeHTML(lead.aiDraft)}</div>
     <button type="button" data-open="approval">Review In Approval Queue</button>
   `;
 }
@@ -363,10 +383,10 @@ function renderApprovalQueue() {
         <span>${leadTypeLabel(lead.type)}</span>
         <strong>${lead.score}</strong>
       </div>
-      <h3>${lead.name}</h3>
-      <p>${lead.summary}</p>
-      <div class="draft-box">${lead.aiDraft}</div>
-      <small>${lead.nextStep}</small>
+      <h3>${escapeHTML(lead.name)}</h3>
+      <p>${escapeHTML(lead.summary)}</p>
+      <div class="draft-box">${escapeHTML(lead.aiDraft)}</div>
+      <small>${escapeHTML(lead.nextStep)}</small>
       <div class="button-row">
         <button type="button" data-approve="${lead.id}">Approve</button>
         <button class="secondary" type="button" data-reject="${lead.id}">Reject</button>
@@ -425,16 +445,16 @@ function renderSchedule() {
       <button class="schedule-card ${lead.id === state.selectedScheduleId ? "active" : ""}" type="button" data-schedule-lead="${lead.id}">
         <span class="schedule-date-chip"><span>${date.month}</span>${date.day}</span>
         <span>
-          <strong>${lead.name}</strong>
+          <strong>${escapeHTML(lead.name)}</strong>
           <p>${leadTypeLabel(lead.type)} · ${lead.followUpTime || "Set time"}</p>
-          <small>${lead.outcome || lead.status}</small>
+          <small>${escapeHTML(lead.outcome || lead.status)}</small>
         </span>
       </button>
     `;
   }).join("");
 
   const leadSelect = document.querySelector("#schedule-lead");
-  leadSelect.innerHTML = state.leads.map((lead) => `<option value="${lead.id}">${lead.name} · ${leadTypeLabel(lead.type)}</option>`).join("");
+  leadSelect.innerHTML = state.leads.map((lead) => `<option value="${lead.id}">${escapeHTML(lead.name)} · ${leadTypeLabel(lead.type)}</option>`).join("");
 
   if (selected) {
     leadSelect.value = String(selected.id);
@@ -455,7 +475,7 @@ function renderLeadManagerOverview(type) {
     <article class="manager-module manager-status">
       <span>Status</span>
       <strong>${leads.length} Leads</strong>
-      <p>${content.status}</p>
+      <p>${escapeHTML(content.status)}</p>
       <div class="mini-stats">
         <span>${pending} Pending</span>
         <span>${approved} Approved</span>
@@ -464,23 +484,23 @@ function renderLeadManagerOverview(type) {
     </article>
     <article class="manager-module">
       <span>Flow</span>
-      <ol>${content.flow.map((item) => `<li>${item}</li>`).join("")}</ol>
+      <ol>${content.flow.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}</ol>
     </article>
     <article class="manager-module">
       <span>Follow-Up</span>
-      <ul>${content.followUp.map((item) => `<li>${item}</li>`).join("")}</ul>
+      <ul>${content.followUp.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
     </article>
     <article class="manager-module">
       <span>Links</span>
-      <ul>${content.links.map((item) => `<li>${item}</li>`).join("")}</ul>
+      <ul>${content.links.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
     </article>
     <article class="manager-module">
       <span>Reporting</span>
-      <ul>${content.reporting.map((item) => `<li>${item}</li>`).join("")}</ul>
+      <ul>${content.reporting.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
     </article>
     <article class="manager-module">
       <span>Content Plan</span>
-      <ul>${content.contentPlan.map((item) => `<li>${item}</li>`).join("")}</ul>
+      <ul>${content.contentPlan.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
     </article>
   `;
 }
@@ -491,9 +511,9 @@ function renderStageColumns(type, stages) {
       .filter((lead) => lead.type === type && lead.status === "Approved" && leadStageGroup(lead) === stage)
       .map((lead) => `
         <article class="lead-card">
-          <strong>${lead.name}</strong>
-          <p>${lead.summary}</p>
-          <small>${lead.source}</small>
+          <strong>${escapeHTML(lead.name)}</strong>
+          <p>${escapeHTML(lead.summary)}</p>
+          <small>${escapeHTML(lead.source)}</small>
         </article>
       `).join("");
     return `<section class="pipeline-column"><h4>${stage}</h4>${cards || "<p class='fineprint'>No leads in this stage.</p>"}</section>`;
@@ -547,15 +567,15 @@ function renderSocialHub() {
     </article>
     ${accounts.map(([id, account]) => `
       <button class="account-card ${id === state.selectedSocial ? "active" : ""}" type="button" data-social-account="${id}">
-        <span>${account.label}</span>
-        <strong>${account.handle}</strong>
-        <small>${account.status}</small>
+        <span>${escapeHTML(account.label)}</span>
+        <strong>${escapeHTML(account.handle)}</strong>
+        <small>${escapeHTML(account.status)}</small>
       </button>
     `).join("")}
   `;
 
   document.querySelector("#social-tabs").innerHTML = accounts.map(([id, account]) => `
-    <button class="${id === state.selectedSocial ? "active" : ""}" type="button" data-social-tab="${id}">${account.label}</button>
+    <button class="${id === state.selectedSocial ? "active" : ""}" type="button" data-social-tab="${id}">${escapeHTML(account.label)}</button>
   `).join("");
 
   const engagementRate = ((selected.engagements / Math.max(selected.views, 1)) * 100).toFixed(1);
@@ -563,10 +583,10 @@ function renderSocialHub() {
   document.querySelector("#social-overview").innerHTML = `
     <div class="social-heading">
       <div>
-        <p class="eyebrow">${selected.label}</p>
-        <h3>${selected.handle}</h3>
+        <p class="eyebrow">${escapeHTML(selected.label)}</p>
+        <h3>${escapeHTML(selected.handle)}</h3>
       </div>
-      <span>${selected.audience}</span>
+      <span>${escapeHTML(selected.audience)}</span>
     </div>
     <div class="social-stat-grid">
       <article><span>Post Views</span><strong>${selected.views.toLocaleString()}</strong></article>
@@ -581,8 +601,8 @@ function renderSocialHub() {
       <div><span>Agent Leads</span><div class="social-bar"><i style="width:${(selected.agentLeads / Math.max(selected.leads, 1)) * 100}%"></i></div><strong>${selected.agentLeads}</strong></div>
     </div>
     <div class="social-recommendation">
-      <strong>Top Content: ${selected.topPost}</strong>
-      <p>${selected.recommendation}</p>
+      <strong>Top Content: ${escapeHTML(selected.topPost)}</strong>
+      <p>${escapeHTML(selected.recommendation)}</p>
     </div>
   `;
 }
@@ -610,24 +630,24 @@ function renderComplianceWatch() {
   const feed = state.complianceFeed || fallbackComplianceFeed;
   document.querySelector("#compliance-summary").innerHTML = `
     <p class="eyebrow">Last Checked</p>
-    <h3>${feed.lastChecked}</h3>
-    <p>${feed.summary?.note || "Monitoring acquisition and compliance sources for updates."}</p>
+    <h3>${escapeHTML(feed.lastChecked)}</h3>
+    <p>${escapeHTML(feed.summary?.note || "Monitoring acquisition and compliance sources for updates.")}</p>
     <div class="recommendation-list">
-      ${(feed.recommendations || []).map((item) => `<article><span>Review</span><p>${item}</p></article>`).join("")}
+      ${(feed.recommendations || []).map((item) => `<article><span>Review</span><p>${escapeHTML(item)}</p></article>`).join("")}
     </div>
   `;
   document.querySelector("#compliance-sources").innerHTML = (feed.sources || []).map((source) => `
     <article class="source-card">
       <div class="card-topline">
-        <span>${source.authority || "Source"}</span>
-        <strong>${source.status || "Watched"}</strong>
+        <span>${escapeHTML(source.authority || "Source")}</span>
+        <strong>${escapeHTML(source.status || "Watched")}</strong>
       </div>
-      <h4>${source.name}</h4>
-      <p>${source.snippet || "Source monitored for relevant acquisition guidance."}</p>
+      <h4>${escapeHTML(source.name)}</h4>
+      <p>${escapeHTML(source.snippet || "Source monitored for relevant acquisition guidance.")}</p>
       <div class="topic-list">
-        ${(source.matchedTopics || []).slice(0, 4).map((topic) => `<span>${topic}</span>`).join("")}
+        ${(source.matchedTopics || []).slice(0, 4).map((topic) => `<span>${escapeHTML(topic)}</span>`).join("")}
       </div>
-      <a href="${source.url}" target="_blank" rel="noreferrer">Open Source</a>
+      <a href="${safeExternalUrl(source.url)}" target="_blank" rel="noopener noreferrer">Open Source</a>
     </article>
   `).join("");
 }
@@ -857,6 +877,11 @@ document.querySelector("#sidebar-resizer")?.addEventListener("pointerdown", (eve
 document.querySelector("#profile-upload")?.addEventListener("change", (event) => {
   const file = event.target.files?.[0];
   if (!file || !file.type.startsWith("image/")) return;
+  if (file.size > maxProfilePhotoBytes) {
+    alert("Please choose an image under 750 KB for the profile portrait.");
+    event.target.value = "";
+    return;
+  }
   const reader = new FileReader();
   reader.addEventListener("load", () => {
     const dataUrl = String(reader.result || "");
