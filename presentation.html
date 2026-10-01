@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sharon Lead Acquisition Presentation</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="presentation.css?v=20261001-02" />
+    <link rel="stylesheet" href="presentation.css?v=20261001-03" />
   </head>
   <body>
     <header class="deck-header">
@@ -45,13 +45,15 @@
             <li>Compliance watch for acquisition guidance</li>
             <li>AEO Studio for buyer and sales agent search questions</li>
             <li>Guided intake with human approval before routing</li>
+            <li>Clickable command cards, scheduling, and profile customization</li>
+            <li>Resizable sidebar and lightweight app-wide motion</li>
           </ul>
         </div>
         <div class="feature-strip">
           <article><strong>01</strong><span>Customer Page</span></article>
           <article><strong>02</strong><span>Recruitment Page</span></article>
-          <article><strong>03</strong><span>Social Hub</span></article>
-          <article><strong>04</strong><span>Approval Queue</span></article>
+          <article><strong>03</strong><span>Schedule</span></article>
+          <article><strong>04</strong><span>Profile Menu</span></article>
         </div>
       </section>
 
@@ -63,12 +65,46 @@
           <ul>
             <li>Insurance customer lead count</li>
             <li>Sales agent recruiting lead count</li>
-            <li>Approval status before automation acts</li>
+            <li>Clickable cards route to the right stored lead area</li>
           </ul>
           <button class="feature-focus" type="button" data-view-target="overview">Show Command Center</button>
         </div>
         <div class="live-frame">
           <iframe title="Overview dashboard" src="index.html?slide=overview"></iframe>
+        </div>
+      </section>
+
+      <section class="slide feature-slide" data-view="schedule" data-title="Scheduling">
+        <div class="slide-copy">
+          <p class="eyebrow">Scheduling</p>
+          <h2>Calendar, Notes, And Outcomes</h2>
+          <p>The schedule view gives the team one place to plan callbacks, recruiting conversations, and follow-up outcomes.</p>
+          <ul>
+            <li>Calendar-style follow-up cards</li>
+            <li>Date, time, notes, and outcome selector</li>
+            <li>Approved metric routes directly into this workspace</li>
+          </ul>
+          <button class="feature-focus" type="button" data-view-target="schedule">Show Schedule</button>
+        </div>
+        <div class="live-frame">
+          <iframe title="Scheduling system" src="index.html?slide=schedule"></iframe>
+        </div>
+      </section>
+
+      <section class="slide feature-slide" data-view="pipeline" data-title="Lead Manager">
+        <div class="slide-copy">
+          <p class="eyebrow">Lead Manager</p>
+          <h2>Stored Leads Split By Buyer And Recruit Type</h2>
+          <p>The lead manager separates customer/client opportunities from sales agent candidates so each stream can use the right status, follow-up, links, reporting, and content plan.</p>
+          <ul>
+            <li>Customers / Clients sub-nav</li>
+            <li>Sales Agents sub-nav</li>
+            <li>Relevant workflow data for each lead type</li>
+          </ul>
+          <button class="feature-focus" type="button" data-view-target="pipeline">Show Lead Manager</button>
+        </div>
+        <div class="live-frame">
+          <iframe title="Lead manager" src="index.html?slide=pipeline"></iframe>
         </div>
       </section>
 
@@ -174,6 +210,24 @@
         </div>
       </section>
 
+      <section class="slide feature-slide" data-view="overview" data-title="Interface Updates">
+        <div class="slide-copy">
+          <p class="eyebrow">Interface Updates</p>
+          <h2>Polished Controls For Daily Use</h2>
+          <p>The latest interface pass makes the system feel more like a live operating tool than a static presentation.</p>
+          <ul>
+            <li>Profile menu opens from Sharon’s avatar or name</li>
+            <li>Default portrait is committed to GitHub and shared publicly</li>
+            <li>Sidebar is resizable on desktop</li>
+            <li>Lightweight motion is app-wide and respects reduced-motion settings</li>
+          </ul>
+          <button class="feature-focus" type="button" data-view-target="overview">Show Interface</button>
+        </div>
+        <div class="live-frame">
+          <iframe title="Interface updates" src="index.html?slide=overview"></iframe>
+        </div>
+      </section>
+
       <section class="slide feature-slide" data-view="reporting" data-title="Reporting">
         <div class="slide-copy">
           <p class="eyebrow">Reporting</p>
@@ -197,6 +251,6 @@
       <nav class="dots" id="slide-dots" aria-label="Slide shortcuts"></nav>
     </footer>
 
-    <script src="presentation.js?v=20261001-02"></script>
+    <script src="presentation.js?v=20261001-03"></script>
   </body>
 </html>
