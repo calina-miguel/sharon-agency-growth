@@ -359,7 +359,14 @@ function renderPipeline() {
       <span>${approvedCount} Approved</span>
     </div>
   `;
-  document.querySelector("#lead-manager-overview").innerHTML = renderLeadManagerOverview(type);
+  let overview = document.querySelector("#lead-manager-overview");
+  if (!overview) {
+    overview = document.createElement("div");
+    overview.className = "lead-manager-overview";
+    overview.id = "lead-manager-overview";
+    document.querySelector("#lead-manager-pipeline")?.before(overview);
+  }
+  overview.innerHTML = renderLeadManagerOverview(type);
   document.querySelector("#lead-manager-pipeline").innerHTML = renderStageColumns(type, stages);
 }
 
