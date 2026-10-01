@@ -104,8 +104,47 @@ textarea {
 }
 
 button {
+  position: relative;
   border: 0;
   cursor: pointer;
+  overflow: hidden;
+  transform: translateZ(0);
+  transition:
+    background-color 180ms var(--ease),
+    border-color 180ms var(--ease),
+    box-shadow 220ms var(--ease),
+    color 180ms var(--ease),
+    opacity 180ms var(--ease),
+    transform 220ms var(--spring);
+}
+
+button::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, transparent 18%, rgba(255, 255, 255, 0.22), transparent 82%);
+  content: "";
+  opacity: 0;
+  transform: translateX(-120%);
+  transition: opacity 220ms var(--ease), transform 520ms var(--spring);
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:hover::after {
+  opacity: 1;
+  transform: translateX(120%);
+}
+
+button:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 4px rgba(45, 138, 130, 0.16);
+}
+
+button:active {
+  transform: translateY(0) scale(0.985);
 }
 
 .sidebar {
