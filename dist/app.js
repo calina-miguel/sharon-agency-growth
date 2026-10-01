@@ -8,15 +8,15 @@ const defaultProfileName = "Sharon Martin";
 const validViewIds = new Set(Array.from(document.querySelectorAll(".view")).map((view) => view.id));
 
 const customerMessages = [
-  "Hi, I just bought a home and want to understand mortgage protection. I am available after 5 PM.",
-  "I have two young kids and need to know how much life insurance makes sense before I choose anything.",
-  "I own a small business and want to protect my family if something happens to me."
+  "Captured buyer signal: clicked the mortgage protection ad, watched the family coverage video, and requested a protection review after 5 PM.",
+  "Captured buyer signal: saved a life insurance checklist post, clicked the Google Search ad, and asked how much coverage a young family should consider.",
+  "Captured buyer signal: opened the business continuity campaign link, visited the customer page, and requested a callback."
 ];
 
 const recruitMessages = [
-  "I am interested in becoming a life insurance agent. I am not licensed yet but I want to learn the steps.",
-  "I have sales experience and want to know if joining an agency part time is realistic.",
-  "I am already licensed and looking for better support, leads, and mentorship."
+  "Captured recruiting signal: clicked the LinkedIn career post, opened the recruitment page, and asked about licensing steps.",
+  "Captured recruiting signal: engaged with the sales opportunity video, clicked the recruiting campaign link, and asked if part-time is realistic.",
+  "Captured recruiting signal: licensed agent viewed the mentorship post, clicked the agency opportunity link, and requested a conversation."
 ];
 
 const state = {
@@ -81,6 +81,7 @@ const state = {
     }
   ]
 };
+let skipAccountPromptOnce = false;
 
 const socialAccounts = {
   facebook: {
@@ -201,6 +202,8 @@ function showView(id) {
   document.querySelectorAll(".nav-item").forEach((item) => item.classList.toggle("active", item.dataset.view === id));
   document.querySelector(".sidebar")?.classList.remove("menu-open");
   document.querySelector(".menu-toggle")?.setAttribute("aria-expanded", "false");
+  if (id === "social" && !hasConnectedSocialAccounts() && !skipAccountPromptOnce) showAccountPrompt();
+  skipAccountPromptOnce = false;
 }
 
 function requestedView() {
@@ -351,7 +354,7 @@ function renderApprovalQueue() {
   const pending = state.leads.filter((lead) => lead.status === "Needs Approval");
   const container = document.querySelector("#approval-grid");
   if (!pending.length) {
-    container.innerHTML = `<article class="empty-state"><h3>No Leads Waiting</h3><p>Run the intake generator or generate sample leads to refill the approval queue.</p></article>`;
+    container.innerHTML = `<article class="empty-state"><h3>No Leads Waiting</h3><p>Scan buyer or agent interest to pull captured clicks, form fills, and replies into the approval queue.</p></article>`;
     return;
   }
   container.innerHTML = pending.map((lead) => `
@@ -582,6 +585,25 @@ function renderSocialHub() {
       <p>${selected.recommendation}</p>
     </div>
   `;
+}
+
+function hasConnectedSocialAccounts() {
+  return Object.values(socialAccounts).some((account) => account.status === "Connected");
+}
+
+function showAccountPrompt() {
+  const prompt = document.querySelector("#account-prompt");
+  if (!prompt) return;
+  prompt.hidden = false;
+  document.body.classList.add("modal-open");
+  document.querySelector("#account-prompt-dismiss")?.focus();
+}
+
+function hideAccountPrompt() {
+  const prompt = document.querySelector("#account-prompt");
+  if (!prompt) return;
+  prompt.hidden = true;
+  document.body.classList.remove("modal-open");
 }
 
 function renderComplianceWatch() {
@@ -1008,6 +1030,10 @@ document.querySelector("#social").addEventListener("click", (event) => {
 });
 
 document.querySelector("#sync-social").addEventListener("click", () => {
+  if (!hasConnectedSocialAccounts()) {
+    showAccountPrompt();
+    return;
+  }
   Object.values(socialAccounts).forEach((account) => {
     account.views += Math.floor(Math.random() * 900) + 120;
     account.engagements += Math.floor(Math.random() * 90) + 12;
@@ -1015,6 +1041,22 @@ document.querySelector("#sync-social").addEventListener("click", () => {
     account.leads += Math.floor(Math.random() * 3);
   });
   renderSocialHub();
+});
+
+document.querySelector("#account-prompt-close")?.addEventListener("click", hideAccountPrompt);
+document.querySelector("#account-prompt-dismiss")?.addEventListener("click", hideAccountPrompt);
+document.querySelector("#account-prompt-primary")?.addEventListener("click", () => {
+  hideAccountPrompt();
+  skipAccountPromptOnce = true;
+  showView("social");
+});
+
+document.querySelector("#account-prompt")?.addEventListener("click", (event) => {
+  if (event.target.id === "account-prompt") hideAccountPrompt();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") hideAccountPrompt();
 });
 
 document.querySelector("#refresh-compliance").addEventListener("click", loadComplianceWatch);

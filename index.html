@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sharon Lead Acquisition System</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="styles.css?v=20261001-05" />
+    <link rel="stylesheet" href="styles.css?v=20261001-06" />
   </head>
   <body>
     <aside class="sidebar" aria-label="Application navigation">
@@ -89,13 +89,13 @@
             <p class="eyebrow">Stream 01</p>
             <h2>Insurance Customer Leads</h2>
             <p>Capture people asking about life insurance, mortgage protection, family coverage, or business continuity.</p>
-            <button type="button" data-open="agent" data-agent-type="customer">Generate Customer Lead</button>
+            <button type="button" data-open="agent" data-agent-type="customer">Scan Buyer Interest</button>
           </article>
           <article class="hero-panel agent-panel">
             <p class="eyebrow">Stream 02</p>
             <h2>Sales Agent Recruiting Leads</h2>
             <p>Capture people interested in joining the agency, learning about licensing, or booking a recruiting conversation.</p>
-            <button type="button" data-open="agent" data-agent-type="recruit">Generate Agent Lead</button>
+            <button type="button" data-open="agent" data-agent-type="recruit">Scan Agent Interest</button>
           </article>
         </div>
 
@@ -215,7 +215,7 @@
             <p class="eyebrow">Lead Engines</p>
             <h2>Where The Leads Come From</h2>
           </div>
-          <button type="button" id="seed-both">Generate Sample Leads</button>
+          <button type="button" id="seed-both">Scan Both Lead Streams</button>
         </div>
         <div class="acquisition-plan">
           <article class="acquisition-hero">
@@ -434,6 +434,20 @@
         </section>
       </section>
 
+      <div class="account-prompt" id="account-prompt" role="dialog" aria-modal="true" aria-labelledby="account-prompt-title" hidden>
+        <div class="account-prompt-card">
+          <button class="account-prompt-close" id="account-prompt-close" type="button" aria-label="Close account enrollment prompt">×</button>
+          <p class="eyebrow">Social Account Enrollment Required</p>
+          <h3 id="account-prompt-title">Connect Campaign Accounts First</h3>
+          <p>To capture leads from ads, content, clicks, replies, comments, and form responses, Social Hub needs the social media accounts where those campaigns are running.</p>
+          <p>Once accounts are enrolled, the system can run regular scans for buyer and recruiting intent, then route matched activity into intake, approval, scheduling, and reporting.</p>
+          <div class="button-row">
+            <button type="button" id="account-prompt-primary">Review Social Hub</button>
+            <button type="button" class="secondary" id="account-prompt-dismiss">Dismiss</button>
+          </div>
+        </div>
+      </div>
+
       <section class="view" id="compliance">
         <div class="section-head">
           <div>
@@ -593,6 +607,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=20261001-05"></script>
+    <script src="app.js?v=20261001-06"></script>
   </body>
 </html>

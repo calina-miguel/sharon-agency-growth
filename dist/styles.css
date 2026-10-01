@@ -1285,6 +1285,59 @@ h3 {
   font-weight: 850;
 }
 
+.account-prompt[hidden] {
+  display: none;
+}
+
+.account-prompt {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  background: rgba(5, 22, 18, 0.52);
+  backdrop-filter: blur(10px);
+}
+
+.account-prompt-card {
+  position: relative;
+  width: min(560px, 100%);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 26px;
+  background: var(--panel);
+  box-shadow: 0 24px 70px rgba(5, 22, 18, 0.22);
+}
+
+.account-prompt-card h3 {
+  margin-bottom: 0.45em;
+}
+
+.account-prompt-card p:not(.eyebrow) {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.account-prompt-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  color: var(--forest);
+  background: #e4f0ed;
+  font-size: 1.15rem;
+  font-weight: 850;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
 .topic-list {
   display: flex;
   flex-wrap: wrap;
