@@ -1526,8 +1526,15 @@ body.reduce-motion .motion-reveal {
     min-height: auto;
   }
 
+  .sidebar-head,
+  .brand-stack,
+  .app-title {
+    width: 100%;
+  }
+
   .menu-toggle {
     display: grid;
+    margin-left: auto;
   }
 
   .sidebar nav,
