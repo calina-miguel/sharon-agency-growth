@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sharon Agency Growth Demos</title>
+    <title>Sharon Lead Acquisition System</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="styles.css?v=20260929-03" />
+    <link rel="stylesheet" href="styles.css?v=20261001-01" />
   </head>
   <body>
     <aside class="sidebar" aria-label="Demo navigation">
@@ -17,211 +17,123 @@
               <img id="brand-photo" alt="" />
               <span id="brand-initials">SM</span>
             </span>
-            <span class="brand-edit" aria-hidden="true">✎</span>
+            <span class="brand-edit" aria-hidden="true">Edit</span>
           </label>
           <div>
-            <strong>Sharon Growth</strong>
-            <small>90-Day Pilot Demos</small>
+            <strong>Sharon Leads</strong>
+            <small>AI Acquisition Demo</small>
           </div>
         </div>
         <button class="menu-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle navigation">
-          <span></span>
-          <span></span>
-          <span></span>
+          <span></span><span></span><span></span>
         </button>
       </div>
       <nav id="primary-nav">
-        <button class="nav-item active" data-view="overview">Overview</button>
-        <button class="nav-item" data-view="landing">Landing Page</button>
-        <button class="nav-item" data-view="leads">Lead Manager</button>
-        <button class="nav-item" data-view="workflow">Follow-Up</button>
-        <button class="nav-item" data-view="funnels">Funnel Links</button>
+        <button class="nav-item active" data-view="overview">Command Center</button>
+        <button class="nav-item" data-view="customer-page">Customer Page</button>
+        <button class="nav-item" data-view="recruit-page">Recruitment Page</button>
+        <button class="nav-item" data-view="engines">Lead Engines</button>
+        <button class="nav-item" data-view="agent">AI Intake</button>
+        <button class="nav-item" data-view="approval">Approval Queue</button>
+        <button class="nav-item" data-view="pipeline">Lead Pipeline</button>
+        <button class="nav-item" data-view="social">Social Hub</button>
+        <button class="nav-item" data-view="campaigns">Campaign Builder</button>
         <button class="nav-item" data-view="reporting">Reporting</button>
-        <button class="nav-item" data-view="content">Content Plan</button>
       </nav>
       <div class="proposal-note">
-        <span>Source Basis</span>
-        <p>Built from the proposal's campaign, booking, follow-up, content, and reporting scope.</p>
+        <span>New Direction</span>
+        <p>Built around two outcomes: customer leads for policies and recruiting leads for sales agents.</p>
       </div>
     </aside>
 
     <main>
       <section class="topbar">
         <div>
-          <p class="eyebrow">Working Demo Suite</p>
-          <h1>Life Insurance Growth Pilot</h1>
+          <p class="eyebrow">Automated Lead Acquisition</p>
+          <h1>Two Lead Streams, One Approval System</h1>
+          <p class="lead">A working demo for acquiring insurance customer leads and sales agent prospects, using AI intake with human approval before outreach or routing.</p>
         </div>
-        <div class="phase-meter" aria-label="90-day delivery phases">
-          <button class="phase done" type="button" data-phase="foundation">Days 1-30</button>
-          <button class="phase live" type="button" data-phase="launch">Days 31-60</button>
-          <button class="phase" type="button" data-phase="evaluate">Days 61-90</button>
+        <div class="system-status" aria-label="Automation status">
+          <span class="status-live">Live Demo</span>
+          <strong id="total-leads">0</strong>
+          <small>Total Leads In System</small>
         </div>
       </section>
-      <section class="phase-panel" id="phase-panel" aria-live="polite"></section>
 
       <section class="view active" id="overview">
-        <div class="band split">
-          <div>
-            <p class="eyebrow">Campaign Journey</p>
-            <h2>From Education To Consultation</h2>
-            <p class="lead">This suite turns the proposal into four testable parts: a focused landing page, inquiry capture, structured follow-up, and outcome reporting.</p>
-          </div>
-          <div class="journey" aria-label="Customer journey">
-            <span>Ad or content</span>
-            <span>Landing page</span>
-            <span>Consultation</span>
-            <span>Application</span>
-            <span>Policy outcome</span>
-          </div>
+        <div class="hero-grid">
+          <article class="hero-panel customer-panel">
+            <p class="eyebrow">Stream 01</p>
+            <h2>Insurance Customer Leads</h2>
+            <p>Capture people asking about life insurance, mortgage protection, family coverage, or business continuity.</p>
+            <button type="button" data-open="agent" data-agent-type="customer">Simulate Customer Lead</button>
+          </article>
+          <article class="hero-panel agent-panel">
+            <p class="eyebrow">Stream 02</p>
+            <h2>Sales Agent Recruiting Leads</h2>
+            <p>Capture people interested in joining the agency, learning about licensing, or booking a recruiting conversation.</p>
+            <button type="button" data-open="agent" data-agent-type="recruit">Simulate Agent Lead</button>
+          </article>
         </div>
 
         <div class="metric-grid">
-          <article class="metric" data-metric="qualified">
-            <span>Qualified Inquiries</span>
-            <strong id="metric-qualified">42</strong>
-            <small>Within service area and agreed to contact</small>
-            <div class="metric-chart" role="button" tabindex="0" aria-label="Show qualified inquiries details" aria-expanded="false" data-metric-chart="qualified">
-              <svg class="metric-plot" viewBox="0 0 120 45" preserveAspectRatio="none" aria-hidden="true">
-                <path class="metric-area" id="graph-qualified-area"></path>
-                <path class="metric-line" id="graph-qualified-line"></path>
-              </svg>
-              <span class="metric-dot" id="graph-qualified-dot" aria-hidden="true"></span>
-              <div class="metric-days" aria-hidden="true"><span>Mon</span><span>Wed</span><span>Fri</span><span>Sun</span></div>
-            </div>
-            <div class="metric-bubble" id="metric-qualified-bubble" role="status"></div>
+          <article class="metric">
+            <span>Customer Leads</span>
+            <strong id="metric-customers">0</strong>
+            <small>Insurance buyers captured and scored</small>
           </article>
-          <article class="metric" data-metric="booked">
-            <span>Consultations Booked</span>
-            <strong id="metric-booked">18</strong>
-            <small>Confirmed through the booking flow</small>
-            <div class="metric-chart" role="button" tabindex="0" aria-label="Show consultations booked details" aria-expanded="false" data-metric-chart="booked">
-              <svg class="metric-plot" viewBox="0 0 120 45" preserveAspectRatio="none" aria-hidden="true">
-                <path class="metric-area" id="graph-booked-area"></path>
-                <path class="metric-line" id="graph-booked-line"></path>
-              </svg>
-              <span class="metric-dot" id="graph-booked-dot" aria-hidden="true"></span>
-              <div class="metric-days" aria-hidden="true"><span>Mon</span><span>Wed</span><span>Fri</span><span>Sun</span></div>
-            </div>
-            <div class="metric-bubble" id="metric-booked-bubble" role="status"></div>
+          <article class="metric">
+            <span>Agent Leads</span>
+            <strong id="metric-agents">0</strong>
+            <small>Recruiting prospects captured and scored</small>
           </article>
-          <article class="metric" data-metric="attended">
-            <span>Attended Meetings</span>
-            <strong id="metric-attended">13</strong>
-            <small>Useful conversations with Sharon</small>
-            <div class="metric-chart" role="button" tabindex="0" aria-label="Show attended meetings details" aria-expanded="false" data-metric-chart="attended">
-              <svg class="metric-plot" viewBox="0 0 120 45" preserveAspectRatio="none" aria-hidden="true">
-                <path class="metric-area" id="graph-attended-area"></path>
-                <path class="metric-line" id="graph-attended-line"></path>
-              </svg>
-              <span class="metric-dot" id="graph-attended-dot" aria-hidden="true"></span>
-              <div class="metric-days" aria-hidden="true"><span>Mon</span><span>Wed</span><span>Fri</span><span>Sun</span></div>
-            </div>
-            <div class="metric-bubble" id="metric-attended-bubble" role="status"></div>
+          <article class="metric">
+            <span>Needs Approval</span>
+            <strong id="metric-approval">0</strong>
+            <small>AI summaries waiting for human review</small>
           </article>
-          <article class="metric" data-metric="policies">
-            <span>Placed Policies</span>
-            <strong id="metric-policies">4</strong>
-            <small>Separated from pending applications</small>
-            <div class="metric-chart" role="button" tabindex="0" aria-label="Show placed policies details" aria-expanded="false" data-metric-chart="policies">
-              <svg class="metric-plot" viewBox="0 0 120 45" preserveAspectRatio="none" aria-hidden="true">
-                <path class="metric-area" id="graph-policies-area"></path>
-                <path class="metric-line" id="graph-policies-line"></path>
-              </svg>
-              <span class="metric-dot" id="graph-policies-dot" aria-hidden="true"></span>
-              <div class="metric-days" aria-hidden="true"><span>Mon</span><span>Wed</span><span>Fri</span><span>Sun</span></div>
-            </div>
-            <div class="metric-bubble" id="metric-policies-bubble" role="status"></div>
+          <article class="metric">
+            <span>Approved</span>
+            <strong id="metric-approved">0</strong>
+            <small>Ready for callback, email, or booking</small>
           </article>
         </div>
 
-        <div class="demo-section-head">
-          <p class="eyebrow">Working Demo Path</p>
-          <h2>Walk Through The Client Journey</h2>
-          <p>Use these demos in sequence to show how a prospect moves from a campaign click to consultation, follow-up, reporting, and future campaign support.</p>
-        </div>
-
-        <div class="demo-grid">
-          <article class="demo-card" data-open="landing">
-            <span class="demo-icon">01</span>
-            <h3>Focused Landing Page</h3>
-            <p>Young family offer, needs-based copy, and a consultation request form.</p>
-            <div class="demo-actions">
-              <button type="button" data-open="landing">Open consultation form</button>
-              <button class="secondary" type="button" data-open="workflow">Next: Follow-up workflow</button>
-            </div>
-          </article>
-          <article class="demo-card" data-open="workflow">
-            <span class="demo-icon">02</span>
-            <h3>Lead Follow-Up Workflow</h3>
-            <p>Inquiry tracking, reminders, and next-action states for Sharon's team.</p>
-            <div class="demo-actions">
-              <button type="button" data-open="workflow">Open pipeline</button>
-              <button class="secondary" type="button" data-open="reporting">Next: Performance report</button>
-            </div>
-          </article>
-          <article class="demo-card" data-open="reporting">
-            <span class="demo-icon">03</span>
-            <h3>Performance Report</h3>
-            <p>Costs, conversion rates, applications, and retained commission estimates.</p>
-            <div class="demo-actions">
-              <button type="button" data-open="reporting">Open report</button>
-              <button class="secondary" type="button" data-open="content">Next: Content plan</button>
-            </div>
-          </article>
-          <article class="demo-card" data-open="content">
-            <span class="demo-icon">04</span>
-            <h3>Educational Content Calendar</h3>
-            <p>Posts and short video ideas answering common insurance questions.</p>
-            <div class="demo-actions">
-              <button type="button" data-open="content">Open content plan</button>
-              <button class="secondary" type="button" data-open="leads">Next: Lead records</button>
-            </div>
-          </article>
-          <article class="demo-card" data-open="leads">
-            <span class="demo-icon">05</span>
-            <h3>Lead Records And Notes</h3>
-            <p>Add lead details, record notes, and schedule the next follow-up.</p>
-            <div class="demo-actions">
-              <button type="button" data-open="leads">Open lead manager</button>
-              <button class="secondary" type="button" data-open="funnels">Next: Funnel links</button>
-            </div>
-          </article>
-          <article class="demo-card" data-open="funnels">
-            <span class="demo-icon">06</span>
-            <h3>Click Funnel Links</h3>
-            <p>Generate a campaign link and email-ready invitation copy.</p>
-            <div class="demo-actions">
-              <button type="button" data-open="funnels">Open link builder</button>
-              <button class="secondary" type="button" data-open="landing">Restart at step 01</button>
-            </div>
-          </article>
-        </div>
+        <section class="band split">
+          <div>
+            <p class="eyebrow">AI Implementation Pattern</p>
+            <h2>AI Does The Intake, A Person Approves The Next Step</h2>
+            <p>The automation model pauses before anything important is confirmed. AI qualifies the lead and drafts a next action, then a person approves, edits, or rejects it.</p>
+          </div>
+          <div class="workflow-map">
+            <span>Ad Or Outreach</span>
+            <span>AI Qualifies Lead</span>
+            <span>Human Approval</span>
+            <span>Route To Follow-Up</span>
+          </div>
+        </section>
       </section>
 
-      <section class="view" id="landing">
-        <div class="landing-demo">
+      <section class="view" id="customer-page">
+        <div class="landing-demo customer-landing">
           <div class="landing-copy">
-            <p class="eyebrow">For Young Families</p>
-            <h2>Protect The People Who Count On You</h2>
-            <p>Book a no-obligation life insurance conversation with Sharon to discuss your needs and understand your options.</p>
+            <p class="eyebrow">Insurance Customers</p>
+            <h2>Life Insurance Help For Families, Homeowners, And Business Owners</h2>
+            <p>Capture consumer leads with a focused page that explains the offer, asks the right intake questions, and sends qualified inquiries into AI review.</p>
             <ul>
-              <li>Clear explanations without pressure</li>
-              <li>Coverage conversations around your budget</li>
-              <li>Next steps handled by a licensed insurance adviser</li>
+              <li>Family protection, mortgage protection, and business continuity offers</li>
+              <li>Lead form designed to identify intent and preferred follow-up time</li>
+              <li>AI summary and score generated before Sharon’s team approves outreach</li>
             </ul>
           </div>
-          <form class="booking-form" id="booking-form">
-            <h3>Request A Consultation</h3>
+          <form class="public-lead-form" data-public-form="customer">
+            <h3>Request A Protection Review</h3>
             <label>
-              Full name
-              <input name="name" required placeholder="Jordan Rivera" />
+              Full Name
+              <input name="name" value="Jordan Rivera" required />
             </label>
             <label>
-              Email
-              <input name="email" type="email" required placeholder="jordan@example.com" />
-            </label>
-            <label>
-              Main concern
+              Main Concern
               <select name="concern">
                 <option>Protecting my family</option>
                 <option>Mortgage protection</option>
@@ -230,137 +142,203 @@
               </select>
             </label>
             <label>
-              Preferred time
-              <select name="time">
-                <option>Weekday morning</option>
-                <option>Weekday afternoon</option>
-                <option>Early evening</option>
-              </select>
+              Message
+              <textarea name="message" rows="4">I want to understand how much coverage my family may need before I choose anything.</textarea>
             </label>
-            <button type="submit">Add demo inquiry</button>
-            <p class="fineprint">This demo captures inquiry intent only. Product advice, quotes, and applications stay with Sharon and her licensed team.</p>
+            <button type="submit">Send To AI Intake</button>
           </form>
         </div>
-        <div class="confirmation" id="confirmation" role="status" aria-live="polite"></div>
       </section>
 
-      <section class="view" id="leads">
+      <section class="view" id="recruit-page">
+        <div class="landing-demo recruit-landing">
+          <div class="landing-copy">
+            <p class="eyebrow">Sales Agent Recruiting</p>
+            <h2>Explore A Sales Agent Opportunity With Sharon’s Team</h2>
+            <p>Capture recruiting leads with a separate page for people interested in licensing, mentorship, agency support, and insurance sales.</p>
+            <ul>
+              <li>Separate messaging from consumer insurance offers</li>
+              <li>Recruiting form that captures experience, license status, and motivation</li>
+              <li>AI screening before an interview invitation is approved</li>
+            </ul>
+          </div>
+          <form class="public-lead-form" data-public-form="recruit">
+            <h3>Request Recruiting Details</h3>
+            <label>
+              Full Name
+              <input name="name" value="Marcus Reed" required />
+            </label>
+            <label>
+              Experience Level
+              <select name="concern">
+                <option>Not licensed yet</option>
+                <option>Licensed agent</option>
+                <option>Sales background</option>
+                <option>Part-time opportunity</option>
+              </select>
+            </label>
+            <label>
+              Message
+              <textarea name="message" rows="4">I have sales experience and want to learn what it takes to become licensed and join the agency.</textarea>
+            </label>
+            <button type="submit">Send To AI Intake</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="view" id="engines">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Lead Capture And CRM</p>
-            <h2>Lead Manager</h2>
+            <p class="eyebrow">Lead Engines</p>
+            <h2>Two Acquisition Channels</h2>
           </div>
-          <button id="seed-followup" type="button">Schedule selected for tomorrow</button>
+          <button type="button" id="seed-both">Generate Sample Leads</button>
         </div>
-        <div class="lead-workspace">
-          <form class="manager-form" id="lead-form">
-            <h3>Add A Lead</h3>
-            <label>
-              Full name
-              <input name="name" required placeholder="Alex Morgan" />
-            </label>
-            <label>
-              Email
-              <input name="email" type="email" required placeholder="alex@example.com" />
-            </label>
-            <label>
-              Phone
-              <input name="phone" placeholder="(555) 013-4421" />
-            </label>
-            <label>
-              Service area
-              <input name="area" placeholder="North Dallas" />
-            </label>
-            <label>
-              Main need
-              <select name="concern">
-                <option>Protecting my family</option>
-                <option>Mortgage protection</option>
-                <option>Business continuity</option>
-                <option>Understanding my options</option>
-              </select>
-            </label>
-            <label>
-              Lead source
-              <select name="source">
-                <option>Landing page</option>
-                <option>Facebook campaign</option>
-                <option>Referral</option>
-                <option>Email link</option>
-              </select>
-            </label>
-            <label>
-              Initial note
-              <textarea name="note" rows="4" placeholder="Asked about coverage for spouse and two children."></textarea>
-            </label>
-            <button type="submit">Create lead record</button>
-          </form>
+        <div class="engine-grid">
+          <article class="engine-card">
+            <span class="engine-icon">01</span>
+            <h3>Insurance Customer Engine</h3>
+            <p>Runs paid ads, local content, referral links, and landing pages for people looking for protection.</p>
+            <ul><li>Family protection offer</li><li>Mortgage protection offer</li><li>Business continuity offer</li></ul>
+          </article>
+          <article class="engine-card">
+            <span class="engine-icon">02</span>
+            <h3>Sales Agent Recruiting Engine</h3>
+            <p>Runs recruiting campaigns for people curious about insurance sales, licensing, and agency opportunity.</p>
+            <ul><li>Career change audience</li><li>Licensed agent audience</li><li>Part-time opportunity audience</li></ul>
+          </article>
+          <article class="engine-card">
+            <span class="engine-icon">03</span>
+            <h3>AI Qualification Layer</h3>
+            <p>Reads the conversation, identifies intent, scores fit, and drafts the recommended next step.</p>
+            <ul><li>Intent classification</li><li>Lead scoring</li><li>Next-step recommendation</li></ul>
+          </article>
+          <article class="engine-card">
+            <span class="engine-icon">04</span>
+            <h3>Human Approval Gate</h3>
+            <p>Pauses automation before outreach, appointment confirmation, or recruiting follow-up.</p>
+            <ul><li>Review AI summary</li><li>Approve or reject</li><li>Route to the right workflow</li></ul>
+          </article>
+        </div>
+      </section>
 
-          <section class="detail-panel" id="lead-detail">
-            <p class="fineprint">Select a lead to view details, add notes, and schedule follow-ups.</p>
+      <section class="view" id="agent">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">AI Intake</p>
+            <h2>Conversation Simulator</h2>
+          </div>
+          <div class="segmented-control" aria-label="Lead type">
+            <button class="active" type="button" data-sim-type="customer">Customer</button>
+            <button type="button" data-sim-type="recruit">Sales Agent</button>
+          </div>
+        </div>
+        <div class="agent-layout">
+          <section class="chat-panel">
+            <div class="chat-window" id="chat-window" aria-live="polite"></div>
+            <form class="chat-form" id="chat-form">
+              <label>
+                Lead Message
+                <textarea id="lead-message" rows="4"></textarea>
+              </label>
+              <button type="submit">Run AI Intake</button>
+            </form>
+          </section>
+          <section class="ai-summary" id="ai-summary">
+            <p class="eyebrow">AI Output</p>
+            <h3>Ready To Qualify</h3>
+            <p>Choose a lead type and run the intake simulator to generate a score, summary, and approval-ready next step.</p>
           </section>
         </div>
-        <div class="lead-table" id="lead-table"></div>
       </section>
 
-      <section class="view" id="workflow">
+      <section class="view" id="approval">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Follow-Up And Booking</p>
-            <h2>Inquiry Pipeline</h2>
+            <p class="eyebrow">Human Approval</p>
+            <h2>Review Before Automation Acts</h2>
           </div>
-          <p class="pipeline-instruction">Tap and hold a lead card, then drag it to another stage</p>
+          <p class="approval-note">Nothing is confirmed until a person approves the AI recommendation.</p>
         </div>
-        <div class="pipeline" id="pipeline"></div>
+        <div class="approval-grid" id="approval-grid"></div>
       </section>
 
-      <section class="view" id="funnels">
+      <section class="view" id="pipeline">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Click Funnel Generator</p>
-            <h2>Campaign Link Builder</h2>
+            <p class="eyebrow">Lead Pipeline</p>
+            <h2>Customers And Agents Routed Separately</h2>
           </div>
-          <button id="generate-funnel" type="button">Generate link</button>
+          <p class="approval-note">Approved leads move into the right follow-up lane.</p>
         </div>
-        <div class="funnel-builder">
-          <form class="manager-form" id="funnel-form">
-            <h3>Funnel Setup</h3>
+        <div class="dual-pipeline">
+          <section>
+            <h3>Insurance Customers</h3>
+            <div class="pipeline" id="customer-pipeline"></div>
+          </section>
+          <section>
+            <h3>Sales Agents</h3>
+            <div class="pipeline" id="agent-pipeline"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="social">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Social Hub</p>
+            <h2>All Business Accounts In One Lead Dashboard</h2>
+          </div>
+          <button type="button" id="sync-social">Sync Demo Stats</button>
+        </div>
+        <div class="social-layout">
+          <section class="connected-accounts" id="connected-accounts" aria-label="Connected social media accounts"></section>
+          <section class="social-panel">
+            <div class="social-tabs" id="social-tabs" aria-label="Social account tabs"></div>
+            <div class="social-overview" id="social-overview"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="campaigns">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Campaign Builder</p>
+            <h2>Generate Lead Magnets And Outreach Copy</h2>
+          </div>
+          <button type="button" id="generate-campaign">Generate Campaign</button>
+        </div>
+        <div class="campaign-builder">
+          <form class="manager-form" id="campaign-form">
+            <h3>Campaign Setup</h3>
             <label>
-              Campaign name
-              <input name="campaign" value="Young Family Protection" required />
+              Lead Stream
+              <select name="stream">
+                <option value="customer">Insurance Customers</option>
+                <option value="recruit">Sales Agents</option>
+              </select>
             </label>
             <label>
               Audience
               <select name="audience">
                 <option>Young families</option>
                 <option>New homeowners</option>
-                <option>Self-employed professionals</option>
                 <option>Business owners</option>
+                <option>Career changers</option>
+                <option>Licensed agents</option>
               </select>
             </label>
             <label>
               Offer
-              <input name="offer" value="No-obligation life insurance conversation" required />
-            </label>
-            <label>
-              Destination
-              <select name="destination">
-                <option value="landing">Landing page</option>
-                <option value="booking">Booking request</option>
-                <option value="callback">Callback form</option>
-              </select>
+              <input name="offer" value="Free protection review" />
             </label>
           </form>
           <section class="generated-link-panel">
-            <h3>Generated Send-Ready Link</h3>
-            <div class="generated-url" id="generated-url">Generate a link to start.</div>
-            <div class="button-row">
-              <button id="copy-link" type="button">Copy link</button>
-              <a id="email-link" href="#">Open email draft</a>
-            </div>
+            <h3>Generated Campaign</h3>
+            <div class="generated-url" id="generated-url">Generate a campaign to start.</div>
             <label>
-              Email copy
-              <textarea id="email-copy" rows="8" readonly></textarea>
+              Outreach Copy
+              <textarea id="campaign-copy" rows="9" readonly></textarea>
             </label>
           </section>
         </div>
@@ -369,33 +347,18 @@
       <section class="view" id="reporting">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Performance Reporting</p>
-            <h2>90-Day Pilot Scorecard</h2>
-          </div>
-          <div class="report-controls">
-            <label>Ad spend <input id="ad-spend" type="number" min="0" value="1800" /></label>
-            <label>Agency fee <input id="agency-fee" type="number" min="0" value="2400" /></label>
+            <p class="eyebrow">Reporting</p>
+            <h2>Lead Acquisition Scorecard</h2>
           </div>
         </div>
         <div class="score-grid" id="score-grid"></div>
         <div class="chart-panel">
-            <h3>Journey Conversion</h3>
+          <h3>Automation Flow</h3>
           <div class="funnel" id="funnel"></div>
         </div>
       </section>
-
-      <section class="view" id="content">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Educational Content</p>
-            <h2>Monthly Publishing Plan</h2>
-          </div>
-          <button id="shuffle-content" type="button">Refresh ideas</button>
-        </div>
-        <div class="content-board" id="content-board"></div>
-      </section>
     </main>
 
-    <script src="app.js?v=20260929-03"></script>
+    <script src="app.js?v=20261001-01"></script>
   </body>
 </html>

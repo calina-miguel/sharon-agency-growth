@@ -1,80 +1,148 @@
-const stages = ["New Inquiry", "Contacted", "Booked", "Outcome"];
+const profilePhotoKey = "sharonLeadSystemProfilePhoto";
+const validViewIds = new Set(Array.from(document.querySelectorAll(".view")).map((view) => view.id));
 
-const phases = {
-  foundation: {
-    label: "Days 1-30",
-    title: "Build The Foundation",
-    focus: "Audience selection, campaign offer, landing page, tracking, and follow-up setup.",
-    milestone: "Campaign ready to launch with baseline measures recorded.",
-    actions: ["Confirm primary audience", "Prepare landing page and inquiry tracking", "Approve first educational content"],
-    view: "landing"
-  },
-  launch: {
-    label: "Days 31-60",
-    title: "Launch And Learn",
-    focus: "Run the first campaign, publish educational content, monitor inquiry quality, and review booking attendance.",
-    milestone: "Initial evidence of which messages generate useful conversations.",
-    actions: ["Review new inquiries", "Advance leads through follow-up", "Compare booked and attended consultations"],
-    view: "workflow"
-  },
-  evaluate: {
-    label: "Days 61-90",
-    title: "Improve And Evaluate",
-    focus: "Refine targeting, address follow-up gaps, assess sales outcomes, and estimate acquisition costs.",
-    milestone: "Documented recommendation to expand, adjust, or stop each activity.",
-    actions: ["Inspect acquisition costs", "Separate pending applications from placed policies", "Prepare next-step recommendation"],
-    view: "reporting"
-  }
-};
-
-const state = {
-  selectedPhase: "launch",
-  selectedLeadId: 1,
-  leads: [
-    { id: 1, name: "Maya Chen", email: "maya@example.com", phone: "(555) 014-1189", area: "Plano", source: "Landing page", concern: "Protecting my family", time: "Weekday afternoon", stage: "New Inquiry", quality: "Qualified", notes: ["Needs coverage for spouse and two children."], followUps: [{ date: "2026-09-28", type: "Call", note: "Confirm budget range and preferred consultation time." }] },
-    { id: 2, name: "Andre Brooks", email: "andre@example.com", phone: "(555) 018-2044", area: "Frisco", source: "Facebook campaign", concern: "Mortgage protection", time: "Early evening", stage: "Contacted", quality: "Qualified", notes: ["Asked whether mortgage protection should be separate from family coverage."], followUps: [{ date: "2026-09-29", type: "Email", note: "Send approved explainer and booking link." }] },
-    { id: 3, name: "Priya Shah", email: "priya@example.com", phone: "(555) 016-0081", area: "McKinney", source: "Referral", concern: "Understanding my options", time: "Weekday morning", stage: "Booked", quality: "Qualified", notes: ["Booked a needs conversation for next week."], followUps: [] },
-    { id: 4, name: "Sam Rivera", email: "sam@example.com", phone: "(555) 011-7761", area: "Dallas", source: "Landing page", concern: "Business continuity", time: "Weekday afternoon", stage: "Outcome", quality: "Application pending", notes: ["Business owner. Application pending underwriting."], followUps: [{ date: "2026-10-02", type: "Task", note: "Check application status." }] },
-    { id: 5, name: "Lena Morris", email: "lena@example.com", phone: "(555) 019-4432", area: "Allen", source: "Email link", concern: "Protecting my family", time: "Early evening", stage: "Outcome", quality: "Policy placed", notes: ["Policy placed. Add annual review reminder later."], followUps: [] }
-  ],
-  generatedFunnelUrl: "",
-  baseline: {
-    qualified: 42,
-    booked: 18,
-    attended: 13,
-    applications: 7,
-    policies: 4,
-    retainedCommission: 7600
-  }
-};
-
-const contentIdeas = [
-  ["Post", "How Much Life Insurance Do Young Families Usually Consider?", "Simple framing around income, debts, dependents, and budget."],
-  ["Short Video", "What Happens During A First Consultation?", "A calm walkthrough of the conversation and what Sharon will ask."],
-  ["Post", "Life Insurance Terms In Plain English", "Define beneficiary, premium, term, and underwriting without sales pressure."],
-  ["Short Video", "Mortgage Protection Vs. Family Protection", "Explain the overlap and why needs can change over time."],
-  ["Post", "Three Moments When Coverage Is Worth Revisiting", "New child, new home, self-employment, or major income change."],
-  ["Post", "Why Online Quotes Are Only A Starting Point", "Position Sharon's role as clarification, not instant product advice."],
-  ["Post", "Questions To Ask Before Buying Coverage", "Encourage prepared, informed conversations."],
-  ["Short Video", "Common Cost Misconceptions", "Address affordability concerns with approved, general language."]
+const customerMessages = [
+  "Hi, I just bought a home and want to understand mortgage protection. I am available after 5 PM.",
+  "I have two young kids and need to know how much life insurance makes sense before I choose anything.",
+  "I own a small business and want to protect my family if something happens to me."
 ];
 
-const metricCopy = {
-  qualified: {
-    label: "Qualified Inquiries",
-    note: "People who matched the target area and gave permission for Sharon's team to follow up."
+const recruitMessages = [
+  "I am interested in becoming a life insurance agent. I am not licensed yet but I want to learn the steps.",
+  "I have sales experience and want to know if joining an agency part time is realistic.",
+  "I am already licensed and looking for better support, leads, and mentorship."
+];
+
+const state = {
+  simType: "customer",
+  selectedSocial: "facebook",
+  selectedLeadId: 1,
+  leads: [
+    {
+      id: 1,
+      type: "customer",
+      name: "Maya Chen",
+      source: "Mortgage Protection Ad",
+      message: "I just bought a house and want to know if mortgage protection is separate from life insurance.",
+      score: 91,
+      status: "Needs Approval",
+      stage: "AI Qualified",
+      summary: "Homeowner asking about mortgage protection and life insurance overlap.",
+      nextStep: "Approve callback and send booking link for a protection review.",
+      aiDraft: "Thanks for reaching out. Sharon can walk through mortgage protection and family coverage options in a short consultation."
+    },
+    {
+      id: 2,
+      type: "recruit",
+      name: "Andre Brooks",
+      source: "Recruiting Landing Page",
+      message: "I have sales experience and want to know what it takes to become licensed.",
+      score: 84,
+      status: "Needs Approval",
+      stage: "AI Qualified",
+      summary: "Career-change prospect with sales experience and licensing questions.",
+      nextStep: "Approve recruiting intro email and invite to a discovery call.",
+      aiDraft: "Thanks for your interest. Sharon's team can explain licensing steps, training, and what the agency opportunity looks like."
+    },
+    {
+      id: 3,
+      type: "customer",
+      name: "Priya Shah",
+      source: "Referral Link",
+      message: "I want to review coverage before our second child arrives.",
+      score: 88,
+      status: "Approved",
+      stage: "Callback Ready",
+      summary: "Family protection lead with a clear life event and near-term need.",
+      nextStep: "Call during weekday morning window.",
+      aiDraft: "Congratulations on the growing family. Sharon can help you review what coverage may fit your needs and budget."
+    },
+    {
+      id: 4,
+      type: "recruit",
+      name: "Lena Morris",
+      source: "LinkedIn Recruiting Post",
+      message: "I am licensed and looking for an agency with better mentorship.",
+      score: 93,
+      status: "Approved",
+      stage: "Interview Ready",
+      summary: "Licensed agent prospect looking for mentorship and agency support.",
+      nextStep: "Send interview scheduler and agency overview.",
+      aiDraft: "Thanks for reaching out. Sharon's team can share the support model and schedule a short conversation."
+    }
+  ]
+};
+
+const socialAccounts = {
+  facebook: {
+    label: "Facebook",
+    handle: "Sharon Martin Agency",
+    status: "Connected",
+    audience: "Local Families",
+    views: 18420,
+    engagements: 1268,
+    clicks: 312,
+    leads: 42,
+    customerLeads: 34,
+    agentLeads: 8,
+    topPost: "Mortgage Protection Basics",
+    recommendation: "Boost the mortgage protection post and send comment replies into AI intake."
   },
-  booked: {
-    label: "Consultations Booked",
-    note: "Qualified leads who moved into a confirmed conversation through the booking flow."
+  instagram: {
+    label: "Instagram",
+    handle: "@sharonprotects",
+    status: "Connected",
+    audience: "Young Families",
+    views: 22380,
+    engagements: 1744,
+    clicks: 276,
+    leads: 36,
+    customerLeads: 30,
+    agentLeads: 6,
+    topPost: "Family Coverage Checklist",
+    recommendation: "Turn story replies into consultation prompts and retarget profile visitors."
   },
-  attended: {
-    label: "Attended Meetings",
-    note: "Booked consultations that became useful live conversations with Sharon."
+  linkedin: {
+    label: "LinkedIn",
+    handle: "Sharon Martin",
+    status: "Connected",
+    audience: "Career Switchers",
+    views: 9710,
+    engagements: 684,
+    clicks: 198,
+    leads: 28,
+    customerLeads: 7,
+    agentLeads: 21,
+    topPost: "Why Insurance Sales Needs Educators",
+    recommendation: "Route career comments into the sales agent recruiting sequence."
   },
-  policies: {
-    label: "Placed Policies",
-    note: "Closed policy outcomes, shown separately from pending applications."
+  tiktok: {
+    label: "TikTok",
+    handle: "@sharoninsurance",
+    status: "Ready To Connect",
+    audience: "Short-Form Viewers",
+    views: 31500,
+    engagements: 2380,
+    clicks: 164,
+    leads: 19,
+    customerLeads: 16,
+    agentLeads: 3,
+    topPost: "Life Insurance Terms In 30 Seconds",
+    recommendation: "Use educational videos for top-of-funnel customer capture."
+  },
+  youtube: {
+    label: "YouTube",
+    handle: "Sharon Martin Agency",
+    status: "Ready To Connect",
+    audience: "Search And Education",
+    views: 12880,
+    engagements: 522,
+    clicks: 141,
+    leads: 17,
+    customerLeads: 14,
+    agentLeads: 3,
+    topPost: "First Consultation Walkthrough",
+    recommendation: "Add lead links below educational videos and send form fills into approval."
   }
 };
 
@@ -82,35 +150,314 @@ function showView(id) {
   if (!validViewIds.has(id)) return;
   document.querySelectorAll(".view").forEach((view) => view.classList.toggle("active", view.id === id));
   document.querySelectorAll(".nav-item").forEach((item) => item.classList.toggle("active", item.dataset.view === id));
+  document.querySelector(".sidebar")?.classList.remove("menu-open");
+  document.querySelector(".menu-toggle")?.setAttribute("aria-expanded", "false");
 }
-
-const sidebar = document.querySelector(".sidebar");
-const menuToggle = document.querySelector(".menu-toggle");
-const pipeline = document.querySelector("#pipeline");
-const profileUpload = document.querySelector("#profile-upload");
-const brandMark = document.querySelector("#brand-mark");
-const brandPhoto = document.querySelector("#brand-photo");
-const profilePhotoKey = "sharonDemoProfilePhoto";
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-const holdDelay = 280;
-const holdMoveTolerance = 18;
-const validViewIds = new Set(Array.from(document.querySelectorAll(".view")).map((view) => view.id));
-let touchDrag = null;
-let parallaxFrame = 0;
-let activeMetric = "";
 
 function requestedView() {
   const params = new URLSearchParams(window.location.search);
   return params.get("presentationView") || params.get("slide") || params.get("view") || params.get("presentation");
 }
 
-function setMenuOpen(isOpen) {
-  if (!sidebar || !menuToggle) return;
-  sidebar.classList.toggle("menu-open", isOpen);
-  menuToggle.setAttribute("aria-expanded", String(isOpen));
+function leadTypeLabel(type) {
+  return type === "customer" ? "Insurance Customer" : "Sales Agent";
+}
+
+function leadStageGroup(lead) {
+  if (lead.status === "Needs Approval") return "Needs Approval";
+  if (lead.status === "Rejected") return "Rejected";
+  return lead.stage;
+}
+
+function selectedMessages() {
+  return state.simType === "customer" ? customerMessages : recruitMessages;
+}
+
+function suggestedName(type) {
+  const customerNames = ["Jordan Rivera", "Camille Wright", "Noah Patel", "Sofia Bennett"];
+  const recruitNames = ["Marcus Reed", "Taylor Brooks", "Nina Alvarez", "Devon Carter"];
+  const names = type === "customer" ? customerNames : recruitNames;
+  return names[Math.floor(Math.random() * names.length)];
+}
+
+function qualifyLead(type, message) {
+  const text = message.toLowerCase();
+  const customerSignals = ["family", "home", "mortgage", "kids", "coverage", "business", "life insurance"];
+  const recruitSignals = ["agent", "licensed", "licensing", "sales", "career", "agency", "part time", "mentorship"];
+  const signals = type === "customer" ? customerSignals : recruitSignals;
+  const matches = signals.filter((signal) => text.includes(signal)).length;
+  const score = Math.min(98, 62 + matches * 8 + Math.floor(Math.random() * 9));
+  const summary = type === "customer"
+    ? "Potential insurance customer with a clear protection question and follow-up intent."
+    : "Potential sales agent prospect with interest in licensing, support, or agency opportunity.";
+  const nextStep = type === "customer"
+    ? "Approve a consultation invitation and route to customer follow-up."
+    : "Approve a recruiting intro and route to the agent opportunity pipeline.";
+  const aiDraft = type === "customer"
+    ? "Thanks for reaching out. Sharon can help you understand your options in a short protection review."
+    : "Thanks for your interest. Sharon's team can explain the opportunity, licensing steps, and next conversation.";
+  return { score, summary, nextStep, aiDraft };
+}
+
+function createLead(type, message, name = suggestedName(type), source = "") {
+  const qualified = qualifyLead(type, message);
+  return {
+    id: Date.now() + Math.floor(Math.random() * 1000),
+    type,
+    name,
+    source: source || (type === "customer" ? "Customer Acquisition Campaign" : "Agent Recruiting Campaign"),
+    message,
+    status: "Needs Approval",
+    stage: "AI Qualified",
+    ...qualified
+  };
+}
+
+function setSimType(type) {
+  state.simType = type;
+  document.querySelectorAll("[data-sim-type]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.simType === type);
+  });
+  const sample = selectedMessages()[0];
+  document.querySelector("#lead-message").value = sample;
+  renderChat(sample);
+  renderAiSummary(null);
+}
+
+function renderChat(message = document.querySelector("#lead-message")?.value || "") {
+  const channel = state.simType === "customer" ? "Customer Lead" : "Recruiting Lead";
+  document.querySelector("#chat-window").innerHTML = `
+    <div class="chat-message inbound">
+      <span>${channel}</span>
+      <p>${message}</p>
+    </div>
+    <div class="chat-message outbound">
+      <span>AI Intake Agent</span>
+      <p>I can qualify this lead, identify the correct stream, and prepare a next step for approval.</p>
+    </div>
+  `;
+}
+
+function renderAiSummary(lead) {
+  const panel = document.querySelector("#ai-summary");
+  if (!lead) {
+    panel.innerHTML = `
+      <p class="eyebrow">AI Output</p>
+      <h3>Ready To Qualify</h3>
+      <p>Choose a lead type and run the intake simulator to generate a score, summary, and approval-ready next step.</p>
+    `;
+    return;
+  }
+  panel.innerHTML = `
+    <p class="eyebrow">${leadTypeLabel(lead.type)}</p>
+    <h3>${lead.name}</h3>
+    <div class="score-ring">${lead.score}</div>
+    <p><strong>AI Summary:</strong> ${lead.summary}</p>
+    <p><strong>Recommended Next Step:</strong> ${lead.nextStep}</p>
+    <div class="draft-box">${lead.aiDraft}</div>
+    <button type="button" data-open="approval">Review In Approval Queue</button>
+  `;
+}
+
+function renderMetrics() {
+  const customerCount = state.leads.filter((lead) => lead.type === "customer").length;
+  const agentCount = state.leads.filter((lead) => lead.type === "recruit").length;
+  const approvalCount = state.leads.filter((lead) => lead.status === "Needs Approval").length;
+  const approvedCount = state.leads.filter((lead) => lead.status === "Approved").length;
+  document.querySelector("#metric-customers").textContent = customerCount;
+  document.querySelector("#metric-agents").textContent = agentCount;
+  document.querySelector("#metric-approval").textContent = approvalCount;
+  document.querySelector("#metric-approved").textContent = approvedCount;
+  document.querySelector("#total-leads").textContent = state.leads.length;
+}
+
+function renderApprovalQueue() {
+  const pending = state.leads.filter((lead) => lead.status === "Needs Approval");
+  const container = document.querySelector("#approval-grid");
+  if (!pending.length) {
+    container.innerHTML = `<article class="empty-state"><h3>No Leads Waiting</h3><p>Run the AI intake simulator or generate sample leads to refill the approval queue.</p></article>`;
+    return;
+  }
+  container.innerHTML = pending.map((lead) => `
+    <article class="approval-card" data-lead-id="${lead.id}">
+      <div class="card-topline">
+        <span>${leadTypeLabel(lead.type)}</span>
+        <strong>${lead.score}</strong>
+      </div>
+      <h3>${lead.name}</h3>
+      <p>${lead.summary}</p>
+      <div class="draft-box">${lead.aiDraft}</div>
+      <small>${lead.nextStep}</small>
+      <div class="button-row">
+        <button type="button" data-approve="${lead.id}">Approve</button>
+        <button class="secondary" type="button" data-reject="${lead.id}">Reject</button>
+      </div>
+    </article>
+  `).join("");
+}
+
+function renderPipeline() {
+  const customerStages = ["Callback Ready", "Consultation Booked", "Quoted", "Policy Opportunity"];
+  const recruitStages = ["Interview Ready", "Licensing Review", "Contracting", "Agent Opportunity"];
+  document.querySelector("#customer-pipeline").innerHTML = renderStageColumns("customer", customerStages);
+  document.querySelector("#agent-pipeline").innerHTML = renderStageColumns("recruit", recruitStages);
+}
+
+function renderStageColumns(type, stages) {
+  return stages.map((stage) => {
+    const cards = state.leads
+      .filter((lead) => lead.type === type && lead.status === "Approved" && leadStageGroup(lead) === stage)
+      .map((lead) => `
+        <article class="lead-card">
+          <strong>${lead.name}</strong>
+          <p>${lead.summary}</p>
+          <small>${lead.source}</small>
+        </article>
+      `).join("");
+    return `<section class="pipeline-column"><h4>${stage}</h4>${cards || "<p class='fineprint'>No leads in this stage.</p>"}</section>`;
+  }).join("");
+}
+
+function renderReport() {
+  const pending = state.leads.filter((lead) => lead.status === "Needs Approval").length;
+  const approved = state.leads.filter((lead) => lead.status === "Approved").length;
+  const rejected = state.leads.filter((lead) => lead.status === "Rejected").length;
+  const avgScore = Math.round(state.leads.reduce((sum, lead) => sum + lead.score, 0) / Math.max(state.leads.length, 1));
+  document.querySelector("#score-grid").innerHTML = [
+    ["Total Captured", state.leads.length, "Across customer and recruiting streams"],
+    ["Average AI Score", avgScore, "Demo fit score across all leads"],
+    ["Pending Approval", pending, "Waiting for human review"],
+    ["Approved Leads", approved, "Ready for next-step routing"]
+  ].map(([label, value, note]) => `<article class="score-card"><span>${label}</span><strong>${value}</strong><small>${note}</small></article>`).join("");
+  const rows = [
+    ["Captured", state.leads.length],
+    ["AI Qualified", state.leads.filter((lead) => lead.score >= 75).length],
+    ["Approved", approved],
+    ["Rejected", rejected]
+  ];
+  const max = Math.max(rows[0][1], 1);
+  document.querySelector("#funnel").innerHTML = rows.map(([label, value]) => `
+    <div class="funnel-row">
+      <strong>${label}</strong>
+      <div class="bar" style="width:${Math.max((value / max) * 100, 8)}%"></div>
+      <span>${value}</span>
+    </div>
+  `).join("");
+}
+
+function renderSocialHub() {
+  const accounts = Object.entries(socialAccounts);
+  const selected = socialAccounts[state.selectedSocial] || socialAccounts.facebook;
+  const totals = accounts.reduce((sum, [, account]) => ({
+    views: sum.views + account.views,
+    engagements: sum.engagements + account.engagements,
+    clicks: sum.clicks + account.clicks,
+    leads: sum.leads + account.leads,
+    customerLeads: sum.customerLeads + account.customerLeads,
+    agentLeads: sum.agentLeads + account.agentLeads
+  }), { views: 0, engagements: 0, clicks: 0, leads: 0, customerLeads: 0, agentLeads: 0 });
+
+  document.querySelector("#connected-accounts").innerHTML = `
+    <article class="social-total">
+      <p class="eyebrow">Unified Social Intake</p>
+      <h3>${totals.leads} Leads Attributed</h3>
+      <p>Customer and recruiting leads from connected social media activity.</p>
+    </article>
+    ${accounts.map(([id, account]) => `
+      <button class="account-card ${id === state.selectedSocial ? "active" : ""}" type="button" data-social-account="${id}">
+        <span>${account.label}</span>
+        <strong>${account.handle}</strong>
+        <small>${account.status}</small>
+      </button>
+    `).join("")}
+  `;
+
+  document.querySelector("#social-tabs").innerHTML = accounts.map(([id, account]) => `
+    <button class="${id === state.selectedSocial ? "active" : ""}" type="button" data-social-tab="${id}">${account.label}</button>
+  `).join("");
+
+  const engagementRate = ((selected.engagements / Math.max(selected.views, 1)) * 100).toFixed(1);
+  const clickRate = ((selected.clicks / Math.max(selected.views, 1)) * 100).toFixed(1);
+  document.querySelector("#social-overview").innerHTML = `
+    <div class="social-heading">
+      <div>
+        <p class="eyebrow">${selected.label}</p>
+        <h3>${selected.handle}</h3>
+      </div>
+      <span>${selected.audience}</span>
+    </div>
+    <div class="social-stat-grid">
+      <article><span>Post Views</span><strong>${selected.views.toLocaleString()}</strong></article>
+      <article><span>Engagements</span><strong>${selected.engagements.toLocaleString()}</strong></article>
+      <article><span>Link Clicks</span><strong>${selected.clicks.toLocaleString()}</strong></article>
+      <article><span>Leads Captured</span><strong>${selected.leads}</strong></article>
+    </div>
+    <div class="social-bars">
+      <div><span>Engagement Rate</span><div class="social-bar"><i style="width:${Math.min(Number(engagementRate) * 8, 100)}%"></i></div><strong>${engagementRate}%</strong></div>
+      <div><span>Click Rate</span><div class="social-bar"><i style="width:${Math.min(Number(clickRate) * 24, 100)}%"></i></div><strong>${clickRate}%</strong></div>
+      <div><span>Customer Leads</span><div class="social-bar"><i style="width:${(selected.customerLeads / Math.max(selected.leads, 1)) * 100}%"></i></div><strong>${selected.customerLeads}</strong></div>
+      <div><span>Agent Leads</span><div class="social-bar"><i style="width:${(selected.agentLeads / Math.max(selected.leads, 1)) * 100}%"></i></div><strong>${selected.agentLeads}</strong></div>
+    </div>
+    <div class="social-recommendation">
+      <strong>Top Content: ${selected.topPost}</strong>
+      <p>${selected.recommendation}</p>
+    </div>
+  `;
+}
+
+function renderCampaign() {
+  const form = new FormData(document.querySelector("#campaign-form"));
+  const stream = form.get("stream");
+  const audience = form.get("audience");
+  const offer = form.get("offer");
+  const base = `${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/, "/")}`;
+  const url = `${base}?stream=${encodeURIComponent(stream)}&audience=${encodeURIComponent(audience.toLowerCase().replaceAll(" ", "-"))}`;
+  const copy = stream === "customer"
+    ? `Campaign: ${offer}\n\nAudience: ${audience}\n\nMessage: If protecting your family, home, or business has been on your mind, this short review helps you understand your options before choosing a policy.\n\nLead Link: ${url}\n\nAutomation: AI intake asks the first questions, scores the lead, and sends qualified conversations to approval.`
+    : `Campaign: ${offer}\n\nAudience: ${audience}\n\nMessage: Curious about life insurance sales or joining a supportive agency? Start with a short fit conversation and learn the next steps.\n\nLead Link: ${url}\n\nAutomation: AI intake screens interest, licensing status, and experience before routing to approval.`;
+  document.querySelector("#generated-url").textContent = url;
+  document.querySelector("#campaign-copy").value = copy;
+}
+
+function approveLead(id) {
+  const lead = state.leads.find((item) => item.id === id);
+  if (!lead) return;
+  lead.status = "Approved";
+  lead.stage = lead.type === "customer" ? "Callback Ready" : "Interview Ready";
+  refresh();
+}
+
+function rejectLead(id) {
+  const lead = state.leads.find((item) => item.id === id);
+  if (!lead) return;
+  lead.status = "Rejected";
+  lead.stage = "Rejected";
+  refresh();
+}
+
+function seedLead(type) {
+  const messages = type === "customer" ? customerMessages : recruitMessages;
+  const message = messages[Math.floor(Math.random() * messages.length)];
+  const lead = createLead(type, message);
+  state.leads.unshift(lead);
+  state.selectedLeadId = lead.id;
+  renderChat(message);
+  renderAiSummary(lead);
+  refresh();
+  return lead;
+}
+
+function refresh() {
+  renderMetrics();
+  renderSocialHub();
+  renderApprovalQueue();
+  renderPipeline();
+  renderReport();
 }
 
 function setBrandPhoto(dataUrl) {
+  const brandMark = document.querySelector("#brand-mark");
+  const brandPhoto = document.querySelector("#brand-photo");
   if (!brandMark || !brandPhoto) return;
   if (dataUrl) {
     brandPhoto.src = dataUrl;
@@ -121,429 +468,20 @@ function setBrandPhoto(dataUrl) {
   }
 }
 
-function restoreBrandPhoto() {
-  try {
-    setBrandPhoto(localStorage.getItem(profilePhotoKey));
-  } catch {
-    setBrandPhoto("");
-  }
-}
-
-function updateParallax() {
-  parallaxFrame = 0;
-  const y = window.scrollY;
-  document.documentElement.style.setProperty("--parallax-fast", `${Math.round(y * 0.04)}px`);
-  document.documentElement.style.setProperty("--parallax-slow", `${Math.round(y * 0.025)}px`);
-  document.documentElement.style.setProperty("--overview-lift", `${Math.round(Math.min(y * 0.018, 8)) * -1}px`);
-}
-
-function requestParallaxUpdate() {
-  if (reduceMotion.matches || parallaxFrame) return;
-  const schedule = window.requestAnimationFrame || ((callback) => window.setTimeout(callback, 16));
-  parallaxFrame = schedule(updateParallax);
-}
-
-function renderPhasePanel() {
-  const phase = phases[state.selectedPhase];
-  const panel = document.querySelector("#phase-panel");
-  panel.innerHTML = `
-    <div>
-      <p class="eyebrow">${phase.label}</p>
-      <h2>${phase.title}</h2>
-      <p>${phase.focus}</p>
-    </div>
-    <div class="phase-detail">
-      <span>Milestone</span>
-      <strong>${phase.milestone}</strong>
-      <ul>
-        ${phase.actions.map((action) => `<li>${action}</li>`).join("")}
-      </ul>
-      <button type="button" data-phase-view="${phase.view}">Open related demo</button>
-    </div>
-  `;
-  document.querySelectorAll(".phase").forEach((button) => {
-    const isActive = button.dataset.phase === state.selectedPhase;
-    button.classList.toggle("live", isActive);
-    button.classList.toggle("done", button.dataset.phase === "foundation" && state.selectedPhase !== "foundation");
-    button.setAttribute("aria-pressed", String(isActive));
-  });
-}
-
-function totals() {
-  const newPolicies = state.leads.filter((lead) => lead.quality === "Policy placed").length;
-  const newBooked = state.leads.filter((lead) => ["Booked", "Outcome"].includes(lead.stage)).length;
-  return {
-    qualified: state.baseline.qualified + state.leads.length,
-    booked: state.baseline.booked + newBooked,
-    attended: state.baseline.attended + state.leads.filter((lead) => lead.stage === "Outcome").length,
-    applications: state.baseline.applications + state.leads.filter((lead) => lead.quality === "Application pending").length,
-    policies: state.baseline.policies + newPolicies
-  };
-}
-
-function updateOverview() {
-  const current = totals();
-  document.querySelector("#metric-qualified").textContent = current.qualified;
-  document.querySelector("#metric-booked").textContent = current.booked;
-  document.querySelector("#metric-attended").textContent = current.attended;
-  document.querySelector("#metric-policies").textContent = current.policies;
-  const max = Math.max(current.qualified, 1);
-  const metricSeries = {
-    qualified: [state.baseline.qualified * 0.72, state.baseline.qualified * 0.86, state.baseline.qualified, current.qualified],
-    booked: [state.baseline.booked * 0.7, state.baseline.booked * 0.86, state.baseline.booked, current.booked],
-    attended: [state.baseline.attended * 0.68, state.baseline.attended * 0.84, state.baseline.attended, current.attended],
-    policies: [state.baseline.policies * 0.62, state.baseline.policies * 0.78, state.baseline.policies, current.policies]
-  };
-  Object.entries(metricSeries).forEach(([id, values]) => {
-    const points = values.map((value, index) => {
-      const x = 8 + index * 34.5;
-      const y = 42 - Math.max((value / max) * 34, 4);
-      return [x, y];
-    });
-    const line = document.querySelector(`#graph-${id}-line`);
-    const area = document.querySelector(`#graph-${id}-area`);
-    const dot = document.querySelector(`#graph-${id}-dot`);
-    if (!line || !area || !dot) return;
-    const linePath = points.map(([x, y], index) => `${index ? "L" : "M"} ${x.toFixed(1)} ${y.toFixed(1)}`).join(" ");
-    const firstPoint = points[0];
-    const lastPoint = points[points.length - 1];
-    line.setAttribute("d", linePath);
-    area.setAttribute("d", `${linePath} L ${lastPoint[0].toFixed(1)} 45 L ${firstPoint[0].toFixed(1)} 45 Z`);
-    dot.style.setProperty("--dot-x", lastPoint[0].toFixed(1));
-    dot.style.setProperty("--dot-y", lastPoint[1].toFixed(1));
-  });
-  updateMetricBubbles(current);
-}
-
-function updateMetricBubbles(current) {
-  Object.entries(metricCopy).forEach(([id, detail]) => {
-    const bubble = document.querySelector(`#metric-${id}-bubble`);
-    if (!bubble) return;
-    const baseline = state.baseline[id] || 0;
-    const value = current[id] || 0;
-    const lift = value - baseline;
-    bubble.innerHTML = `
-      <strong>${detail.label}: ${value}</strong>
-      <p>${detail.note}</p>
-      <dl>
-        <dt>Starting Point</dt>
-        <dd>${baseline}</dd>
-        <dt>Added In Demo</dt>
-        <dd>+${lift}</dd>
-      </dl>
-    `;
-  });
-}
-
-function showMetricBubble(id) {
-  activeMetric = activeMetric === id ? "" : id;
-  document.querySelectorAll(".metric").forEach((metric) => {
-    const isActive = metric.dataset.metric === activeMetric;
-    metric.classList.toggle("show-detail", isActive);
-    metric.querySelector(".metric-chart")?.setAttribute("aria-expanded", String(isActive));
-  });
-}
-
-function closeMetricBubbles() {
-  if (!activeMetric) return;
-  activeMetric = "";
-  document.querySelectorAll(".metric.show-detail").forEach((metric) => {
-    metric.classList.remove("show-detail");
-    metric.querySelector(".metric-chart")?.setAttribute("aria-expanded", "false");
-  });
-}
-
-function renderPipeline() {
-  const pipeline = document.querySelector("#pipeline");
-  pipeline.innerHTML = stages.map((stage) => {
-    const cards = state.leads
-      .filter((lead) => lead.stage === stage)
-      .map((lead) => `
-        <article class="lead-card ${lead.id === state.selectedLeadId ? "selected" : ""}" data-lead-id="${lead.id}">
-          <strong>${lead.name}</strong>
-          <p>${lead.concern}</p>
-          <small>${lead.time} | ${lead.quality}</small>
-          <small>${lead.followUps.length ? `Next: ${lead.followUps[0].date}` : "No follow-up scheduled"}</small>
-        </article>
-      `).join("");
-    return `<section class="pipeline-column" data-stage="${stage}"><h3>${stage}</h3>${cards || "<p class='fineprint'>No leads in this stage.</p>"}</section>`;
-  }).join("");
-}
-
-function selectedLead() {
-  return state.leads.find((lead) => lead.id === state.selectedLeadId);
-}
-
-function renderLeadManager() {
-  const table = document.querySelector("#lead-table");
-  table.innerHTML = `
-    <div class="lead-table-head">
-      <span>Name</span>
-      <span>Need</span>
-      <span>Source</span>
-      <span>Next Follow-Up</span>
-      <span>Status</span>
-    </div>
-    ${state.leads.map((lead) => `
-      <button class="lead-row ${lead.id === state.selectedLeadId ? "selected" : ""}" type="button" data-select="${lead.id}">
-        <span>${lead.name}</span>
-        <span>${lead.concern}</span>
-        <span>${lead.source || "Landing page"}</span>
-        <span>${lead.followUps[0]?.date || "Not scheduled"}</span>
-        <span>${lead.stage}</span>
-      </button>
-    `).join("")}
-  `;
-
-  const lead = selectedLead();
-  const detail = document.querySelector("#lead-detail");
-  if (!lead) {
-    detail.innerHTML = "<p class='fineprint'>Select a lead to view details, add notes, and schedule follow-ups.</p>";
-    return;
-  }
-
-  detail.innerHTML = `
-    <div class="detail-header">
-      <div>
-        <p class="eyebrow">Selected Lead</p>
-        <h3>${lead.name}</h3>
-      </div>
-      <span class="status-pill">${lead.quality}</span>
-    </div>
-    <dl class="detail-grid">
-      <div><dt>Email</dt><dd>${lead.email || "Not provided"}</dd></div>
-      <div><dt>Phone</dt><dd>${lead.phone || "Not provided"}</dd></div>
-      <div><dt>Area</dt><dd>${lead.area || "Not provided"}</dd></div>
-      <div><dt>Source</dt><dd>${lead.source || "Landing page"}</dd></div>
-    </dl>
-    <form class="inline-form" id="note-form">
-      <label>
-        Add note
-        <textarea name="note" rows="3" placeholder="Document the conversation, objections, or next step." required></textarea>
-      </label>
-      <button type="submit">Save note</button>
-    </form>
-    <form class="inline-form" id="followup-form">
-      <label>
-        Follow-up date
-        <input name="date" type="date" required />
-      </label>
-      <label>
-        Type
-        <select name="type">
-          <option>Call</option>
-          <option>Email</option>
-          <option>Text</option>
-          <option>Task</option>
-        </select>
-      </label>
-      <label>
-        Reminder note
-        <input name="note" placeholder="Confirm appointment and send reminder." required />
-      </label>
-      <button type="submit">Schedule follow-up</button>
-    </form>
-    <div class="activity-list">
-      <h4>Notes</h4>
-      ${lead.notes.map((note) => `<p>${note}</p>`).join("") || "<p>No notes yet.</p>"}
-      <h4>Scheduled Follow-Ups</h4>
-      ${lead.followUps.map((item) => `<p><strong>${item.date}</strong> - ${item.type}: ${item.note}</p>`).join("") || "<p>No follow-ups scheduled.</p>"}
-    </div>
-  `;
-}
-
-function renderReport() {
-  const current = totals();
-  const adSpend = Number(document.querySelector("#ad-spend").value || 0);
-  const agencyFee = Number(document.querySelector("#agency-fee").value || 0);
-  const totalCost = adSpend + agencyFee;
-  const costPerQualified = totalCost / Math.max(current.qualified, 1);
-  const costPerClient = totalCost / Math.max(current.policies, 1);
-  const retained = state.baseline.retainedCommission + current.policies * 1900;
-  const roi = ((retained - totalCost) / Math.max(totalCost, 1)) * 100;
-
-  document.querySelector("#score-grid").innerHTML = [
-    ["Cost Per Qualified Inquiry", `$${Math.round(costPerQualified)}`, "Ad spend plus agency fee"],
-    ["Cost Per Placed Policy", `$${Math.round(costPerClient)}`, "Uses policies placed in force"],
-    ["Estimated Retained Commission", `$${retained.toLocaleString()}`, "Demo figure for evaluation"],
-    ["Pilot Return Estimate", `${Math.round(roi)}%`, "Before servicing costs or reversals"]
-  ].map(([label, value, note]) => `<article class="score-card"><span>${label}</span><strong>${value}</strong><small>${note}</small></article>`).join("");
-
-  const rows = [
-    ["Qualified Inquiries", current.qualified],
-    ["Consultations Booked", current.booked],
-    ["Attended Meetings", current.attended],
-    ["Applications", current.applications],
-    ["Policies Placed", current.policies]
-  ];
-  const max = rows[0][1];
-  document.querySelector("#funnel").innerHTML = rows.map(([label, value]) => `
-    <div class="funnel-row">
-      <strong>${label}</strong>
-      <div class="bar" style="width:${Math.max((value / max) * 100, 8)}%"></div>
-      <span>${value}</span>
-    </div>
-  `).join("");
-}
-
-function renderContent(offset = 0) {
-  const selected = [...contentIdeas.slice(offset), ...contentIdeas.slice(0, offset)].slice(0, 6);
-  document.querySelector("#content-board").innerHTML = selected.map(([type, title, note]) => `
-    <article class="content-card">
-      <span class="content-type">${type}</span>
-      <h3>${title}</h3>
-      <p>${note}</p>
-    </article>
-  `).join("");
-}
-
-function slugify(value) {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-}
-
-function renderFunnel() {
-  const form = new FormData(document.querySelector("#funnel-form"));
-  const campaign = form.get("campaign");
-  const audience = form.get("audience");
-  const offer = form.get("offer");
-  const destination = form.get("destination");
-  const basePath = window.location.pathname.replace(/\/$/, "");
-  const base = `${window.location.origin}${basePath}`;
-  const params = new URLSearchParams({
-    funnel: slugify(campaign),
-    audience: slugify(audience),
-    offer: slugify(offer),
-    source: "email"
-  });
-  const hash = destination === "landing" ? "" : `#${destination}`;
-  const url = `${base}/?${params.toString()}${hash}`;
-  const emailCopy = `Subject: ${campaign}\n\nHi,\n\nI thought this might be useful if you have questions about life insurance options for ${audience.toLowerCase()}.\n\nYou can book a no-obligation conversation with Sharon here:\n${url}\n\nThe conversation is meant to help you understand your options. Product advice, quotes, and applications are handled by Sharon and her licensed team.\n\nBest,`;
-
-  state.generatedFunnelUrl = url;
-  document.querySelector("#generated-url").textContent = url;
-  document.querySelector("#email-copy").value = emailCopy;
-  document.querySelector("#email-link").href = `mailto:?subject=${encodeURIComponent(campaign)}&body=${encodeURIComponent(emailCopy.replace(/^Subject:.*\n\n/, ""))}`;
-}
-
-function clearPipelineTargets() {
-  document.querySelectorAll(".pipeline-column").forEach((column) => column.classList.remove("drop-target"));
-}
-
-function highlightPipelineTarget(column) {
-  document.querySelectorAll(".pipeline-column").forEach((item) => item.classList.toggle("drop-target", item === column));
-}
-
-function nearestPipelineColumn(clientX, clientY) {
-  let bestColumn = null;
-  let bestDistance = Infinity;
-  document.querySelectorAll(".pipeline-column").forEach((column) => {
-    const rect = column.getBoundingClientRect();
-    const x = Math.max(rect.left, Math.min(clientX, rect.right));
-    const y = Math.max(rect.top, Math.min(clientY, rect.bottom));
-    const distance = Math.hypot(clientX - x, clientY - y);
-    if (distance < bestDistance) {
-      bestDistance = distance;
-      bestColumn = column;
-    }
-  });
-  return bestDistance < 90 ? bestColumn : null;
-}
-
-function moveLeadToStage(leadId, stage) {
-  const lead = state.leads.find((item) => item.id === leadId);
-  if (!lead || !stage) return;
-  lead.stage = stage;
-  if (lead.stage === "Outcome" && lead.quality === "Qualified") lead.quality = "Application pending";
-  state.selectedLeadId = lead.id;
-  refresh();
-}
-
-function startHoldDrag({ card, leadId, pointerId, startX, startY, delay = holdDelay }) {
-  cancelHoldDrag();
-  touchDrag = {
-    card,
-    leadId,
-    pointerId,
-    startX,
-    startY,
-    targetColumn: null,
-    moved: false,
-    armed: false,
-    suppressClick: false,
-    holdTimer: window.setTimeout(() => {
-      if (!touchDrag || touchDrag.card !== card) return;
-      touchDrag.armed = true;
-      card.classList.add("hold-ready", "dragging", "touch-dragging");
-    }, delay)
-  };
-}
-
-function cancelHoldDrag() {
-  if (!touchDrag || touchDrag.suppressClick) return;
-  window.clearTimeout(touchDrag.holdTimer);
-  touchDrag.card?.classList.remove("hold-ready", "dragging", "touch-dragging");
-  if (touchDrag.card) touchDrag.card.style.transform = "";
-  clearPipelineTargets();
-  touchDrag = null;
-}
-
-function updateHoldDrag(clientX, clientY) {
-  if (!touchDrag) return false;
-  const viewportBuffer = 82;
-  const scrollStep = 16;
-  const dx = clientX - touchDrag.startX;
-  const dy = clientY - touchDrag.startY;
-  if (!touchDrag.armed) {
-    if (Math.hypot(dx, dy) > holdMoveTolerance) cancelHoldDrag();
-    return false;
-  }
-  touchDrag.moved = true;
-  if (clientY > window.innerHeight - viewportBuffer) window.scrollBy({ top: scrollStep, behavior: "auto" });
-  if (clientY < viewportBuffer) window.scrollBy({ top: -scrollStep, behavior: "auto" });
-  touchDrag.card.style.transform = `translate(${dx}px, ${dy}px)`;
-  const element = document.elementFromPoint(clientX, clientY);
-  const column = element?.closest?.(".pipeline-column") || nearestPipelineColumn(clientX, clientY);
-  touchDrag.targetColumn = column;
-  highlightPipelineTarget(column);
-  return true;
-}
-
-function finishHoldDrag() {
-  if (!touchDrag) return;
-  const { card, leadId, targetColumn, moved, armed } = touchDrag;
-  window.clearTimeout(touchDrag.holdTimer);
-  card.classList.remove("hold-ready", "dragging", "touch-dragging");
-  card.style.transform = "";
-  clearPipelineTargets();
-  touchDrag = armed ? { suppressClick: true } : null;
-  if (armed && moved && targetColumn) moveLeadToStage(leadId, targetColumn.dataset.stage);
-}
-
-function refresh() {
-  renderPhasePanel();
-  updateOverview();
-  renderPipeline();
-  renderLeadManager();
-  renderReport();
-}
-
 document.querySelectorAll(".nav-item").forEach((button) => {
-  button.addEventListener("click", () => {
-    showView(button.dataset.view);
-    setMenuOpen(false);
-  });
+  button.addEventListener("click", () => showView(button.dataset.view));
 });
 
-menuToggle?.addEventListener("click", () => {
-  setMenuOpen(!sidebar?.classList.contains("menu-open"));
+document.querySelector(".menu-toggle")?.addEventListener("click", () => {
+  const sidebar = document.querySelector(".sidebar");
+  const isOpen = !sidebar.classList.contains("menu-open");
+  sidebar.classList.toggle("menu-open", isOpen);
+  document.querySelector(".menu-toggle").setAttribute("aria-expanded", String(isOpen));
 });
 
-profileUpload?.addEventListener("change", () => {
-  const file = profileUpload.files?.[0];
-  if (!file || !file.type.startsWith("image/")) {
-    setBrandPhoto("");
-    return;
-  }
+document.querySelector("#profile-upload")?.addEventListener("change", (event) => {
+  const file = event.target.files?.[0];
+  if (!file || !file.type.startsWith("image/")) return;
   const reader = new FileReader();
   reader.addEventListener("load", () => {
     const dataUrl = String(reader.result || "");
@@ -551,255 +489,94 @@ profileUpload?.addEventListener("change", () => {
     try {
       localStorage.setItem(profilePhotoKey, dataUrl);
     } catch {
-      // The preview still works even if browser storage is full or unavailable.
+      // The preview still works if local storage is unavailable.
     }
   });
   reader.readAsDataURL(file);
 });
 
-document.querySelectorAll("[data-open]").forEach((card) => {
-  card.addEventListener("click", (event) => {
-    event.stopPropagation();
-    showView(card.dataset.open);
-  });
-});
-
-document.querySelectorAll(".phase").forEach((button) => {
+document.querySelectorAll("[data-open]").forEach((button) => {
   button.addEventListener("click", () => {
-    state.selectedPhase = button.dataset.phase;
-    renderPhasePanel();
+    if (button.dataset.agentType) setSimType(button.dataset.agentType);
+    showView(button.dataset.open);
   });
 });
 
-document.querySelector(".metric-grid").addEventListener("click", (event) => {
-  const chart = event.target.closest("[data-metric-chart]");
-  if (!chart) return;
-  event.stopPropagation();
-  showMetricBubble(chart.dataset.metricChart);
+document.querySelectorAll("[data-sim-type]").forEach((button) => {
+  button.addEventListener("click", () => setSimType(button.dataset.simType));
 });
 
-document.querySelector(".metric-grid").addEventListener("keydown", (event) => {
-  if (!["Enter", " "].includes(event.key)) return;
-  const chart = event.target.closest("[data-metric-chart]");
-  if (!chart) return;
+document.querySelector("#chat-form").addEventListener("submit", (event) => {
   event.preventDefault();
-  showMetricBubble(chart.dataset.metricChart);
-});
-
-document.addEventListener("click", (event) => {
-  if (event.target.closest(".metric")) return;
-  closeMetricBubbles();
-});
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closeMetricBubbles();
-});
-
-document.querySelector("#phase-panel").addEventListener("click", (event) => {
-  const button = event.target.closest("[data-phase-view]");
-  if (!button) return;
-  showView(button.dataset.phaseView);
-});
-
-document.querySelector("#booking-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const form = new FormData(event.currentTarget);
-  const lead = {
-    id: Date.now(),
-    name: form.get("name"),
-    email: form.get("email"),
-    phone: "",
-    area: "",
-    source: "Landing page",
-    concern: form.get("concern"),
-    time: form.get("time"),
-    stage: "New Inquiry",
-    quality: "Qualified",
-    notes: ["Submitted consultation request from the landing page."],
-    followUps: []
-  };
+  const message = document.querySelector("#lead-message").value.trim();
+  if (!message) return;
+  const lead = createLead(state.simType, message);
   state.leads.unshift(lead);
   state.selectedLeadId = lead.id;
-  document.querySelector("#confirmation").textContent = `${lead.name} was added to the follow-up workflow.`;
-  event.currentTarget.reset();
+  renderChat(message);
+  renderAiSummary(lead);
   refresh();
 });
 
-pipeline.addEventListener("click", (event) => {
-  if (touchDrag?.suppressClick) {
+document.querySelectorAll(".public-lead-form").forEach((form) => {
+  form.addEventListener("submit", (event) => {
     event.preventDefault();
-    event.stopPropagation();
-    touchDrag = null;
-    return;
-  }
-  const card = event.target.closest(".lead-card");
-  if (!card) return;
-  state.selectedLeadId = Number(card.dataset.leadId);
-  renderPipeline();
-  renderLeadManager();
-});
-
-pipeline.addEventListener("pointerdown", (event) => {
-  if (event.target.closest("button")) return;
-  const card = event.target.closest(".lead-card");
-  if (!card) return;
-  event.preventDefault();
-  startHoldDrag({
-    card,
-    leadId: Number(card.dataset.leadId),
-    pointerId: event.pointerId,
-    startX: event.clientX,
-    startY: event.clientY,
-    delay: event.pointerType === "mouse" ? 0 : holdDelay
+    const data = new FormData(form);
+    const type = form.dataset.publicForm;
+    const name = String(data.get("name") || suggestedName(type));
+    const concern = String(data.get("concern") || "");
+    const message = `${concern}. ${String(data.get("message") || "")}`.trim();
+    const source = type === "customer" ? "Insurance Customer Page" : "Recruitment Page";
+    const lead = createLead(type, message, name, source);
+    state.leads.unshift(lead);
+    state.simType = type;
+    renderChat(message);
+    renderAiSummary(lead);
+    refresh();
+    showView("approval");
   });
-  try {
-    card.setPointerCapture?.(event.pointerId);
-  } catch {
-    // Some mobile browsers reject pointer capture for synthetic or interrupted gestures.
-  }
 });
 
-pipeline.addEventListener("pointermove", (event) => {
-  if (!touchDrag || event.pointerId !== touchDrag.pointerId) return;
-  if (updateHoldDrag(event.clientX, event.clientY)) event.preventDefault();
+document.querySelector("#seed-both").addEventListener("click", () => {
+  seedLead("customer");
+  seedLead("recruit");
+  showView("approval");
 });
 
-pipeline.addEventListener("pointerup", (event) => {
-  if (!touchDrag || event.pointerId !== touchDrag.pointerId) return;
-  const { card } = touchDrag;
-  try {
-    if (card.hasPointerCapture?.(event.pointerId)) card.releasePointerCapture?.(event.pointerId);
-  } catch {
-    // If capture was lost mid-gesture, still finish the drop cleanup.
-  }
-  finishHoldDrag();
+document.querySelector("#approval-grid").addEventListener("click", (event) => {
+  const approve = event.target.closest("[data-approve]");
+  const reject = event.target.closest("[data-reject]");
+  if (approve) approveLead(Number(approve.dataset.approve));
+  if (reject) rejectLead(Number(reject.dataset.reject));
 });
 
-pipeline.addEventListener("pointercancel", (event) => {
-  if (!touchDrag || event.pointerId !== touchDrag.pointerId) return;
-  cancelHoldDrag();
+document.querySelector("#social").addEventListener("click", (event) => {
+  const tab = event.target.closest("[data-social-tab], [data-social-account]");
+  if (!tab) return;
+  state.selectedSocial = tab.dataset.socialTab || tab.dataset.socialAccount;
+  renderSocialHub();
 });
 
-pipeline.addEventListener("touchstart", (event) => {
-  if (touchDrag || event.touches.length !== 1) return;
-  if (event.target.closest("button")) return;
-  const card = event.target.closest(".lead-card");
-  if (!card) return;
-  const touch = event.touches[0];
-  startHoldDrag({
-    card,
-    leadId: Number(card.dataset.leadId),
-    pointerId: "touch",
-    startX: touch.clientX,
-    startY: touch.clientY
+document.querySelector("#sync-social").addEventListener("click", () => {
+  Object.values(socialAccounts).forEach((account) => {
+    account.views += Math.floor(Math.random() * 900) + 120;
+    account.engagements += Math.floor(Math.random() * 90) + 12;
+    account.clicks += Math.floor(Math.random() * 24) + 3;
+    account.leads += Math.floor(Math.random() * 3);
   });
-}, { passive: true });
-
-pipeline.addEventListener("touchmove", (event) => {
-  if (!touchDrag || touchDrag.pointerId !== "touch" || event.touches.length !== 1) return;
-  const touch = event.touches[0];
-  if (updateHoldDrag(touch.clientX, touch.clientY)) event.preventDefault();
-}, { passive: false });
-
-pipeline.addEventListener("touchend", () => {
-  if (!touchDrag || touchDrag.pointerId !== "touch") return;
-  finishHoldDrag();
+  renderSocialHub();
 });
 
-pipeline.addEventListener("touchcancel", () => {
-  if (!touchDrag || touchDrag.pointerId !== "touch") return;
-  cancelHoldDrag();
-});
+document.querySelector("#generate-campaign").addEventListener("click", renderCampaign);
+document.querySelector("#campaign-form").addEventListener("input", renderCampaign);
 
-pipeline.addEventListener("contextmenu", (event) => {
-  if (!event.target.closest(".lead-card")) return;
-  event.preventDefault();
-});
+try {
+  setBrandPhoto(localStorage.getItem(profilePhotoKey));
+} catch {
+  setBrandPhoto("");
+}
 
-document.querySelector("#lead-table").addEventListener("click", (event) => {
-  const row = event.target.closest("[data-select]");
-  if (!row) return;
-  state.selectedLeadId = Number(row.dataset.select);
-  renderPipeline();
-  renderLeadManager();
-});
-
-document.querySelector("#lead-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const form = new FormData(event.currentTarget);
-  const note = form.get("note");
-  const lead = {
-    id: Date.now(),
-    name: form.get("name"),
-    email: form.get("email"),
-    phone: form.get("phone"),
-    area: form.get("area"),
-    source: form.get("source"),
-    concern: form.get("concern"),
-    time: "To schedule",
-    stage: "New inquiry",
-    quality: "Qualified",
-    notes: note ? [note] : [],
-    followUps: []
-  };
-  state.leads.unshift(lead);
-  state.selectedLeadId = lead.id;
-  event.currentTarget.reset();
-  refresh();
-});
-
-document.querySelector("#lead-detail").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const lead = selectedLead();
-  if (!lead) return;
-  const form = new FormData(event.target);
-  if (event.target.id === "note-form") {
-    lead.notes.unshift(form.get("note"));
-  }
-  if (event.target.id === "followup-form") {
-    lead.followUps.unshift({ date: form.get("date"), type: form.get("type"), note: form.get("note") });
-    lead.followUps.sort((a, b) => a.date.localeCompare(b.date));
-  }
-  event.target.reset();
-  refresh();
-});
-
-document.querySelector("#seed-followup").addEventListener("click", () => {
-  const lead = selectedLead();
-  if (!lead) return;
-  const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-  lead.followUps.unshift({ date: tomorrow, type: "Call", note: "Confirm interest and offer booking times." });
-  lead.followUps.sort((a, b) => a.date.localeCompare(b.date));
-  refresh();
-});
-
-document.querySelector("#ad-spend").addEventListener("input", renderReport);
-document.querySelector("#agency-fee").addEventListener("input", renderReport);
-document.querySelector("#generate-funnel").addEventListener("click", renderFunnel);
-document.querySelector("#funnel-form").addEventListener("input", renderFunnel);
-document.querySelector("#copy-link").addEventListener("click", async () => {
-  if (!state.generatedFunnelUrl) renderFunnel();
-  await navigator.clipboard.writeText(state.generatedFunnelUrl);
-  document.querySelector("#copy-link").textContent = "Copied";
-  setTimeout(() => {
-    document.querySelector("#copy-link").textContent = "Copy link";
-  }, 1400);
-});
-
-let contentOffset = 0;
-document.querySelector("#shuffle-content").addEventListener("click", () => {
-  contentOffset = (contentOffset + 2) % contentIdeas.length;
-  renderContent(contentOffset);
-});
-
-window.addEventListener("scroll", requestParallaxUpdate, { passive: true });
-reduceMotion.addEventListener?.("change", () => {
-  if (!reduceMotion.matches) requestParallaxUpdate();
-});
-
-restoreBrandPhoto();
-requestParallaxUpdate();
-renderContent();
-renderFunnel();
+setSimType("customer");
+renderCampaign();
 refresh();
 showView(requestedView() || "overview");
