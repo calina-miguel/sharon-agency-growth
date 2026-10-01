@@ -696,6 +696,23 @@ function restoreSidebarWidth() {
   }
 }
 
+function initMotionReveal() {
+  const revealItems = document.querySelectorAll(".metric, .hero-panel, .engine-card, .approval-card, .pipeline-column, .manager-module, .account-card, .source-card, .recommendation-list article, .aeo-panel, .schedule-panel, .schedule-card, .score-card, .chart-panel");
+  if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    revealItems.forEach((item) => item.classList.add("is-visible"));
+    return;
+  }
+  revealItems.forEach((item) => item.classList.add("motion-reveal"));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+  revealItems.forEach((item) => observer.observe(item));
+}
+
 document.querySelectorAll(".nav-item").forEach((button) => {
   button.addEventListener("click", () => showView(button.dataset.view));
 });
@@ -894,3 +911,4 @@ renderCampaign();
 refresh();
 loadComplianceWatch();
 showView(requestedView() || "overview");
+initMotionReveal();

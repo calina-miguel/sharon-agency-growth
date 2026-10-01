@@ -10,12 +10,18 @@
   --rose: #bc6c64;
   --blue: #3d6f9f;
   --shadow: 0 18px 42px rgba(23, 33, 31, 0.12);
+  --lift-shadow: 0 18px 34px rgba(23, 33, 31, 0.12);
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --spring: cubic-bezier(0.16, 1, 0.3, 1);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -53,6 +59,7 @@ button {
   color: #f8fbf8;
   background: #102d29;
   box-shadow: 14px 0 36px rgba(16, 45, 41, 0.08);
+  animation: sidebarEnter 520ms var(--spring) both;
 }
 
 body.sidebar-resizing {
@@ -130,6 +137,7 @@ body.sidebar-resizing .sidebar-resizer::before {
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
   font-size: 1rem;
   font-weight: 750;
+  animation: logoPop 680ms var(--spring) both;
 }
 
 .app-kicker {
@@ -146,12 +154,17 @@ body.sidebar-resizing .sidebar-resizer::before {
 .brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
+  min-height: 38px;
 }
 
 .brand strong {
   display: block;
+  color: #f8fbf8;
+  font-size: 0.98rem;
+  font-weight: 680;
   line-height: 1.1;
+  white-space: nowrap;
 }
 
 .brand-upload {
@@ -173,13 +186,14 @@ body.sidebar-resizing .sidebar-resizer::before {
   position: relative;
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
+  width: 38px;
+  height: 38px;
   overflow: hidden;
   border-radius: 8px;
   color: #17211f;
   background: var(--gold);
-  font-weight: 900;
+  font-size: 0.82rem;
+  font-weight: 780;
 }
 
 .brand-mark img {
@@ -199,15 +213,15 @@ body.sidebar-resizing .sidebar-resizer::before {
 
 .brand-edit {
   position: absolute;
-  right: -8px;
-  bottom: -7px;
-  padding: 2px 5px;
+  right: -7px;
+  bottom: -6px;
+  padding: 1px 5px;
   border: 2px solid #102d29;
   border-radius: 999px;
   color: var(--forest);
   background: #ffffff;
-  font-size: 0.62rem;
-  font-weight: 900;
+  font-size: 0.58rem;
+  font-weight: 780;
 }
 
 .brand small,
@@ -237,6 +251,11 @@ nav {
 
 .nav-item:hover {
   transform: translateX(3px);
+}
+
+.nav-item:active,
+button:active {
+  transform: scale(0.985);
 }
 
 .proposal-note {
@@ -281,6 +300,7 @@ nav {
 main {
   padding: 32px;
   overflow: hidden;
+  animation: contentEnter 520ms var(--spring) 90ms both;
 }
 
 h1,
@@ -333,6 +353,29 @@ h3 {
   border-radius: 8px;
   background: var(--panel);
   box-shadow: 0 1px 0 rgba(23, 33, 31, 0.04);
+  transition: border-color 180ms var(--ease), box-shadow 220ms var(--ease), transform 220ms var(--spring);
+  will-change: transform;
+}
+
+.system-status:hover,
+.hero-panel:hover,
+.engine-card:hover,
+.approval-card:hover,
+.pipeline-column:hover,
+.manager-form:hover,
+.generated-link-panel:hover,
+.score-card:hover,
+.chart-panel:hover,
+.manager-module:hover,
+.account-card:hover,
+.social-recommendation:hover,
+.compliance-summary:hover,
+.compliance-panel:hover,
+.aeo-panel:hover,
+.schedule-panel:hover {
+  border-color: rgba(45, 138, 130, 0.34);
+  box-shadow: var(--lift-shadow);
+  transform: translateY(-3px);
 }
 
 .system-status {
@@ -355,6 +398,7 @@ h3 {
   background: #e4f0ed;
   font-size: 0.78rem;
   font-weight: 900;
+  animation: softPulse 2.4s var(--ease) infinite;
 }
 
 .view {
@@ -366,7 +410,18 @@ h3 {
 
 .view.active {
   display: block;
-  animation: viewIn 420ms var(--ease) both;
+  animation: viewIn 520ms var(--spring) both;
+}
+
+.motion-reveal {
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+  transition: opacity 560ms var(--spring), transform 560ms var(--spring);
+}
+
+.motion-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .hero-grid,
@@ -504,6 +559,11 @@ h3 {
   box-shadow: 0 14px 28px rgba(23, 33, 31, 0.1);
   outline: 0;
   transform: translateY(-2px);
+}
+
+.metric-link:active,
+.schedule-card:active {
+  transform: scale(0.985);
 }
 
 .metric span,
@@ -1313,6 +1373,72 @@ textarea {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes sidebarEnter {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes contentEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes logoPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.82) rotate(-4deg);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.04) rotate(1deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes softPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(45, 138, 130, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(45, 138, 130, 0.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .motion-reveal {
+    opacity: 1;
+    transform: none;
   }
 }
 
