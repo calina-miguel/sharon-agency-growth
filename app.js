@@ -148,6 +148,25 @@ const socialAccounts = {
   }
 };
 
+const leadManagerContent = {
+  customer: {
+    status: "Consumer acquisition is focused on people asking about protection, coverage, mortgage needs, and family planning.",
+    flow: ["Social / Search Click", "Customer Page", "AI Intake", "Human Approval", "Callback Or Booking"],
+    followUp: ["Approve consultation invite", "Send booking link", "Call within preferred window", "Move qualified buyers to quote review"],
+    links: ["Customer Page", "Protection Review Campaign", "Family Coverage Retargeting"],
+    reporting: ["Customer lead volume", "Approval rate", "Callback-ready leads", "Policy opportunity count"],
+    contentPlan: ["Mortgage Protection Basics", "How Much Coverage Families Consider", "What Happens In A Protection Review"]
+  },
+  recruit: {
+    status: "Recruiting acquisition is focused on people interested in licensing, sales support, mentorship, and joining the agency.",
+    flow: ["Recruiting Post / Ad", "Recruitment Page", "AI Screening", "Human Approval", "Interview Or Licensing Review"],
+    followUp: ["Approve recruiting intro", "Send opportunity overview", "Ask license-status questions", "Route strong fits to interview"],
+    links: ["Recruitment Page", "Agent Opportunity Campaign", "Licensed Agent Outreach"],
+    reporting: ["Agent lead volume", "Approval rate", "Interview-ready leads", "Licensing review count"],
+    contentPlan: ["How To Start In Insurance Sales", "What Support New Agents Need", "Licensed Agent Mentorship Post"]
+  }
+};
+
 const fallbackComplianceFeed = {
   lastChecked: "Pending Scheduled Check",
   summary: {
@@ -340,7 +359,48 @@ function renderPipeline() {
       <span>${approvedCount} Approved</span>
     </div>
   `;
+  document.querySelector("#lead-manager-overview").innerHTML = renderLeadManagerOverview(type);
   document.querySelector("#lead-manager-pipeline").innerHTML = renderStageColumns(type, stages);
+}
+
+function renderLeadManagerOverview(type) {
+  const content = leadManagerContent[type];
+  const leads = state.leads.filter((lead) => lead.type === type);
+  const pending = leads.filter((lead) => lead.status === "Needs Approval").length;
+  const approved = leads.filter((lead) => lead.status === "Approved").length;
+  const avgScore = Math.round(leads.reduce((sum, lead) => sum + lead.score, 0) / Math.max(leads.length, 1));
+  return `
+    <article class="manager-module manager-status">
+      <span>Status</span>
+      <strong>${leads.length} Leads</strong>
+      <p>${content.status}</p>
+      <div class="mini-stats">
+        <span>${pending} Pending</span>
+        <span>${approved} Approved</span>
+        <span>${avgScore} Avg Score</span>
+      </div>
+    </article>
+    <article class="manager-module">
+      <span>Flow</span>
+      <ol>${content.flow.map((item) => `<li>${item}</li>`).join("")}</ol>
+    </article>
+    <article class="manager-module">
+      <span>Follow-Up</span>
+      <ul>${content.followUp.map((item) => `<li>${item}</li>`).join("")}</ul>
+    </article>
+    <article class="manager-module">
+      <span>Links</span>
+      <ul>${content.links.map((item) => `<li>${item}</li>`).join("")}</ul>
+    </article>
+    <article class="manager-module">
+      <span>Reporting</span>
+      <ul>${content.reporting.map((item) => `<li>${item}</li>`).join("")}</ul>
+    </article>
+    <article class="manager-module">
+      <span>Content Plan</span>
+      <ul>${content.contentPlan.map((item) => `<li>${item}</li>`).join("")}</ul>
+    </article>
+  `;
 }
 
 function renderStageColumns(type, stages) {

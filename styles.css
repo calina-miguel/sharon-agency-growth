@@ -521,6 +521,69 @@ h3 {
   background: var(--panel);
 }
 
+.lead-manager-overview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.manager-module {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--panel);
+}
+
+.manager-module > span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--teal);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.manager-module strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1.5rem;
+}
+
+.manager-module p {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.manager-module ul,
+.manager-module ol {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 18px;
+  color: #34423e;
+}
+
+.manager-status {
+  grid-row: span 2;
+}
+
+.mini-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.mini-stats span {
+  border-radius: 999px;
+  padding: 6px 8px;
+  color: var(--forest);
+  background: #e4f0ed;
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
 .lead-manager-head h3 {
   margin-bottom: 0;
 }
@@ -1029,7 +1092,8 @@ textarea {
   .metric-grid,
   .engine-grid,
   .approval-grid,
-  .score-grid {
+  .score-grid,
+  .lead-manager-overview {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1047,8 +1111,13 @@ textarea {
   .metric-grid,
   .engine-grid,
   .approval-grid,
-  .score-grid {
+  .score-grid,
+  .lead-manager-overview {
     grid-template-columns: 1fr;
+  }
+
+  .manager-status {
+    grid-row: auto;
   }
 
   .sidebar.menu-open nav {
