@@ -264,7 +264,7 @@ h3 {
 .band,
 .engine-card,
 .chat-panel,
-.ai-summary,
+.intake-summary,
 .approval-card,
 .pipeline-column,
 .manager-form,
@@ -352,7 +352,7 @@ h3 {
 .engine-card p,
 .band p,
 .approval-card p,
-.ai-summary p,
+.intake-summary p,
 .empty-state p {
   color: var(--muted);
   line-height: 1.55;
@@ -361,7 +361,7 @@ h3 {
 .hero-panel button,
 .section-head button,
 .chat-form button,
-.ai-summary button,
+.intake-summary button,
 .public-lead-form button,
 .button-row button,
 .segmented-control button {
@@ -373,7 +373,7 @@ h3 {
   font-weight: 850;
 }
 
-.landing-demo {
+.landing-preview {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(360px, 0.78fr);
   gap: 24px;
@@ -642,7 +642,7 @@ h3 {
 }
 
 .chat-panel,
-.ai-summary,
+.intake-summary,
 .manager-form,
 .generated-link-panel,
 .chart-panel,
@@ -1207,7 +1207,7 @@ textarea {
 
   .hero-grid,
   .split,
-  .landing-demo,
+  .landing-preview,
   .agent-layout,
   .campaign-builder,
   .dual-pipeline,

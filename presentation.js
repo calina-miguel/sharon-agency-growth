@@ -20,8 +20,8 @@ function updateSlide(index) {
   progressBar.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
   dots.querySelectorAll("button").forEach((button, dotIndex) => button.classList.toggle("active", dotIndex === currentSlide));
   const activeSlide = slides[currentSlide];
-  const activeDemo = activeSlide.dataset.demo;
-  activeSlide.querySelectorAll("iframe").forEach((iframe) => setIframeView(iframe, activeDemo || "overview"));
+  const activeView = activeSlide.dataset.view;
+  activeSlide.querySelectorAll("iframe").forEach((iframe) => setIframeView(iframe, activeView || "overview"));
 }
 
 slides.forEach((slide, index) => {
@@ -39,11 +39,11 @@ document.querySelectorAll("[data-jump]").forEach((button) => {
   button.addEventListener("click", () => updateSlide(Number(button.dataset.jump)));
 });
 
-document.querySelectorAll("[data-demo-target]").forEach((button) => {
+document.querySelectorAll("[data-view-target]").forEach((button) => {
   button.addEventListener("click", () => {
     const slide = button.closest(".slide");
     const iframe = slide?.querySelector("iframe");
-    setIframeView(iframe, button.dataset.demoTarget);
+    setIframeView(iframe, button.dataset.viewTarget);
   });
 });
 

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles.css?v=20261001-02" />
   </head>
   <body>
-    <aside class="sidebar" aria-label="Demo navigation">
+    <aside class="sidebar" aria-label="Application navigation">
       <div class="sidebar-head">
         <div class="brand-stack">
           <p class="app-kicker">Lead Acquisition System</p>
@@ -36,7 +36,7 @@
         <button class="nav-item" data-view="customer-page">Customer Page</button>
         <button class="nav-item" data-view="recruit-page">Recruitment Page</button>
         <button class="nav-item" data-view="engines">Lead Engines</button>
-        <button class="nav-item" data-view="agent">AI Intake</button>
+        <button class="nav-item" data-view="agent">Lead Intake</button>
         <button class="nav-item" data-view="approval">Approval Queue</button>
         <button class="nav-item" data-view="pipeline">Lead Manager</button>
         <button class="nav-item" data-view="social">Social Hub</button>
@@ -56,10 +56,10 @@
         <div>
           <p class="eyebrow">Automated Lead Acquisition</p>
           <h1>Two Lead Streams, One Approval System</h1>
-          <p class="lead">A working demo for acquiring insurance customer leads and sales agent prospects, using AI intake with human approval before outreach or routing.</p>
+          <p class="lead">A lead acquisition system for insurance customer leads and sales agent prospects, using guided intake with human approval before outreach or routing.</p>
         </div>
         <div class="system-status" aria-label="Automation status">
-          <span class="status-live">Live Demo</span>
+          <span class="status-live">Live System</span>
           <strong id="total-leads">0</strong>
           <small>Total Leads In System</small>
         </div>
@@ -71,13 +71,13 @@
             <p class="eyebrow">Stream 01</p>
             <h2>Insurance Customer Leads</h2>
             <p>Capture people asking about life insurance, mortgage protection, family coverage, or business continuity.</p>
-            <button type="button" data-open="agent" data-agent-type="customer">Simulate Customer Lead</button>
+            <button type="button" data-open="agent" data-agent-type="customer">Generate Customer Lead</button>
           </article>
           <article class="hero-panel agent-panel">
             <p class="eyebrow">Stream 02</p>
             <h2>Sales Agent Recruiting Leads</h2>
             <p>Capture people interested in joining the agency, learning about licensing, or booking a recruiting conversation.</p>
-            <button type="button" data-open="agent" data-agent-type="recruit">Simulate Agent Lead</button>
+            <button type="button" data-open="agent" data-agent-type="recruit">Generate Agent Lead</button>
           </article>
         </div>
 
@@ -95,7 +95,7 @@
           <article class="metric">
             <span>Needs Approval</span>
             <strong id="metric-approval">0</strong>
-            <small>AI summaries waiting for human review</small>
+            <small>Lead summaries waiting for human review</small>
           </article>
           <article class="metric">
             <span>Approved</span>
@@ -106,13 +106,13 @@
 
         <section class="band split">
           <div>
-            <p class="eyebrow">AI Implementation Pattern</p>
-            <h2>AI Does The Intake, A Person Approves The Next Step</h2>
-            <p>The automation model pauses before anything important is confirmed. AI qualifies the lead and drafts a next action, then a person approves, edits, or rejects it.</p>
+            <p class="eyebrow">Intake Implementation Pattern</p>
+            <h2>The System Handles Intake, A Person Approves The Next Step</h2>
+            <p>The automation model pauses before anything important is confirmed. The system qualifies the lead and drafts a next action, then a person approves, edits, or rejects it.</p>
           </div>
           <div class="workflow-map">
             <span>Ad Or Outreach</span>
-            <span>AI Qualifies Lead</span>
+            <span>System Qualifies Lead</span>
             <span>Human Approval</span>
             <span>Route To Follow-Up</span>
           </div>
@@ -120,15 +120,15 @@
       </section>
 
       <section class="view" id="customer-page">
-        <div class="landing-demo customer-landing">
+        <div class="landing-preview customer-landing">
           <div class="landing-copy">
             <p class="eyebrow">Insurance Customers</p>
             <h2>Life Insurance Help For Families, Homeowners, And Business Owners</h2>
-            <p>Capture consumer leads with a focused page that explains the offer, asks the right intake questions, and sends qualified inquiries into AI review.</p>
+            <p>Capture consumer leads with a focused page that explains the offer, asks the right intake questions, and sends qualified inquiries into review.</p>
             <ul>
               <li>Family protection, mortgage protection, and business continuity offers</li>
               <li>Lead form designed to identify intent and preferred follow-up time</li>
-              <li>AI summary and score generated before Sharon’s team approves outreach</li>
+              <li>Lead summary and score generated before Sharon’s team approves outreach</li>
             </ul>
           </div>
           <form class="public-lead-form" data-public-form="customer">
@@ -150,13 +150,13 @@
               Message
               <textarea name="message" rows="4">I want to understand how much coverage my family may need before I choose anything.</textarea>
             </label>
-            <button type="submit">Send To AI Intake</button>
+            <button type="submit">Send To Intake</button>
           </form>
         </div>
       </section>
 
       <section class="view" id="recruit-page">
-        <div class="landing-demo recruit-landing">
+        <div class="landing-preview recruit-landing">
           <div class="landing-copy">
             <p class="eyebrow">Sales Agent Recruiting</p>
             <h2>Explore A Sales Agent Opportunity With Sharon’s Team</h2>
@@ -164,7 +164,7 @@
             <ul>
               <li>Separate messaging from consumer insurance offers</li>
               <li>Recruiting form that captures experience, license status, and motivation</li>
-              <li>AI screening before an interview invitation is approved</li>
+              <li>Fit screening before an interview invitation is approved</li>
             </ul>
           </div>
           <form class="public-lead-form" data-public-form="recruit">
@@ -186,7 +186,7 @@
               Message
               <textarea name="message" rows="4">I have sales experience and want to learn what it takes to become licensed and join the agency.</textarea>
             </label>
-            <button type="submit">Send To AI Intake</button>
+            <button type="submit">Send To Intake</button>
           </form>
         </div>
       </section>
@@ -214,7 +214,7 @@
           </article>
           <article class="engine-card">
             <span class="engine-icon">03</span>
-            <h3>AI Qualification Layer</h3>
+            <h3>Qualification Layer</h3>
             <p>Reads the conversation, identifies intent, scores fit, and drafts the recommended next step.</p>
             <ul><li>Intent classification</li><li>Lead scoring</li><li>Next-step recommendation</li></ul>
           </article>
@@ -222,7 +222,7 @@
             <span class="engine-icon">04</span>
             <h3>Human Approval Gate</h3>
             <p>Pauses automation before outreach, appointment confirmation, or recruiting follow-up.</p>
-            <ul><li>Review AI summary</li><li>Approve or reject</li><li>Route to the right workflow</li></ul>
+            <ul><li>Review lead summary</li><li>Approve or reject</li><li>Route to the right workflow</li></ul>
           </article>
         </div>
       </section>
@@ -230,8 +230,8 @@
       <section class="view" id="agent">
         <div class="section-head">
           <div>
-            <p class="eyebrow">AI Intake</p>
-            <h2>Conversation Simulator</h2>
+            <p class="eyebrow">Lead Intake</p>
+            <h2>Lead Intake Generator</h2>
           </div>
           <div class="segmented-control" aria-label="Lead type">
             <button class="active" type="button" data-sim-type="customer">Customer</button>
@@ -246,13 +246,13 @@
                 Lead Message
                 <textarea id="lead-message" rows="4"></textarea>
               </label>
-              <button type="submit">Run AI Intake</button>
+              <button type="submit">Run Intake</button>
             </form>
           </section>
-          <section class="ai-summary" id="ai-summary">
-            <p class="eyebrow">AI Output</p>
+          <section class="intake-summary" id="intake-summary">
+            <p class="eyebrow">Intake Output</p>
             <h3>Ready To Qualify</h3>
-            <p>Choose a lead type and run the intake simulator to generate a score, summary, and approval-ready next step.</p>
+            <p>Choose a lead type and run the intake generator to create a score, summary, and approval-ready next step.</p>
           </section>
         </div>
       </section>
@@ -263,7 +263,7 @@
             <p class="eyebrow">Human Approval</p>
             <h2>Review Before Automation Acts</h2>
           </div>
-          <p class="approval-note">Nothing is confirmed until a person approves the AI recommendation.</p>
+          <p class="approval-note">Nothing is confirmed until a person approves the intake recommendation.</p>
         </div>
         <div class="approval-grid" id="approval-grid"></div>
       </section>
@@ -293,7 +293,7 @@
             <p class="eyebrow">Social Hub</p>
             <h2>All Business Accounts In One Lead Dashboard</h2>
           </div>
-          <button type="button" id="sync-social">Sync Demo Stats</button>
+          <button type="button" id="sync-social">Sync Stats</button>
         </div>
         <div class="social-layout">
           <section class="connected-accounts" id="connected-accounts" aria-label="Connected social media accounts"></section>

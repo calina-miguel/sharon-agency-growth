@@ -77,7 +77,7 @@ button {
 .icon-button,
 .cover-actions a,
 .cover-actions button,
-.demo-focus {
+.feature-focus {
   border-radius: 8px;
   padding: 10px 14px;
   background: var(--forest);
@@ -96,7 +96,7 @@ button {
 .icon-button:hover,
 .cover-actions a:hover,
 .cover-actions button:hover,
-.demo-focus:hover {
+.feature-focus:hover {
   box-shadow: 0 10px 22px rgba(23, 33, 31, 0.12);
   transform: translateY(-1px);
 }
@@ -127,7 +127,7 @@ button {
 
 .cover,
 .split-slide,
-.demo-slide {
+.feature-slide {
   grid-template-columns: minmax(0, 0.86fr) minmax(520px, 1.14fr);
 }
 
@@ -257,7 +257,7 @@ li::before {
   font-weight: 850;
 }
 
-.demo-focus {
+.feature-focus {
   margin-top: 28px;
 }
 
@@ -327,7 +327,7 @@ li::before {
   .slide,
   .cover,
   .split-slide,
-  .demo-slide {
+  .feature-slide {
     position: relative;
     display: none;
     grid-template-columns: 1fr;

@@ -28,7 +28,7 @@ const state = {
       message: "I just bought a house and want to know if mortgage protection is separate from life insurance.",
       score: 91,
       status: "Needs Approval",
-      stage: "AI Qualified",
+      stage: "Intake Qualified",
       summary: "Homeowner asking about mortgage protection and life insurance overlap.",
       nextStep: "Approve callback and send booking link for a protection review.",
       aiDraft: "Thanks for reaching out. Sharon can walk through mortgage protection and family coverage options in a short consultation."
@@ -41,7 +41,7 @@ const state = {
       message: "I have sales experience and want to know what it takes to become licensed.",
       score: 84,
       status: "Needs Approval",
-      stage: "AI Qualified",
+      stage: "Intake Qualified",
       summary: "Career-change prospect with sales experience and licensing questions.",
       nextStep: "Approve recruiting intro email and invite to a discovery call.",
       aiDraft: "Thanks for your interest. Sharon's team can explain licensing steps, training, and what the agency opportunity looks like."
@@ -88,7 +88,7 @@ const socialAccounts = {
     customerLeads: 34,
     agentLeads: 8,
     topPost: "Mortgage Protection Basics",
-    recommendation: "Boost the mortgage protection post and send comment replies into AI intake."
+    recommendation: "Boost the mortgage protection post and send comment replies into guided intake."
   },
   instagram: {
     label: "Instagram",
@@ -151,7 +151,7 @@ const socialAccounts = {
 const leadManagerContent = {
   customer: {
     status: "Consumer acquisition is focused on people asking about protection, coverage, mortgage needs, and family planning.",
-    flow: ["Social / Search Click", "Customer Page", "AI Intake", "Human Approval", "Callback Or Booking"],
+    flow: ["Social / Search Click", "Customer Page", "Guided Intake", "Human Approval", "Callback Or Booking"],
     followUp: ["Approve consultation invite", "Send booking link", "Call within preferred window", "Move qualified buyers to quote review"],
     links: ["Customer Page", "Protection Review Campaign", "Family Coverage Retargeting"],
     reporting: ["Customer lead volume", "Approval rate", "Callback-ready leads", "Policy opportunity count"],
@@ -159,7 +159,7 @@ const leadManagerContent = {
   },
   recruit: {
     status: "Recruiting acquisition is focused on people interested in licensing, sales support, mentorship, and joining the agency.",
-    flow: ["Recruiting Post / Ad", "Recruitment Page", "AI Screening", "Human Approval", "Interview Or Licensing Review"],
+    flow: ["Recruiting Post / Ad", "Recruitment Page", "Fit Screening", "Human Approval", "Interview Or Licensing Review"],
     followUp: ["Approve recruiting intro", "Send opportunity overview", "Ask license-status questions", "Route strong fits to interview"],
     links: ["Recruitment Page", "Agent Opportunity Campaign", "Licensed Agent Outreach"],
     reporting: ["Agent lead volume", "Approval rate", "Interview-ready leads", "Licensing review count"],
@@ -175,7 +175,7 @@ const fallbackComplianceFeed = {
   },
   recommendations: [
     "Use separate acquisition pages for insurance customers and sales agent recruiting so each form has clear intent and consent.",
-    "Keep AI-generated outreach behind human approval before sending messages, booking calls, or confirming next steps.",
+    "Keep system-generated outreach behind human approval before sending messages, booking calls, or confirming next steps.",
     "Avoid guarantees, exaggerated claims, misleading role titles, or product-specific advice in public acquisition content.",
     "Keep proof of consent, source, timestamp, and campaign context for every lead routed to calling, texting, or email follow-up."
   ],
@@ -250,7 +250,7 @@ function createLead(type, message, name = suggestedName(type), source = "") {
     source: source || (type === "customer" ? "Customer Acquisition Campaign" : "Agent Recruiting Campaign"),
     message,
     status: "Needs Approval",
-    stage: "AI Qualified",
+    stage: "Intake Qualified",
     ...qualified
   };
 }
@@ -274,19 +274,19 @@ function renderChat(message = document.querySelector("#lead-message")?.value || 
       <p>${message}</p>
     </div>
     <div class="chat-message outbound">
-      <span>AI Intake Agent</span>
+      <span>Intake Assistant</span>
       <p>I can qualify this lead, identify the correct stream, and prepare a next step for approval.</p>
     </div>
   `;
 }
 
 function renderAiSummary(lead) {
-  const panel = document.querySelector("#ai-summary");
+  const panel = document.querySelector("#intake-summary");
   if (!lead) {
     panel.innerHTML = `
-      <p class="eyebrow">AI Output</p>
+      <p class="eyebrow">Intake Output</p>
       <h3>Ready To Qualify</h3>
-      <p>Choose a lead type and run the intake simulator to generate a score, summary, and approval-ready next step.</p>
+      <p>Choose a lead type and run the intake generator to create a score, summary, and approval-ready next step.</p>
     `;
     return;
   }
@@ -294,7 +294,7 @@ function renderAiSummary(lead) {
     <p class="eyebrow">${leadTypeLabel(lead.type)}</p>
     <h3>${lead.name}</h3>
     <div class="score-ring">${lead.score}</div>
-    <p><strong>AI Summary:</strong> ${lead.summary}</p>
+    <p><strong>Lead Summary:</strong> ${lead.summary}</p>
     <p><strong>Recommended Next Step:</strong> ${lead.nextStep}</p>
     <div class="draft-box">${lead.aiDraft}</div>
     <button type="button" data-open="approval">Review In Approval Queue</button>
@@ -317,7 +317,7 @@ function renderApprovalQueue() {
   const pending = state.leads.filter((lead) => lead.status === "Needs Approval");
   const container = document.querySelector("#approval-grid");
   if (!pending.length) {
-    container.innerHTML = `<article class="empty-state"><h3>No Leads Waiting</h3><p>Run the AI intake simulator or generate sample leads to refill the approval queue.</p></article>`;
+    container.innerHTML = `<article class="empty-state"><h3>No Leads Waiting</h3><p>Run the intake generator or generate sample leads to refill the approval queue.</p></article>`;
     return;
   }
   container.innerHTML = pending.map((lead) => `
@@ -432,13 +432,13 @@ function renderReport() {
   const avgScore = Math.round(state.leads.reduce((sum, lead) => sum + lead.score, 0) / Math.max(state.leads.length, 1));
   document.querySelector("#score-grid").innerHTML = [
     ["Total Captured", state.leads.length, "Across customer and recruiting streams"],
-    ["Average AI Score", avgScore, "Demo fit score across all leads"],
+    ["Average Fit Score", avgScore, "Fit score across all leads"],
     ["Pending Approval", pending, "Waiting for human review"],
     ["Approved Leads", approved, "Ready for next-step routing"]
   ].map(([label, value, note]) => `<article class="score-card"><span>${label}</span><strong>${value}</strong><small>${note}</small></article>`).join("");
   const rows = [
     ["Captured", state.leads.length],
-    ["AI Qualified", state.leads.filter((lead) => lead.score >= 75).length],
+    ["Intake Qualified", state.leads.filter((lead) => lead.score >= 75).length],
     ["Approved", approved],
     ["Rejected", rejected]
   ];
@@ -557,8 +557,8 @@ function renderCampaign() {
   const base = `${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/, "/")}`;
   const url = `${base}?stream=${encodeURIComponent(stream)}&audience=${encodeURIComponent(audience.toLowerCase().replaceAll(" ", "-"))}`;
   const copy = stream === "customer"
-    ? `Campaign: ${offer}\n\nAudience: ${audience}\n\nMessage: If protecting your family, home, or business has been on your mind, this short review helps you understand your options before choosing a policy.\n\nLead Link: ${url}\n\nAutomation: AI intake asks the first questions, scores the lead, and sends qualified conversations to approval.`
-    : `Campaign: ${offer}\n\nAudience: ${audience}\n\nMessage: Curious about life insurance sales or joining a supportive agency? Start with a short fit conversation and learn the next steps.\n\nLead Link: ${url}\n\nAutomation: AI intake screens interest, licensing status, and experience before routing to approval.`;
+    ? `Campaign: ${offer}\n\nAudience: ${audience}\n\nMessage: If protecting your family, home, or business has been on your mind, this short review helps you understand your options before choosing a policy.\n\nLead Link: ${url}\n\nAutomation: Guided intake asks the first questions, scores the lead, and sends qualified conversations to approval.`
+    : `Campaign: ${offer}\n\nAudience: ${audience}\n\nMessage: Curious about life insurance sales or joining a supportive agency? Start with a short fit conversation and learn the next steps.\n\nLead Link: ${url}\n\nAutomation: Guided intake screens interest, licensing status, and experience before routing to approval.`;
   document.querySelector("#generated-url").textContent = url;
   document.querySelector("#campaign-copy").value = copy;
 }
