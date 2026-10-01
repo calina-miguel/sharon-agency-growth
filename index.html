@@ -56,7 +56,7 @@
         <button class="nav-item" data-view="approval">Approval Queue</button>
         <button class="nav-item" data-view="pipeline">Lead Manager</button>
         <button class="nav-item" data-view="schedule">Schedule</button>
-        <button class="nav-item" data-view="social">Social Hub</button>
+        <button class="nav-item" data-view="social">Social Accounts + Publishing</button>
         <button class="nav-item" data-view="compliance">Compliance Watch</button>
         <button class="nav-item" data-view="aeo">AEO Studio</button>
         <button class="nav-item" data-view="campaigns">Campaign Builder</button>
@@ -213,34 +213,67 @@
         <div class="section-head">
           <div>
             <p class="eyebrow">Lead Engines</p>
-            <h2>Two Acquisition Channels</h2>
+            <h2>Where The Leads Come From</h2>
           </div>
           <button type="button" id="seed-both">Generate Sample Leads</button>
+        </div>
+        <div class="acquisition-plan">
+          <article class="acquisition-hero">
+            <p class="eyebrow">Best Approach</p>
+            <h3>Use A Blended Acquisition Flywheel</h3>
+            <p>Content builds trust, paid search captures high intent, paid social scales the offer, LinkedIn supports recruiting, and every response routes into intake, approval, scheduling, and reporting.</p>
+            <div class="button-row">
+              <button type="button" data-view="social">Open Social Accounts</button>
+              <button type="button" data-view="campaigns" class="secondary">Build Campaign Link</button>
+            </div>
+          </article>
+          <article class="channel-route">
+            <span>Buyer Lead Route</span>
+            <strong>Meta Ads + Google Search Ads + Local Content + Referral Partners</strong>
+            <p>Best for families, homeowners, parents, business owners, and people actively comparing life insurance options.</p>
+          </article>
+          <article class="channel-route">
+            <span>Recruiting Lead Route</span>
+            <strong>LinkedIn Content + LinkedIn Lead Forms + Career Search Ads + Recruiting Reels</strong>
+            <p>Best for licensed agents, career changers, sales professionals, and part-time opportunity seekers.</p>
+          </article>
         </div>
         <div class="engine-grid">
           <article class="engine-card">
             <span class="engine-icon">01</span>
-            <h3>Insurance Customer Engine</h3>
-            <p>Runs paid ads, local content, referral links, and landing pages for people looking for protection.</p>
-            <ul><li>Family protection offer</li><li>Mortgage protection offer</li><li>Business continuity offer</li></ul>
+            <h3>Meta Buyer Campaigns</h3>
+            <p>Facebook and Instagram ads generate affordable local demand with family protection, mortgage protection, and review offers.</p>
+            <ul><li>Lead forms with consent</li><li>Short video and carousel ads</li><li>Retargeting from content viewers</li></ul>
           </article>
           <article class="engine-card">
             <span class="engine-icon">02</span>
-            <h3>Sales Agent Recruiting Engine</h3>
-            <p>Runs recruiting campaigns for people curious about insurance sales, licensing, and agency opportunity.</p>
-            <ul><li>Career change audience</li><li>Licensed agent audience</li><li>Part-time opportunity audience</li></ul>
+            <h3>Google Search Demand</h3>
+            <p>Google Search Ads catch people already looking for life insurance help or insurance sales opportunities.</p>
+            <ul><li>Life insurance near me</li><li>Mortgage protection searchers</li><li>Insurance sales career searches</li></ul>
           </article>
           <article class="engine-card">
             <span class="engine-icon">03</span>
-            <h3>Qualification Layer</h3>
-            <p>Reads the conversation, identifies intent, scores fit, and drafts the recommended next step.</p>
-            <ul><li>Intent classification</li><li>Lead scoring</li><li>Next-step recommendation</li></ul>
+            <h3>LinkedIn Recruiting</h3>
+            <p>LinkedIn content, outreach, and lead forms position the agency for licensed agents and serious career changers.</p>
+            <ul><li>Licensed agent audience</li><li>Sales professional audience</li><li>Career-change messaging</li></ul>
           </article>
           <article class="engine-card">
             <span class="engine-icon">04</span>
-            <h3>Human Approval Gate</h3>
-            <p>Pauses automation before outreach, appointment confirmation, or recruiting follow-up.</p>
-            <ul><li>Review lead summary</li><li>Approve or reject</li><li>Route to the right workflow</li></ul>
+            <h3>Organic Content Engine</h3>
+            <p>Educational posts, short videos, FAQs, and referral links create warmer audiences before paid follow-up.</p>
+            <ul><li>Buyer education posts</li><li>Recruiting proof points</li><li>Partner referral links</li></ul>
+          </article>
+          <article class="engine-card">
+            <span class="engine-icon">05</span>
+            <h3>Qualification Layer</h3>
+            <p>Every inbound response is scored, categorized as buyer or recruit, and prepared for human review.</p>
+            <ul><li>Intent classification</li><li>Lead scoring</li><li>Next-step recommendation</li></ul>
+          </article>
+          <article class="engine-card">
+            <span class="engine-icon">06</span>
+            <h3>Approval And Scheduling</h3>
+            <p>The system keeps outreach controlled by routing approved leads to follow-up, calendar notes, and outcome tracking.</p>
+            <ul><li>Review lead summary</li><li>Approve or reject</li><li>Schedule next action</li></ul>
           </article>
         </div>
       </section>
@@ -358,8 +391,8 @@
       <section class="view" id="social">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Social Hub</p>
-            <h2>All Business Accounts In One Lead Dashboard</h2>
+            <p class="eyebrow">Social Accounts + Publishing</p>
+            <h2>Connected Channels And Content Deployment</h2>
           </div>
           <button type="button" id="sync-social">Sync Stats</button>
         </div>
@@ -370,6 +403,35 @@
             <div class="social-overview" id="social-overview"></div>
           </section>
         </div>
+        <section class="publish-panel" aria-label="Content publishing plan">
+          <div class="publish-head">
+            <div>
+              <p class="eyebrow">Content Deployment</p>
+              <h3>Post From The App, Then Route Engagement Into Leads</h3>
+            </div>
+            <button type="button" data-view="campaigns">Generate Campaign Link</button>
+          </div>
+          <div class="publish-grid">
+            <article>
+              <span>Buyer Content</span>
+              <h4>Family Protection Short Video</h4>
+              <p>Publish to Facebook, Instagram, and YouTube Shorts with a consultation link for insurance buyers.</p>
+              <button type="button" data-view="customer-page">Open Buyer Destination</button>
+            </article>
+            <article>
+              <span>Recruiting Content</span>
+              <h4>Life Insurance Career Post</h4>
+              <p>Publish to LinkedIn and Facebook with a recruitment page link for sales agent candidates.</p>
+              <button type="button" data-view="recruit-page">Open Recruiting Destination</button>
+            </article>
+            <article>
+              <span>Engagement Routing</span>
+              <h4>Comments, Clicks, And Replies</h4>
+              <p>Route interested commenters, form fills, and campaign clicks into intake for review and scheduling.</p>
+              <button type="button" data-view="agent">Send To Intake</button>
+            </article>
+          </div>
+        </section>
       </section>
 
       <section class="view" id="compliance">
