@@ -121,7 +121,7 @@ body.sidebar-resizing .sidebar-resizer::before {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding-bottom: 14px;
+  padding-bottom: 24px;
 }
 
 .app-logo {
@@ -143,10 +143,10 @@ body.sidebar-resizing .sidebar-resizer::before {
 .app-kicker {
   margin: 0;
   color: #dfeae6;
-  max-width: 180px;
-  font-size: 1.3rem;
+  max-width: 142px;
+  font-size: 1.04rem;
   font-weight: 780;
-  line-height: 1.08;
+  line-height: 1.12;
   letter-spacing: 0.01em;
   text-transform: uppercase;
 }
