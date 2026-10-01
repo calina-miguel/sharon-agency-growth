@@ -5,23 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sharon Lead Acquisition System</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="styles.css?v=20261001-01" />
+    <link rel="stylesheet" href="styles.css?v=20261001-02" />
   </head>
   <body>
     <aside class="sidebar" aria-label="Demo navigation">
       <div class="sidebar-head">
-        <div class="brand">
-          <label class="brand-upload" title="Upload profile photo">
-            <input id="profile-upload" type="file" accept="image/*" />
-            <span class="brand-mark" id="brand-mark">
-              <img id="brand-photo" alt="" />
-              <span id="brand-initials">SM</span>
-            </span>
-            <span class="brand-edit" aria-hidden="true">Edit</span>
-          </label>
-          <div>
-            <strong>Sharon Leads</strong>
-            <small>AI Acquisition Demo</small>
+        <div class="brand-stack">
+          <p class="app-kicker">Lead Acquisition System</p>
+          <div class="brand">
+            <label class="brand-upload" title="Upload profile photo">
+              <input id="profile-upload" type="file" accept="image/*" />
+              <span class="brand-mark" id="brand-mark">
+                <img id="brand-photo" alt="" />
+                <span id="brand-initials">SM</span>
+              </span>
+              <span class="brand-edit" aria-hidden="true">Edit</span>
+            </label>
+            <div>
+              <strong>Sharon Martin</strong>
+              <small>Insurance Buyers + Agent Recruiting</small>
+            </div>
           </div>
         </div>
         <button class="menu-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +41,7 @@
         <button class="nav-item" data-view="pipeline">Lead Manager</button>
         <button class="nav-item" data-view="social">Social Hub</button>
         <button class="nav-item" data-view="compliance">Compliance Watch</button>
+        <button class="nav-item" data-view="aeo">AEO Studio</button>
         <button class="nav-item" data-view="campaigns">Campaign Builder</button>
         <button class="nav-item" data-view="reporting">Reporting</button>
       </nav>
@@ -320,6 +324,86 @@
         </div>
       </section>
 
+      <section class="view" id="aeo">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">AEO Studio</p>
+            <h2>Turn Search Questions Into Buyer And Recruit Leads</h2>
+          </div>
+          <p class="approval-note">Built to attract insurance consumers and strong sales agent candidates.</p>
+        </div>
+        <div class="aeo-layout">
+          <section class="aeo-panel">
+            <div class="aeo-panel-head">
+              <div>
+                <p class="eyebrow">Insurance Buyers</p>
+                <h3>Questions That Can Pull In Consumers</h3>
+              </div>
+              <strong>Consumer Leads</strong>
+            </div>
+            <div class="answer-stack">
+              <article>
+                <span>Search Question</span>
+                <h4>How Much Life Insurance Should A Young Family Consider?</h4>
+                <p>Start with income replacement, mortgage or rent, debts, childcare, education goals, and how long loved ones may need support. A licensed professional should review personal details before any policy decision.</p>
+                <button type="button" data-view="customer-page">Send To Customer Page</button>
+              </article>
+              <article>
+                <span>Search Question</span>
+                <h4>What Is Mortgage Protection Life Insurance?</h4>
+                <p>Mortgage protection is commonly discussed as coverage intended to help loved ones keep up with or resolve mortgage obligations if the insured person dies.</p>
+                <button type="button" data-view="campaigns">Build Buyer Campaign</button>
+              </article>
+              <article>
+                <span>Search Question</span>
+                <h4>What Happens During A Life Insurance Consultation?</h4>
+                <p>A consultation usually reviews goals, budget, family responsibilities, existing coverage, and next steps. Quotes or applications should stay with licensed professionals.</p>
+                <button type="button" data-view="approval">Route Buyer Leads</button>
+              </article>
+            </div>
+          </section>
+          <section class="aeo-panel">
+            <div class="aeo-panel-head">
+              <div>
+                <p class="eyebrow">Sales Agent Recruiting</p>
+                <h3>Questions That Can Attract Better Agents</h3>
+              </div>
+              <strong>Recruit Leads</strong>
+            </div>
+            <div class="answer-stack">
+              <article>
+                <span>Search Question</span>
+                <h4>How Do You Become A Life Insurance Sales Agent?</h4>
+                <p>Most candidates need to review state requirements, complete required education, pass the licensing exam, and complete agency or carrier onboarding.</p>
+                <button type="button" data-view="recruit-page">Send To Recruiting Page</button>
+              </article>
+              <article>
+                <span>Search Question</span>
+                <h4>What Should A New Agent Ask Before Joining An Agency?</h4>
+                <p>Ask about training, lead support, mentorship, compensation, compliance review, carrier access, and what happens after a prospect requests information.</p>
+                <button type="button" data-view="campaigns">Build Recruiting Campaign</button>
+              </article>
+              <article>
+                <span>Search Question</span>
+                <h4>Can Insurance Sales Be Part Time?</h4>
+                <p>Some agencies support part-time starts, but candidates should confirm licensing, schedule expectations, lead handling, supervision, and production requirements.</p>
+                <button type="button" data-view="lead-manager">Route Agent Leads</button>
+              </article>
+            </div>
+          </section>
+          <section class="aeo-panel aeo-wide">
+            <p class="eyebrow">Front-End AEO Workflow</p>
+            <h3>What Sharon Can Use This For</h3>
+            <div class="aeo-signal-grid">
+              <article><strong>Find Demand</strong><span>Identify the questions consumers and agent candidates are already asking.</span></article>
+              <article><strong>Publish Answers</strong><span>Turn each question into short website copy, posts, videos, and campaign hooks.</span></article>
+              <article><strong>Route Intent</strong><span>Send buyer questions to the customer page and opportunity questions to recruitment.</span></article>
+              <article><strong>Keep It Reviewed</strong><span>Use compliance watch before claims, guarantees, or recruiting promises go public.</span></article>
+            </div>
+          </section>
+        </div>
+      </section>
+
       <section class="view" id="campaigns">
         <div class="section-head">
           <div>
@@ -379,6 +463,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=20261001-01"></script>
+    <script src="app.js?v=20261001-02"></script>
   </body>
 </html>

@@ -617,6 +617,10 @@ document.querySelectorAll(".nav-item").forEach((button) => {
   button.addEventListener("click", () => showView(button.dataset.view));
 });
 
+document.querySelectorAll("button[data-view]:not(.nav-item)").forEach((button) => {
+  button.addEventListener("click", () => showView(button.dataset.view));
+});
+
 document.querySelector(".menu-toggle")?.addEventListener("click", () => {
   const sidebar = document.querySelector(".sidebar");
   const isOpen = !sidebar.classList.contains("menu-open");
