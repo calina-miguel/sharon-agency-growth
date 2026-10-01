@@ -38,15 +38,35 @@ html {
 }
 
 body {
+  position: relative;
   display: grid;
   grid-template-columns: var(--sidebar-width, 320px) minmax(0, 1fr);
   min-height: 100vh;
   margin: 0;
   color: var(--ink);
+  background: var(--paper);
+  isolation: isolate;
+}
+
+body::before {
+  position: fixed;
+  inset: -8%;
+  z-index: -1;
+  pointer-events: none;
   background:
-    radial-gradient(circle at 80% 12%, rgba(217, 164, 65, 0.16), transparent 24vw),
-    radial-gradient(circle at 18% 82%, rgba(45, 138, 130, 0.12), transparent 28vw),
-    var(--paper);
+    radial-gradient(circle at calc(80% + var(--parallax-x, 0px)) calc(12% + var(--parallax-y, 0px)), rgba(217, 164, 65, 0.18), transparent 24vw),
+    radial-gradient(circle at calc(18% - var(--parallax-x, 0px)) calc(82% - var(--parallax-y, 0px)), rgba(45, 138, 130, 0.14), transparent 28vw),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 42%);
+  content: "";
+  transform: translate3d(calc(var(--parallax-x, 0px) * 0.16), calc(var(--parallax-y, 0px) * 0.16), 0);
+  transition: transform 700ms var(--spring), background-position 700ms var(--spring);
+}
+
+body.dark-mode::before {
+  background:
+    radial-gradient(circle at calc(80% + var(--parallax-x, 0px)) calc(12% + var(--parallax-y, 0px)), rgba(227, 185, 95, 0.12), transparent 24vw),
+    radial-gradient(circle at calc(18% - var(--parallax-x, 0px)) calc(82% - var(--parallax-y, 0px)), rgba(86, 183, 170, 0.12), transparent 28vw),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 42%);
 }
 
 body.dark-mode .sidebar {
@@ -420,6 +440,8 @@ button:active {
 }
 
 main {
+  position: relative;
+  z-index: 1;
   padding: 32px;
   overflow: hidden;
   animation: contentEnter 520ms var(--spring) 90ms both;
@@ -1341,6 +1363,15 @@ textarea {
   padding: 11px 12px;
   color: var(--ink);
   background: #fbfcfb;
+  transition: border-color 180ms var(--ease), box-shadow 180ms var(--ease), background-color 180ms var(--ease);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(45, 138, 130, 0.12);
+  outline: 0;
 }
 
 .score-ring {
@@ -1467,11 +1498,13 @@ textarea {
 @keyframes viewIn {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    filter: blur(4px);
+    transform: translateY(16px) scale(0.992);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    filter: blur(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -1547,6 +1580,15 @@ body.reduce-motion *::after {
   animation-duration: 0.001ms !important;
   animation-iteration-count: 1 !important;
   transition-duration: 0.001ms !important;
+}
+
+body.reduce-motion {
+  --parallax-x: 0px;
+  --parallax-y: 0px;
+}
+
+body.reduce-motion::before {
+  transform: none !important;
 }
 
 body.reduce-motion .motion-reveal {

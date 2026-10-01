@@ -703,6 +703,10 @@ function setReducedMotionPreference(enabled) {
   document.body.classList.toggle("reduce-motion", enabled);
   const toggle = document.querySelector("#compact-motion-toggle");
   if (toggle) toggle.checked = enabled;
+  if (enabled) {
+    document.documentElement.style.setProperty("--parallax-x", "0px");
+    document.documentElement.style.setProperty("--parallax-y", "0px");
+  }
 }
 
 function setThemePreference(theme) {
@@ -745,6 +749,29 @@ function initMotionReveal() {
     });
   }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
   revealItems.forEach((item) => observer.observe(item));
+}
+
+function initAmbientParallax() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let frame = 0;
+  let nextX = 0;
+  let nextY = 0;
+  const setParallax = () => {
+    document.documentElement.style.setProperty("--parallax-x", `${nextX.toFixed(2)}px`);
+    document.documentElement.style.setProperty("--parallax-y", `${nextY.toFixed(2)}px`);
+    frame = 0;
+  };
+  window.addEventListener("pointermove", (event) => {
+    if (document.body.classList.contains("reduce-motion")) return;
+    nextX = ((event.clientX / Math.max(window.innerWidth, 1)) - 0.5) * 34;
+    nextY = ((event.clientY / Math.max(window.innerHeight, 1)) - 0.5) * 34;
+    if (!frame) frame = requestAnimationFrame(setParallax);
+  }, { passive: true });
+  window.addEventListener("pointerleave", () => {
+    nextX = 0;
+    nextY = 0;
+    if (!frame) frame = requestAnimationFrame(setParallax);
+  });
 }
 
 document.querySelectorAll(".nav-item").forEach((button) => {
@@ -1014,3 +1041,4 @@ refresh();
 loadComplianceWatch();
 showView(requestedView() || "overview");
 initMotionReveal();
+initAmbientParallax();
