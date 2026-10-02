@@ -434,6 +434,50 @@
             </article>
           </div>
         </section>
+        <section class="content-studio" aria-label="Social content generator and publisher">
+          <div class="publish-head">
+            <div>
+              <p class="eyebrow">Content Studio</p>
+              <h3>Generate Posts And Send Them To Enrolled Accounts</h3>
+            </div>
+            <button type="button" id="generate-social-post">Generate Post Set</button>
+          </div>
+          <div class="content-studio-layout">
+            <form class="content-form" id="content-form">
+              <label>
+                Campaign Goal
+                <select name="goal">
+                  <option value="customer">Insurance Buyer Leads</option>
+                  <option value="recruit">Sales Agent Recruiting</option>
+                </select>
+              </label>
+              <label>
+                Topic
+                <input name="topic" value="Family protection review" />
+              </label>
+              <label>
+                Call To Action
+                <input name="cta" value="Request a short review" />
+              </label>
+              <fieldset>
+                <legend>Enrolled Accounts</legend>
+                <div class="account-checks" id="publisher-accounts"></div>
+              </fieldset>
+              <div class="button-row">
+                <button type="button" id="publish-social-posts">Publish To Selected Accounts</button>
+                <button type="button" class="secondary" id="queue-social-posts">Queue For Review</button>
+              </div>
+            </form>
+            <section class="post-preview-panel">
+              <h4>Generated Post Preview</h4>
+              <div class="post-preview-list" id="post-preview-list"></div>
+            </section>
+          </div>
+          <div class="posting-log-panel">
+            <h4>Publishing Log</h4>
+            <div class="posting-log" id="posting-log"></div>
+          </div>
+        </section>
       </section>
 
       <div class="account-prompt" id="account-prompt" role="dialog" aria-modal="true" aria-labelledby="account-prompt-title" hidden>

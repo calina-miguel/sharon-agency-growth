@@ -1285,6 +1285,110 @@ h3 {
   font-weight: 850;
 }
 
+.content-studio {
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+  background: var(--panel);
+}
+
+.content-studio-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.content-form {
+  display: grid;
+  gap: 12px;
+}
+
+.content-form fieldset {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.content-form legend {
+  padding: 0 6px;
+  color: var(--forest);
+  font-weight: 850;
+}
+
+.account-checks {
+  display: grid;
+  gap: 8px;
+}
+
+.account-checks label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--soft);
+}
+
+.account-checks small {
+  grid-column: 2;
+  color: var(--muted);
+}
+
+.post-preview-panel,
+.posting-log-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.post-preview-list,
+.posting-log {
+  display: grid;
+  gap: 10px;
+}
+
+.post-preview-card,
+.posting-log article {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--soft);
+}
+
+.post-preview-card p,
+.posting-log p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.posting-log-panel {
+  margin-top: 16px;
+}
+
+.posting-log article span {
+  display: inline-flex;
+  margin-bottom: 6px;
+  border-radius: 999px;
+  padding: 5px 8px;
+  color: var(--forest);
+  background: #e4f0ed;
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.posting-log article small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+}
+
 .account-prompt[hidden] {
   display: none;
 }
@@ -1842,6 +1946,7 @@ body.reduce-motion .motion-reveal {
   .social-layout,
   .acquisition-plan,
   .publish-grid,
+  .content-studio-layout,
   .compliance-layout,
   .aeo-layout,
   .schedule-layout {

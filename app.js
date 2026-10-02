@@ -46,6 +46,8 @@ const state = {
   complianceFeed: null,
   selectedLeadId: 1,
   selectedScheduleId: 1,
+  generatedPosts: [],
+  postingLog: [],
   leads: [
     {
       id: 1,
@@ -611,6 +613,137 @@ function hasConnectedSocialAccounts() {
   return Object.values(socialAccounts).some((account) => account.status === "Connected");
 }
 
+function connectedSocialEntries() {
+  return Object.entries(socialAccounts).filter(([, account]) => account.status === "Connected");
+}
+
+function defaultPostSet() {
+  const form = document.querySelector("#content-form");
+  const data = form ? new FormData(form) : new FormData();
+  const goal = data.get("goal") || "customer";
+  const topic = String(data.get("topic") || (goal === "customer" ? "Family protection review" : "Insurance sales opportunity")).trim();
+  const cta = String(data.get("cta") || (goal === "customer" ? "Request a short review" : "Request recruiting details")).trim();
+  const isCustomer = goal === "customer";
+  const leadPath = isCustomer ? "customer-page" : "recruit-page";
+  return connectedSocialEntries().map(([id, account]) => {
+    const isLinkedIn = id === "linkedin";
+    const hook = isCustomer
+      ? `Families often wait until a major life change to review coverage. ${topic} gives them a simple starting point.`
+      : `${topic} can help sales-minded people understand whether life insurance fits their goals, schedule, and support needs.`;
+    const body = isLinkedIn
+      ? `${hook}\n\nWhat the team can do next: answer the first questions, collect intent, and route interested people into a reviewed follow-up process.\n\n${cta}: ${window.location.origin}${window.location.pathname}?view=${leadPath}`
+      : `${hook}\n\n${cta}: ${window.location.origin}${window.location.pathname}?view=${leadPath}`;
+    return {
+      id,
+      label: account.label,
+      handle: account.handle,
+      goal,
+      topic,
+      body
+    };
+  });
+}
+
+function renderPublisherAccounts() {
+  const container = document.querySelector("#publisher-accounts");
+  if (!container) return;
+  const accounts = connectedSocialEntries();
+  if (!accounts.length) {
+    container.innerHTML = `<p class="fineprint">No social accounts are enrolled yet. Connect campaign accounts before publishing.</p>`;
+    return;
+  }
+  container.innerHTML = accounts.map(([id, account]) => `
+    <label>
+      <input type="checkbox" name="accounts" value="${id}" checked />
+      <span>${escapeHTML(account.label)}</span>
+      <small>${escapeHTML(account.handle)}</small>
+    </label>
+  `).join("");
+}
+
+function renderPostPreviews() {
+  const container = document.querySelector("#post-preview-list");
+  if (!container) return;
+  const posts = state.generatedPosts.length ? state.generatedPosts : defaultPostSet();
+  state.generatedPosts = posts;
+  if (!posts.length) {
+    container.innerHTML = `<article class="empty-state"><h3>No Accounts Selected</h3><p>Connect social accounts to generate post previews.</p></article>`;
+    return;
+  }
+  container.innerHTML = posts.map((post) => `
+    <article class="post-preview-card" data-post-account="${escapeHTML(post.id)}">
+      <div class="card-topline">
+        <span>${escapeHTML(post.label)}</span>
+        <strong>${escapeHTML(post.goal === "customer" ? "Buyer Leads" : "Recruiting")}</strong>
+      </div>
+      <p>${escapeHTML(post.body)}</p>
+    </article>
+  `).join("");
+}
+
+function renderPostingLog() {
+  const container = document.querySelector("#posting-log");
+  if (!container) return;
+  if (!state.postingLog.length) {
+    container.innerHTML = `<p class="fineprint">Generated posts will appear here after they are queued or published.</p>`;
+    return;
+  }
+  container.innerHTML = state.postingLog.map((item) => `
+    <article>
+      <span>${escapeHTML(item.status)}</span>
+      <strong>${escapeHTML(item.account)}</strong>
+      <p>${escapeHTML(item.summary)}</p>
+      <small>${escapeHTML(item.time)}</small>
+    </article>
+  `).join("");
+}
+
+function renderContentStudio() {
+  renderPublisherAccounts();
+  renderPostPreviews();
+  renderPostingLog();
+}
+
+function selectedPublisherAccounts() {
+  return Array.from(document.querySelectorAll("#publisher-accounts input[name='accounts']:checked")).map((input) => input.value);
+}
+
+function submitGeneratedPosts(status) {
+  if (!hasConnectedSocialAccounts()) {
+    showAccountPrompt();
+    return;
+  }
+  if (!state.generatedPosts.length) state.generatedPosts = defaultPostSet();
+  const selected = new Set(selectedPublisherAccounts());
+  const posts = state.generatedPosts.filter((post) => selected.has(post.id));
+  if (!posts.length) {
+    state.postingLog.unshift({
+      status: "Needs Account Selection",
+      account: "No account selected",
+      summary: "Select at least one enrolled account before publishing or queuing content.",
+      time: new Date().toLocaleString()
+    });
+    renderPostingLog();
+    return;
+  }
+  posts.forEach((post) => {
+    state.postingLog.unshift({
+      status,
+      account: post.label,
+      summary: `${post.topic} post prepared for ${post.goal === "customer" ? "insurance buyers" : "agent recruiting"}.`,
+      time: new Date().toLocaleString()
+    });
+    const account = socialAccounts[post.id];
+    if (status === "Published" && account) {
+      account.views += Math.floor(Math.random() * 240) + 60;
+      account.engagements += Math.floor(Math.random() * 30) + 6;
+      account.clicks += Math.floor(Math.random() * 10) + 2;
+    }
+  });
+  renderPostingLog();
+  renderSocialHub();
+}
+
 function showAccountPrompt() {
   const prompt = document.querySelector("#account-prompt");
   if (!prompt) return;
@@ -708,6 +841,7 @@ function seedLead(type) {
 function refresh() {
   renderMetrics();
   renderSocialHub();
+  renderContentStudio();
   renderComplianceWatch();
   renderApprovalQueue();
   renderPipeline();
@@ -1067,6 +1201,23 @@ document.querySelector("#sync-social").addEventListener("click", () => {
   });
   renderSocialHub();
 });
+
+document.querySelector("#generate-social-post")?.addEventListener("click", () => {
+  if (!hasConnectedSocialAccounts()) {
+    showAccountPrompt();
+    return;
+  }
+  state.generatedPosts = defaultPostSet();
+  renderPostPreviews();
+});
+
+document.querySelector("#content-form")?.addEventListener("input", () => {
+  state.generatedPosts = defaultPostSet();
+  renderPostPreviews();
+});
+
+document.querySelector("#publish-social-posts")?.addEventListener("click", () => submitGeneratedPosts("Published"));
+document.querySelector("#queue-social-posts")?.addEventListener("click", () => submitGeneratedPosts("Queued For Review"));
 
 document.querySelector("#account-prompt-close")?.addEventListener("click", hideAccountPrompt);
 document.querySelector("#account-prompt-dismiss")?.addEventListener("click", hideAccountPrompt);
