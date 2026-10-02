@@ -1,8 +1,8 @@
-const profilePhotoKey = "sharonLeadSystemProfilePhoto";
-const profileNameKey = "sharonLeadSystemProfileName";
-const reducedMotionKey = "sharonLeadSystemReducedMotion";
-const themeKey = "sharonLeadSystemTheme";
-const sidebarWidthKey = "sharonLeadSystemSidebarWidth";
+const profilePhotoKey = "leadSystemProfilePhoto";
+const profileNameKey = "leadSystemProfileName";
+const reducedMotionKey = "leadSystemReducedMotion";
+const themeKey = "leadSystemTheme";
+const sidebarWidthKey = "leadSystemSidebarWidth";
 const defaultProfilePhoto = "assets/sharon.png";
 const defaultProfileName = "Sharon Martin";
 const validViewIds = new Set(Array.from(document.querySelectorAll(".view")).map((view) => view.id));
@@ -60,7 +60,7 @@ const state = {
       stage: "Intake Qualified",
       summary: "Homeowner asking about mortgage protection and life insurance overlap.",
       nextStep: "Approve callback and send booking link for a protection review.",
-      aiDraft: "Thanks for reaching out. Sharon can walk through mortgage protection and family coverage options in a short consultation."
+      aiDraft: "Thanks for reaching out. The team can walk through mortgage protection and family coverage options in a short consultation."
     },
     {
       id: 2,
@@ -73,7 +73,7 @@ const state = {
       stage: "Intake Qualified",
       summary: "Career-change prospect with sales experience and licensing questions.",
       nextStep: "Approve recruiting intro email and invite to a discovery call.",
-      aiDraft: "Thanks for your interest. Sharon's team can explain licensing steps, training, and what the agency opportunity looks like."
+      aiDraft: "Thanks for your interest. The team can explain licensing steps, training, and what the agency opportunity looks like."
     },
     {
       id: 3,
@@ -86,7 +86,7 @@ const state = {
       stage: "Callback Ready",
       summary: "Family protection lead with a clear life event and near-term need.",
       nextStep: "Call during weekday morning window.",
-      aiDraft: "Congratulations on the growing family. Sharon can help you review what coverage may fit your needs and budget."
+      aiDraft: "Congratulations on the growing family. The team can help you review what coverage may fit your needs and budget."
     },
     {
       id: 4,
@@ -99,7 +99,7 @@ const state = {
       stage: "Interview Ready",
       summary: "Licensed agent prospect looking for mentorship and agency support.",
       nextStep: "Send interview scheduler and agency overview.",
-      aiDraft: "Thanks for reaching out. Sharon's team can share the support model and schedule a short conversation."
+      aiDraft: "Thanks for reaching out. The team can share the support model and schedule a short conversation."
     }
   ]
 };
@@ -108,7 +108,7 @@ let skipAccountPromptOnce = false;
 const socialAccounts = {
   facebook: {
     label: "Facebook",
-    handle: "Sharon Martin Agency",
+    handle: "Lead Acquisition Agency",
     status: "Connected",
     audience: "Local Families",
     views: 18420,
@@ -122,7 +122,7 @@ const socialAccounts = {
   },
   instagram: {
     label: "Instagram",
-    handle: "@sharonprotects",
+    handle: "@agencyprotects",
     status: "Connected",
     audience: "Young Families",
     views: 22380,
@@ -136,7 +136,7 @@ const socialAccounts = {
   },
   linkedin: {
     label: "LinkedIn",
-    handle: "Sharon Martin",
+    handle: "Agency Recruiting",
     status: "Connected",
     audience: "Career Switchers",
     views: 9710,
@@ -150,7 +150,7 @@ const socialAccounts = {
   },
   tiktok: {
     label: "TikTok",
-    handle: "@sharoninsurance",
+    handle: "@agencyinsurance",
     status: "Ready To Connect",
     audience: "Short-Form Viewers",
     views: 31500,
@@ -164,7 +164,7 @@ const socialAccounts = {
   },
   youtube: {
     label: "YouTube",
-    handle: "Sharon Martin Agency",
+    handle: "Lead Acquisition Agency",
     status: "Ready To Connect",
     audience: "Search And Education",
     views: 12880,
@@ -295,8 +295,8 @@ function qualifyLead(type, message) {
     ? "Approve a consultation invitation and route to customer follow-up."
     : "Approve a recruiting intro and route to the agent opportunity pipeline.";
   const aiDraft = type === "customer"
-    ? "Thanks for reaching out. Sharon can help you understand your options in a short protection review."
-    : "Thanks for your interest. Sharon's team can explain the opportunity, licensing steps, and next conversation.";
+    ? "Thanks for reaching out. The team can help you understand your options in a short protection review."
+    : "Thanks for your interest. The team can explain the opportunity, licensing steps, and next conversation.";
   return { score, summary, nextStep, aiDraft };
 }
 

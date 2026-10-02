@@ -1,6 +1,6 @@
-# Sharon Agency Growth Demos
+# Lead Acquisition System
 
-Standalone web project based on the 90-day growth proposal for Sharon's life insurance business. This folder is its own git repository and is intended to be published as its own GitHub repository and GitHub Pages site.
+Standalone web project for a life insurance lead acquisition system. This folder is its own git repository and is intended to be published as its own GitHub repository and GitHub Pages site.
 
 ## Included demos
 
