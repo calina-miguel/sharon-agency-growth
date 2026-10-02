@@ -1,9 +1,9 @@
 {
-  "lastChecked": "2026-10-01T11:31:15.650Z",
+  "lastChecked": "2026-10-02T11:30:34.790Z",
   "summary": {
-    "status": "No Source Changes Detected",
-    "changedCount": 0,
-    "note": "No monitored source changes were detected. Continue routing new tactics through human compliance review."
+    "status": "Review Needed",
+    "changedCount": 3,
+    "note": "3 monitored sources changed since the last run. Review before updating acquisition copy or automation."
   },
   "recommendations": [
     "Separate insurance customer acquisition from sales agent recruiting so each page, ad, and consent path has a clear purpose.",
@@ -80,8 +80,8 @@
       ],
       "status": "Watched",
       "title": "Social Media | FINRA.org",
-      "hash": "54491e73a27fb22d",
-      "changedSinceLastRun": false,
+      "hash": "96b62887885be274",
+      "changedSinceLastRun": true,
       "matchedTopics": [
         "social media",
         "communications",
@@ -104,8 +104,8 @@
       ],
       "status": "Watched",
       "title": "What and When to File with Advertising Regulation | FINRA.org",
-      "hash": "7620dd72d91be634",
-      "changedSinceLastRun": false,
+      "hash": "5bf8c6a49abce623",
+      "changedSinceLastRun": true,
       "matchedTopics": [
         "retail communications",
         "public media",
@@ -152,8 +152,8 @@
       ],
       "status": "Watched",
       "title": "The lead-generation bait-and-switch | Consumer Advice",
-      "hash": "34102f512e9a67df",
-      "changedSinceLastRun": false,
+      "hash": "3b35be5ea3184956",
+      "changedSinceLastRun": true,
       "matchedTopics": [
         "bait-and-switch",
         "unwanted calls",
