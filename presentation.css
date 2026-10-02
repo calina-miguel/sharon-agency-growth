@@ -133,7 +133,7 @@ button {
 
 .cover-copy,
 .slide-copy {
-  max-width: 690px;
+  max-width: 720px;
 }
 
 .eyebrow {
@@ -182,7 +182,7 @@ li {
   position: relative;
   padding-left: 24px;
   color: #35423e;
-  font-size: clamp(1rem, 1.25vw, 1.2rem);
+  font-size: clamp(0.98rem, 1.12vw, 1.14rem);
   line-height: 1.42;
 }
 
@@ -212,7 +212,7 @@ li::before {
 
 .cover-frame,
 .live-frame {
-  height: min(68vh, 700px);
+  height: min(70vh, 720px);
   min-height: 430px;
   overflow: hidden;
   border: 1px solid rgba(23, 33, 31, 0.12);
