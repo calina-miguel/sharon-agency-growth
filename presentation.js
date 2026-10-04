@@ -15,6 +15,7 @@ let currentSlide = 0;
 let tourMode = false;
 let audioMode = false;
 let guideTimer = 0;
+let guideResetTimer = 0;
 let voiceoverEnabled = true;
 
 const voiceAudio = new Audio();
@@ -40,9 +41,27 @@ const narrationScripts = [
   "Reporting gives the team a simple scorecard. It shows total captured leads, average fit score, pending approvals, approved opportunities, and the movement from capture to outcome. This helps the agency see whether campaigns are creating usable opportunities."
 ];
 
+const demoTargets = {
+  overview: [".metric-link", ".hero-panel button", ".metric-grid"],
+  engines: [".engine-card", ".section-head button", ".engine-grid"],
+  schedule: ["#schedule-form button", "#schedule-form", ".schedule-card"],
+  pipeline: [".lead-manager-tabs", ".lead-card", ".lead-manager-panel"],
+  "customer-page": [".public-lead-form button", ".public-lead-form", ".landing-preview"],
+  "recruit-page": [".public-lead-form button", ".public-lead-form", ".landing-preview"],
+  social: ["#generate-social-post", "#sync-social", ".account-card"],
+  agent: ["#chat-form", "#intake-summary"],
+  compliance: ["#refresh-compliance", ".compliance-panel", ".compliance-layout"],
+  aeo: [".answer-stack button", ".aeo-signal-grid", ".aeo-layout"],
+  approval: ["[data-approve]", ".approval-card", "#approval-grid"],
+  campaigns: ["#generate-campaign", "#campaign-form"],
+  reporting: [".score-card", "#score-grid", ".chart-panel"]
+};
+
 function setIframeView(iframe, view) {
   if (!iframe || !view) return;
-  iframe.src = `index.html?presentationView=${encodeURIComponent(view)}&v=${Date.now()}`;
+  const nextSrc = `index.html?presentationView=${encodeURIComponent(view)}&v=${Date.now()}`;
+  iframe.addEventListener("load", () => scheduleDemoGuide(520), { once: true });
+  iframe.src = nextSrc;
 }
 
 function supportsVoiceover() {
@@ -157,18 +176,73 @@ function setDemoBox(element, rect, pad = 8) {
   element.style.height = `${height}px`;
 }
 
-function animateDemoGuide() {
+function iframeTargetRect(iframe, selectors = []) {
+  try {
+    if (!iframe?.contentWindow?.document) return null;
+    const doc = iframe.contentWindow.document;
+    const target = selectors.map((selector) => doc.querySelector(selector)).find(Boolean);
+    if (!target) return null;
+    target.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+    return { iframe, target };
+  } catch {
+    return null;
+  }
+}
+
+function resolveDemoTarget() {
+  const activeSlide = slides[currentSlide];
+  const activeView = activeSlide?.dataset.view;
+  const iframe = activeSlide?.querySelector("iframe");
+  const iframeMatch = iframeTargetRect(iframe, demoTargets[activeView] || []);
+  if (iframeMatch) return iframeMatch;
+  const target = activeSlide?.querySelector(".feature-focus") || activeSlide?.querySelector(".cover-actions button") || activeSlide?.querySelector(".feature-strip") || activeSlide?.querySelector(".live-frame") || activeSlide?.querySelector(".cover-frame");
+  return target ? { target } : null;
+}
+
+function screenRectForTarget(match) {
+  const targetRect = match.target.getBoundingClientRect();
+  if (!match.iframe) return targetRect;
+  const iframeRect = match.iframe.getBoundingClientRect();
+  const left = Math.max(iframeRect.left + targetRect.left, iframeRect.left + 8);
+  const top = Math.max(iframeRect.top + targetRect.top, iframeRect.top + 8);
+  const right = Math.min(iframeRect.left + targetRect.right, iframeRect.right - 8);
+  const bottom = Math.min(iframeRect.top + targetRect.bottom, iframeRect.bottom - 8);
+  if (right <= left || bottom <= top) {
+    return {
+      left: iframeRect.left + iframeRect.width * 0.18,
+      top: iframeRect.top + iframeRect.height * 0.28,
+      width: iframeRect.width * 0.64,
+      height: Math.min(iframeRect.height * 0.34, 220),
+      right: iframeRect.left + iframeRect.width * 0.82,
+      bottom: iframeRect.top + iframeRect.height * 0.62
+    };
+  }
+  return {
+    left,
+    top,
+    width: right - left,
+    height: bottom - top,
+    right,
+    bottom
+  };
+}
+
+function animateDemoGuide(settled = false) {
   window.clearTimeout(guideTimer);
   if (!demoGuide || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const activeSlide = slides[currentSlide];
-  const target = activeSlide?.querySelector(".feature-focus") || activeSlide?.querySelector(".cover-actions button") || activeSlide?.querySelector(".live-frame") || activeSlide?.querySelector(".cover-frame");
-  if (!target || !demoHighlight || !demoCursor || !demoClick) {
+  const match = resolveDemoTarget();
+  if (!match || !demoHighlight || !demoCursor || !demoClick) {
     demoGuide.classList.add("is-hidden");
     return;
   }
 
+  if (match.iframe && !settled) {
+    scheduleDemoGuide(560, true);
+    return;
+  }
+
   demoGuide.classList.remove("is-hidden");
-  const rect = target.getBoundingClientRect();
+  const rect = screenRectForTarget(match);
   const startX = Math.max(24, rect.left - 72);
   const startY = Math.max(86, rect.top - 34);
   const endX = rect.left + Math.min(rect.width - 12, Math.max(20, rect.width * 0.72));
@@ -177,7 +251,7 @@ function animateDemoGuide() {
   demoHighlight.classList.remove("is-active");
   demoCursor.classList.remove("is-active", "is-clicking");
   demoClick.classList.remove("is-active");
-  setDemoBox(demoHighlight, rect, 10);
+  setDemoBox(demoHighlight, rect, match.iframe ? 0 : 10);
   demoCursor.style.left = `${startX}px`;
   demoCursor.style.top = `${startY}px`;
   demoClick.style.left = `${endX}px`;
@@ -199,6 +273,11 @@ function animateDemoGuide() {
   window.setTimeout(() => demoCursor?.classList.remove("is-clicking"), 1120);
 }
 
+function scheduleDemoGuide(delay = 0, settled = false) {
+  window.clearTimeout(guideResetTimer);
+  guideResetTimer = window.setTimeout(() => animateDemoGuide(settled), delay);
+}
+
 function updateSlide(index, options = {}) {
   currentSlide = Math.max(0, Math.min(index, slides.length - 1));
   slides.forEach((slide, slideIndex) => slide.classList.toggle("active", slideIndex === currentSlide));
@@ -209,7 +288,7 @@ function updateSlide(index, options = {}) {
   const activeSlide = slides[currentSlide];
   const activeView = activeSlide.dataset.view;
   activeSlide.querySelectorAll("iframe").forEach((iframe) => setIframeView(iframe, activeView || "overview"));
-  animateDemoGuide();
+  scheduleDemoGuide(180);
   if (options.narrate || (tourMode && options.userInitiated)) {
     speakCurrentSlide({ continueTour: tourMode });
   }
