@@ -87,6 +87,79 @@ button {
   text-align: left;
 }
 
+.voice-button {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+}
+
+.control-icon {
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+}
+
+.icon-play {
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 14px solid currentColor;
+}
+
+.icon-speaker::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 5px;
+  width: 7px;
+  height: 8px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.icon-speaker::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 2px;
+  width: 9px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-left: 0;
+  border-radius: 0 12px 12px 0;
+}
+
+.icon-pause::before,
+.icon-pause::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  width: 5px;
+  height: 14px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.icon-pause::before {
+  left: 3px;
+}
+
+.icon-pause::after {
+  right: 3px;
+}
+
+.icon-stop {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  background: currentColor;
+}
+
 .icon-button,
 .cover-actions a,
 .cover-actions button,
@@ -381,7 +454,7 @@ li::before {
 
   .voice-controls .icon-button {
     flex: 0 0 auto;
-    padding: 9px 11px;
+    padding: 0;
   }
 
   .voice-controls span {

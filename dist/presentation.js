@@ -11,6 +11,11 @@ const stopVoiceButton = document.querySelector("#stop-voice");
 const voiceStatus = document.querySelector("#voice-status");
 let currentSlide = 0;
 let tourMode = false;
+let audioMode = false;
+
+const voiceAudio = new Audio();
+voiceAudio.preload = "metadata";
+const narrationAudioFiles = slides.map((_, index) => `assets/voiceover/slide-${String(index + 1).padStart(2, "0")}.mp3`);
 
 const narrationScripts = [
   "Welcome to the Lead Acquisition System. This guided tour explains how the app helps an agency attract insurance buyers, recruit sales agents, review every lead, and track follow up from one workspace. Use the live preview on the right as the tour moves through each section.",
@@ -52,22 +57,30 @@ function getPreferredVoice() {
 }
 
 function resetPauseButton() {
-  if (pauseVoiceButton) pauseVoiceButton.textContent = "Pause";
+  if (pauseVoiceButton) {
+    pauseVoiceButton.setAttribute("aria-label", "Pause voiceover");
+    pauseVoiceButton.title = "Pause voiceover";
+  }
 }
 
 function stopVoiceover(status = "Voiceover Ready") {
   tourMode = false;
+  audioMode = false;
+  voiceAudio.pause();
+  voiceAudio.removeAttribute("src");
+  voiceAudio.load();
   if (supportsVoiceover()) window.speechSynthesis.cancel();
   resetPauseButton();
   setVoiceStatus(status);
 }
 
-function speakCurrentSlide({ continueTour = false } = {}) {
+function useSpeechFallback({ continueTour = false } = {}) {
   if (!supportsVoiceover()) {
     setVoiceStatus("Voiceover Not Supported");
     return;
   }
 
+  audioMode = false;
   window.speechSynthesis.cancel();
   resetPauseButton();
 
@@ -93,6 +106,29 @@ function speakCurrentSlide({ continueTour = false } = {}) {
   utterance.onerror = () => stopVoiceover("Voiceover Stopped");
 
   window.speechSynthesis.speak(utterance);
+}
+
+function speakCurrentSlide({ continueTour = false } = {}) {
+  voiceAudio.pause();
+  if (supportsVoiceover()) {
+    window.speechSynthesis.cancel();
+  }
+  audioMode = true;
+  resetPauseButton();
+  voiceAudio.src = narrationAudioFiles[currentSlide];
+  voiceAudio.currentTime = 0;
+  voiceAudio.onplay = () => setVoiceStatus(`Kokoro Voice ${currentSlide + 1} / ${slides.length}`);
+  voiceAudio.onended = () => {
+    if (tourMode && continueTour && currentSlide < slides.length - 1) {
+      updateSlide(currentSlide + 1, { narrate: true });
+      return;
+    }
+    tourMode = false;
+    setVoiceStatus("Voiceover Complete");
+    resetPauseButton();
+  };
+  voiceAudio.onerror = () => useSpeechFallback({ continueTour });
+  voiceAudio.play().catch(() => useSpeechFallback({ continueTour }));
 }
 
 function updateSlide(index, options = {}) {
@@ -133,19 +169,34 @@ narrateSlideButton?.addEventListener("click", () => {
 });
 
 pauseVoiceButton?.addEventListener("click", () => {
+  if (audioMode) {
+    if (voiceAudio.paused) {
+      voiceAudio.play().then(() => {
+        resetPauseButton();
+        setVoiceStatus(`Kokoro Voice ${currentSlide + 1} / ${slides.length}`);
+      }).catch(() => setVoiceStatus("Voiceover Stopped"));
+      return;
+    }
+    voiceAudio.pause();
+    pauseVoiceButton.setAttribute("aria-label", "Resume voiceover");
+    pauseVoiceButton.title = "Resume voiceover";
+    setVoiceStatus("Voiceover Paused");
+    return;
+  }
   if (!supportsVoiceover()) {
     setVoiceStatus("Voiceover Not Supported");
     return;
   }
   if (window.speechSynthesis.paused) {
     window.speechSynthesis.resume();
-    pauseVoiceButton.textContent = "Pause";
+    resetPauseButton();
     setVoiceStatus(`Narrating ${currentSlide + 1} / ${slides.length}`);
     return;
   }
   if (window.speechSynthesis.speaking) {
     window.speechSynthesis.pause();
-    pauseVoiceButton.textContent = "Resume";
+    pauseVoiceButton.setAttribute("aria-label", "Resume voiceover");
+    pauseVoiceButton.title = "Resume voiceover";
     setVoiceStatus("Voiceover Paused");
   }
 });
