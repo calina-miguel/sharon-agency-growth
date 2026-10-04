@@ -98,7 +98,7 @@ body.dark-mode .profile-dropdown {
 
 body.dark-mode .guide-launch {
   color: #edf7f4;
-  background: rgba(255, 255, 255, 0.08);
+  background: transparent;
 }
 
 body.dark-mode .quickstart-popover {
@@ -238,23 +238,25 @@ body.sidebar-resizing .sidebar-resizer::before {
 }
 
 .guide-launch {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid var(--line);
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
   border-radius: 999px;
-  padding: 10px 14px;
+  padding: 0;
   color: var(--forest);
-  background: rgba(255, 255, 255, 0.82);
+  background: transparent;
   font-weight: 820;
-  box-shadow: 0 12px 26px rgba(23, 33, 31, 0.08);
+  box-shadow: none;
 }
 
 .guide-launch span {
   display: grid;
   place-items: center;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 999px;
   color: #ffffff;
   background: var(--forest);
@@ -263,7 +265,11 @@ body.sidebar-resizing .sidebar-resizer::before {
 
 .guide-launch:hover {
   transform: translateY(-1px);
-  box-shadow: 0 18px 32px rgba(23, 33, 31, 0.12);
+}
+
+.guide-launch:hover span,
+.guide-launch:focus-visible span {
+  box-shadow: 0 0 0 5px rgba(22, 72, 63, 0.12);
 }
 
 .brand-stack {
@@ -2065,7 +2071,7 @@ body.reduce-motion .motion-reveal {
 
   .topbar-actions {
     width: 100%;
-    align-items: stretch;
+    align-items: flex-start;
     justify-content: space-between;
   }
 
@@ -2143,12 +2149,12 @@ body.reduce-motion .motion-reveal {
   }
 
   .topbar-actions {
-    flex-direction: column;
+    align-items: flex-start;
+    flex-direction: row;
   }
 
   .guide-launch {
-    justify-content: center;
-    width: 100%;
+    width: 34px;
   }
 
   .quickstart-popover {
