@@ -24,6 +24,8 @@ let voiceoverEnabled = true;
 const voiceAudio = new Audio();
 voiceAudio.preload = "metadata";
 const narrationAudioFiles = slides.map((_, index) => `assets/voiceover/slide-${String(index + 1).padStart(2, "0")}.mp3`);
+const mobileNarrationAudioFiles = [...narrationAudioFiles];
+mobileNarrationAudioFiles[0] = "assets/voiceover/slide-01-mobile.mp3";
 
 const narrationScripts = [
   "Welcome to the Lead Acquisition System. This guided tour explains how the app helps an agency attract insurance buyers, recruit sales agents, review every lead, and track follow up from one workspace. Use the live preview on the right as the tour moves through each section.",
@@ -43,6 +45,9 @@ const narrationScripts = [
   "The app includes a dedicated Quick Start Guide page. Each guide card opens a real app section and highlights the actual controls, records, or work areas users should review. The app also keeps the profile menu, resizable sidebar, mobile navigation, light mode, dark mode, and reduced motion settings for daily use.",
   "Reporting gives the team a simple scorecard. It shows total captured leads, average fit score, pending approvals, approved opportunities, and the movement from capture to outcome. This helps the agency see whether campaigns are creating usable opportunities."
 ];
+
+const mobileNarrationScripts = [...narrationScripts];
+mobileNarrationScripts[0] = "Welcome to the Lead Acquisition System. This guided tour explains how the app helps an agency attract insurance buyers, recruit sales agents, review every lead, and track follow up from one workspace. Use the live preview at the bottom as the tour moves through each section.";
 
 const demoTargets = {
   overview: [".metric-link", ".hero-panel button", ".metric-grid"],
@@ -153,7 +158,8 @@ function useSpeechFallback({ continueTour = false } = {}) {
   resetPauseButton();
 
   const title = slides[currentSlide]?.dataset.title || `Slide ${currentSlide + 1}`;
-  const script = narrationScripts[currentSlide] || title;
+  const scriptSet = window.matchMedia("(max-width: 900px)").matches ? mobileNarrationScripts : narrationScripts;
+  const script = scriptSet[currentSlide] || title;
   const utterance = new SpeechSynthesisUtterance(script);
   const selectedVoice = getPreferredVoice();
   if (selectedVoice) utterance.voice = selectedVoice;
@@ -191,7 +197,8 @@ function speakCurrentSlide({ continueTour = false } = {}) {
   }
   audioMode = true;
   resetPauseButton();
-  voiceAudio.src = narrationAudioFiles[currentSlide];
+  const audioSet = window.matchMedia("(max-width: 900px)").matches ? mobileNarrationAudioFiles : narrationAudioFiles;
+  voiceAudio.src = audioSet[currentSlide];
   voiceAudio.currentTime = 0;
   voiceAudio.onplay = () => setVoiceStatus(`Playing ${currentSlide + 1} / ${slides.length}`);
   voiceAudio.onended = () => {
@@ -219,25 +226,28 @@ function setDemoBox(element, rect, pad = 8) {
   element.style.height = `${height}px`;
 }
 
-function iframeTargetRect(iframe, selectors = []) {
+function iframeTargetRect(iframe, selectors = [], options = {}) {
   try {
     if (!iframe?.contentWindow?.document) return null;
     const doc = iframe.contentWindow.document;
     const target = selectors.map((selector) => doc.querySelector(selector)).find(Boolean);
     if (!target) return null;
-    target.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+    if (options.scroll !== false) {
+      iframe.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+      target.scrollIntoView({ behavior: options.instant ? "auto" : "smooth", block: "center", inline: "center" });
+    }
     return { iframe, target };
   } catch {
     return null;
   }
 }
 
-function resolveDemoTarget() {
+function resolveDemoTarget(options = {}) {
   const activeSlide = slides[currentSlide];
   const activeView = activeSlide?.dataset.view;
   const iframe = activeSlide?.querySelector("iframe");
   const targetSelectors = activeCueSelectors || demoTargets[activeView] || [];
-  const iframeMatch = iframeTargetRect(iframe, targetSelectors);
+  const iframeMatch = iframeTargetRect(iframe, targetSelectors, options);
   if (iframeMatch) return iframeMatch;
   const target = activeCueSelectors?.map((selector) => activeSlide?.querySelector(selector)).find(Boolean) || activeSlide?.querySelector(".feature-focus") || activeSlide?.querySelector(".cover-actions button") || activeSlide?.querySelector(".feature-strip") || activeSlide?.querySelector(".live-frame") || activeSlide?.querySelector(".cover-frame");
   return target ? { target } : null;
@@ -271,21 +281,34 @@ function screenRectForTarget(match) {
   };
 }
 
+function markIframeTarget(match) {
+  if (!match.iframe) return;
+  try {
+    const doc = match.iframe.contentWindow.document;
+    doc.querySelectorAll(".presentation-cue-focus").forEach((node) => node.classList.remove("presentation-cue-focus"));
+    match.target.classList.add("presentation-cue-focus");
+    window.setTimeout(() => match.target.classList.remove("presentation-cue-focus"), 2600);
+  } catch {
+    // The overlay still works even if the embedded page cannot be marked.
+  }
+}
+
 function animateDemoGuide(settled = false) {
   window.clearTimeout(guideTimer);
   if (!demoGuide || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const match = resolveDemoTarget();
+  const match = resolveDemoTarget({ scroll: !settled, instant: !!activeCueSelectors });
   if (!match || !demoHighlight || !demoCursor || !demoClick) {
     demoGuide.classList.add("is-hidden");
     return;
   }
 
   if (match.iframe && !settled) {
-    scheduleDemoGuide(560, true);
+    scheduleDemoGuide(activeCueSelectors ? 720 : 560, true);
     return;
   }
 
   demoGuide.classList.remove("is-hidden");
+  markIframeTarget(match);
   const rect = screenRectForTarget(match);
   const startX = Math.max(24, rect.left - 72);
   const startY = Math.max(86, rect.top - 34);

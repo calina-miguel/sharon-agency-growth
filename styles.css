@@ -587,6 +587,13 @@ button:active {
   box-shadow: 0 0 0 4px rgba(217, 164, 65, 0.32), 0 0 0 12px rgba(217, 164, 65, 0.12), var(--lift-shadow) !important;
 }
 
+.presentation-cue-focus {
+  position: relative;
+  z-index: 4;
+  animation: quickstartPulse 1800ms var(--ease) 2;
+  box-shadow: 0 0 0 4px rgba(217, 164, 65, 0.34), 0 0 0 12px rgba(217, 164, 65, 0.12), var(--lift-shadow) !important;
+}
+
 .menu-toggle {
   display: none;
   width: 44px;
