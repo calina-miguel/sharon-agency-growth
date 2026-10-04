@@ -7,30 +7,19 @@
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Lead Acquisition Presentation</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="presentation.css?v=20261004-01" />
+    <link rel="stylesheet" href="presentation.css?v=20261004-08" />
   </head>
   <body>
     <header class="deck-header">
       <a class="brand-link" href="index.html" target="_blank" rel="noreferrer">Lead Acquisition System</a>
       <div class="voice-controls" aria-label="Voiceover controls">
-        <button class="icon-button voice-button" id="play-tour" type="button" aria-label="Play full voiceover tour" title="Play full voiceover tour">
-          <span class="control-icon icon-play" aria-hidden="true"></span>
-        </button>
-        <button class="icon-button voice-button" id="narrate-slide" type="button" aria-label="Narrate current slide" title="Narrate current slide">
-          <span class="control-icon icon-speaker" aria-hidden="true"></span>
-        </button>
-        <button class="icon-button voice-button" id="pause-voice" type="button" aria-label="Pause voiceover" title="Pause voiceover">
-          <span class="control-icon icon-pause" aria-hidden="true"></span>
-        </button>
-        <button class="icon-button voice-button" id="stop-voice" type="button" aria-label="Stop voiceover" title="Stop voiceover">
-          <span class="control-icon icon-stop" aria-hidden="true"></span>
-        </button>
+        <button class="icon-button" id="play-tour" type="button">Play</button>
+        <button class="icon-button" id="restart-tour" type="button">Back To Start</button>
+        <button class="icon-button" id="tour-next-slide" type="button">Next Slide</button>
         <span id="voice-status" aria-live="polite">Voiceover Ready</span>
       </div>
-      <div class="deck-controls" aria-label="Presentation controls">
-        <button class="icon-button" id="prev-slide" type="button" aria-label="Previous slide">Back</button>
+      <div class="deck-controls" aria-label="Presentation status">
         <span id="slide-count" aria-live="polite">1 / 9</span>
-        <button class="icon-button" id="next-slide" type="button" aria-label="Next slide">Next</button>
       </div>
     </header>
 
@@ -325,11 +314,17 @@
       </section>
     </main>
 
+    <div class="demo-guide" id="demo-guide" aria-hidden="true">
+      <div class="demo-highlight" id="demo-highlight"></div>
+      <div class="demo-click" id="demo-click"></div>
+      <div class="demo-cursor" id="demo-cursor"></div>
+    </div>
+
     <footer class="deck-footer">
       <div class="progress-track"><span id="progress-bar"></span></div>
       <nav class="dots" id="slide-dots" aria-label="Slide shortcuts"></nav>
     </footer>
 
-    <script src="presentation.js?v=20261004-01"></script>
+    <script src="presentation.js?v=20261004-08"></script>
   </body>
 </html>

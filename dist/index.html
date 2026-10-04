@@ -7,7 +7,7 @@
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Lead Acquisition System</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="styles.css?v=20261001-06" />
+    <link rel="stylesheet" href="styles.css?v=20261004-08" />
   </head>
   <body>
     <aside class="sidebar" aria-label="Application navigation">
@@ -78,10 +78,16 @@
           <h1>Two Lead Streams, One Approval System</h1>
           <p class="lead">A lead acquisition system for insurance customer leads and sales agent prospects, using guided intake with human approval before outreach or routing.</p>
         </div>
-        <div class="system-status" aria-label="Automation status">
-          <span class="status-live">Live System</span>
-          <strong id="total-leads">0</strong>
-          <small>Total Leads In System</small>
+        <div class="topbar-actions">
+          <button class="guide-launch" id="guide-launch" type="button" aria-label="Start quickstart guide">
+            <span aria-hidden="true">?</span>
+            Guide
+          </button>
+          <div class="system-status" aria-label="Automation status">
+            <span class="status-live">Live System</span>
+            <strong id="total-leads">0</strong>
+            <small>Total Leads In System</small>
+          </div>
         </div>
       </section>
 
@@ -284,7 +290,7 @@
         <div class="section-head">
           <div>
             <p class="eyebrow">Lead Intake</p>
-            <h2>Lead Intake Generator</h2>
+            <h2>Campaign Response Intake</h2>
           </div>
           <div class="segmented-control" aria-label="Lead type">
             <button class="active" type="button" data-sim-type="customer">Customer</button>
@@ -296,16 +302,16 @@
             <div class="chat-window" id="chat-window" aria-live="polite"></div>
             <form class="chat-form" id="chat-form">
               <label>
-                Lead Message
+                Captured Campaign Signal
                 <textarea id="lead-message" rows="4"></textarea>
               </label>
-              <button type="submit">Run Intake</button>
+              <button type="submit">Send To Intake</button>
             </form>
           </section>
           <section class="intake-summary" id="intake-summary">
             <p class="eyebrow">Intake Output</p>
             <h3>Ready To Qualify</h3>
-            <p>Choose a lead type and run the intake generator to create a score, summary, and approval-ready next step.</p>
+            <p>Choose a lead type and send a connected ad response, form fill, comment, reply, or click signal into intake for scoring and approval.</p>
           </section>
         </div>
       </section>
@@ -653,6 +659,21 @@
       </section>
     </main>
 
-    <script src="app.js?v=20261001-06"></script>
+    <div class="quickstart-helper" id="quickstart-helper" hidden>
+      <div class="quickstart-backdrop" id="quickstart-backdrop"></div>
+      <div class="quickstart-focus" id="quickstart-focus" aria-hidden="true"></div>
+      <article class="quickstart-popover" id="quickstart-popover" role="dialog" aria-modal="false" aria-labelledby="quickstart-title">
+        <p class="eyebrow" id="quickstart-step">Quickstart</p>
+        <h3 id="quickstart-title">Start Here</h3>
+        <p id="quickstart-copy">Use this guide to learn the main workflow.</p>
+        <div class="quickstart-actions">
+          <button type="button" class="secondary" id="quickstart-skip">Close</button>
+          <button type="button" id="quickstart-prev">Back</button>
+          <button type="button" id="quickstart-next">Next</button>
+        </div>
+      </article>
+    </div>
+
+    <script src="app.js?v=20261004-08"></script>
   </body>
 </html>

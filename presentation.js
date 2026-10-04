@@ -1,17 +1,19 @@
 const slides = Array.from(document.querySelectorAll(".slide"));
-const previousButton = document.querySelector("#prev-slide");
-const nextButton = document.querySelector("#next-slide");
 const slideCount = document.querySelector("#slide-count");
 const progressBar = document.querySelector("#progress-bar");
 const dots = document.querySelector("#slide-dots");
 const playTourButton = document.querySelector("#play-tour");
-const narrateSlideButton = document.querySelector("#narrate-slide");
-const pauseVoiceButton = document.querySelector("#pause-voice");
-const stopVoiceButton = document.querySelector("#stop-voice");
+const restartTourButton = document.querySelector("#restart-tour");
+const tourNextSlideButton = document.querySelector("#tour-next-slide");
 const voiceStatus = document.querySelector("#voice-status");
+const demoGuide = document.querySelector("#demo-guide");
+const demoHighlight = document.querySelector("#demo-highlight");
+const demoCursor = document.querySelector("#demo-cursor");
+const demoClick = document.querySelector("#demo-click");
 let currentSlide = 0;
 let tourMode = false;
 let audioMode = false;
+let guideTimer = 0;
 
 const voiceAudio = new Audio();
 voiceAudio.preload = "metadata";
@@ -57,10 +59,7 @@ function getPreferredVoice() {
 }
 
 function resetPauseButton() {
-  if (pauseVoiceButton) {
-    pauseVoiceButton.setAttribute("aria-label", "Pause voiceover");
-    pauseVoiceButton.title = "Pause voiceover";
-  }
+  return;
 }
 
 function stopVoiceover(status = "Voiceover Ready") {
@@ -131,17 +130,71 @@ function speakCurrentSlide({ continueTour = false } = {}) {
   voiceAudio.play().catch(() => useSpeechFallback({ continueTour }));
 }
 
+function setDemoBox(element, rect, pad = 8) {
+  if (!element || !rect) return;
+  const left = Math.max(8, rect.left - pad);
+  const top = Math.max(8, rect.top - pad);
+  const width = Math.min(window.innerWidth - left - 8, rect.width + pad * 2);
+  const height = Math.min(window.innerHeight - top - 8, rect.height + pad * 2);
+  element.style.left = `${left}px`;
+  element.style.top = `${top}px`;
+  element.style.width = `${width}px`;
+  element.style.height = `${height}px`;
+}
+
+function animateDemoGuide() {
+  window.clearTimeout(guideTimer);
+  if (!demoGuide || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const activeSlide = slides[currentSlide];
+  const target = activeSlide?.querySelector(".feature-focus") || activeSlide?.querySelector(".cover-actions button") || activeSlide?.querySelector(".live-frame") || activeSlide?.querySelector(".cover-frame");
+  if (!target || !demoHighlight || !demoCursor || !demoClick) {
+    demoGuide.classList.add("is-hidden");
+    return;
+  }
+
+  demoGuide.classList.remove("is-hidden");
+  const rect = target.getBoundingClientRect();
+  const startX = Math.max(24, rect.left - 72);
+  const startY = Math.max(86, rect.top - 34);
+  const endX = rect.left + Math.min(rect.width - 12, Math.max(20, rect.width * 0.72));
+  const endY = rect.top + Math.min(rect.height - 12, Math.max(18, rect.height * 0.52));
+
+  demoHighlight.classList.remove("is-active");
+  demoCursor.classList.remove("is-active", "is-clicking");
+  demoClick.classList.remove("is-active");
+  setDemoBox(demoHighlight, rect, 10);
+  demoCursor.style.left = `${startX}px`;
+  demoCursor.style.top = `${startY}px`;
+  demoClick.style.left = `${endX}px`;
+  demoClick.style.top = `${endY}px`;
+
+  requestAnimationFrame(() => {
+    demoHighlight.classList.add("is-active");
+    demoCursor.classList.add("is-active");
+    demoCursor.style.left = `${endX}px`;
+    demoCursor.style.top = `${endY}px`;
+  });
+
+  guideTimer = window.setTimeout(() => {
+    demoCursor.classList.add("is-clicking");
+    demoClick.classList.remove("is-active");
+    void demoClick.offsetWidth;
+    demoClick.classList.add("is-active");
+  }, 760);
+  window.setTimeout(() => demoCursor?.classList.remove("is-clicking"), 1120);
+}
+
 function updateSlide(index, options = {}) {
   currentSlide = Math.max(0, Math.min(index, slides.length - 1));
   slides.forEach((slide, slideIndex) => slide.classList.toggle("active", slideIndex === currentSlide));
   slideCount.textContent = `${currentSlide + 1} / ${slides.length}`;
-  previousButton.disabled = currentSlide === 0;
-  nextButton.disabled = currentSlide === slides.length - 1;
+  if (tourNextSlideButton) tourNextSlideButton.disabled = currentSlide === slides.length - 1;
   progressBar.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
   dots.querySelectorAll("button").forEach((button, dotIndex) => button.classList.toggle("active", dotIndex === currentSlide));
   const activeSlide = slides[currentSlide];
   const activeView = activeSlide.dataset.view;
   activeSlide.querySelectorAll("iframe").forEach((iframe) => setIframeView(iframe, activeView || "overview"));
+  animateDemoGuide();
   if (options.narrate || (tourMode && options.userInitiated)) {
     speakCurrentSlide({ continueTour: tourMode });
   }
@@ -155,53 +208,20 @@ slides.forEach((slide, index) => {
   dots.append(dot);
 });
 
-previousButton.addEventListener("click", () => updateSlide(currentSlide - 1, { userInitiated: true }));
-nextButton.addEventListener("click", () => updateSlide(currentSlide + 1, { userInitiated: true }));
-
 playTourButton?.addEventListener("click", () => {
   tourMode = true;
   speakCurrentSlide({ continueTour: true });
 });
 
-narrateSlideButton?.addEventListener("click", () => {
-  tourMode = false;
-  speakCurrentSlide();
+restartTourButton?.addEventListener("click", () => {
+  stopVoiceover("Voiceover Ready");
+  updateSlide(0, { userInitiated: true });
 });
 
-pauseVoiceButton?.addEventListener("click", () => {
-  if (audioMode) {
-    if (voiceAudio.paused) {
-      voiceAudio.play().then(() => {
-        resetPauseButton();
-        setVoiceStatus(`Kokoro Voice ${currentSlide + 1} / ${slides.length}`);
-      }).catch(() => setVoiceStatus("Voiceover Stopped"));
-      return;
-    }
-    voiceAudio.pause();
-    pauseVoiceButton.setAttribute("aria-label", "Resume voiceover");
-    pauseVoiceButton.title = "Resume voiceover";
-    setVoiceStatus("Voiceover Paused");
-    return;
-  }
-  if (!supportsVoiceover()) {
-    setVoiceStatus("Voiceover Not Supported");
-    return;
-  }
-  if (window.speechSynthesis.paused) {
-    window.speechSynthesis.resume();
-    resetPauseButton();
-    setVoiceStatus(`Narrating ${currentSlide + 1} / ${slides.length}`);
-    return;
-  }
-  if (window.speechSynthesis.speaking) {
-    window.speechSynthesis.pause();
-    pauseVoiceButton.setAttribute("aria-label", "Resume voiceover");
-    pauseVoiceButton.title = "Resume voiceover";
-    setVoiceStatus("Voiceover Paused");
-  }
+tourNextSlideButton?.addEventListener("click", () => {
+  stopVoiceover("Voiceover Ready");
+  updateSlide(currentSlide + 1, { userInitiated: true });
 });
-
-stopVoiceButton?.addEventListener("click", () => stopVoiceover());
 
 document.querySelectorAll("[data-jump]").forEach((button) => {
   button.addEventListener("click", () => updateSlide(Number(button.dataset.jump), { userInitiated: true }));
@@ -234,4 +254,5 @@ if (supportsVoiceover()) {
   setVoiceStatus("Voiceover Not Supported");
 }
 
+window.addEventListener("resize", animateDemoGuide);
 updateSlide(0);

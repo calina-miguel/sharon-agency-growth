@@ -192,6 +192,87 @@ button {
   transform: translateY(-1px);
 }
 
+.demo-guide {
+  position: fixed;
+  inset: 0;
+  z-index: 18;
+  pointer-events: none;
+}
+
+.demo-guide.is-hidden {
+  display: none;
+}
+
+.demo-highlight {
+  position: fixed;
+  border: 2px solid var(--gold);
+  border-radius: 14px;
+  opacity: 0;
+  box-shadow: 0 0 0 8px rgba(217, 164, 65, 0.14), 0 18px 42px rgba(23, 33, 31, 0.16);
+  transition: left 360ms var(--ease), top 360ms var(--ease), width 360ms var(--ease), height 360ms var(--ease), opacity 180ms var(--ease);
+}
+
+.demo-highlight.is-active {
+  opacity: 1;
+  animation: guidePulse 1800ms var(--ease) infinite;
+}
+
+.demo-cursor {
+  position: fixed;
+  width: 22px;
+  height: 22px;
+  opacity: 0;
+  transform: translate(-4px, -2px);
+  transition: left 620ms var(--ease), top 620ms var(--ease), opacity 180ms var(--ease), transform 180ms var(--ease);
+}
+
+.demo-cursor::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 1px;
+  width: 0;
+  height: 0;
+  border-top: 17px solid #ffffff;
+  border-right: 11px solid transparent;
+  filter: drop-shadow(0 3px 5px rgba(23, 33, 31, 0.34));
+}
+
+.demo-cursor::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 12px;
+  width: 7px;
+  height: 11px;
+  border-radius: 2px;
+  background: #ffffff;
+  transform: rotate(-24deg);
+  box-shadow: 0 3px 5px rgba(23, 33, 31, 0.24);
+}
+
+.demo-cursor.is-active {
+  opacity: 1;
+}
+
+.demo-cursor.is-clicking {
+  transform: translate(-4px, -2px) scale(0.88);
+}
+
+.demo-click {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--gold);
+  border-radius: 999px;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+}
+
+.demo-click.is-active {
+  animation: clickRipple 620ms var(--ease);
+}
+
 .deck {
   min-height: 100vh;
 }
@@ -395,6 +476,27 @@ li::before {
   background: var(--forest);
 }
 
+@keyframes guidePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 6px rgba(217, 164, 65, 0.12), 0 18px 42px rgba(23, 33, 31, 0.16);
+  }
+  50% {
+    box-shadow: 0 0 0 13px rgba(217, 164, 65, 0.2), 0 22px 52px rgba(23, 33, 31, 0.18);
+  }
+}
+
+@keyframes clickRipple {
+  0% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(3.2);
+  }
+}
+
 @media (max-width: 1050px) {
   body {
     overflow: auto;
@@ -487,6 +589,10 @@ li::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .demo-guide {
+    display: none;
+  }
+
   *,
   *::before,
   *::after {

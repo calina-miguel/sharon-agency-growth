@@ -96,6 +96,26 @@ body.dark-mode .profile-dropdown {
   background: #0d1c19;
 }
 
+body.dark-mode .guide-launch {
+  color: #edf7f4;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .quickstart-popover {
+  color: #edf7f4;
+  background: #102d29;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+body.dark-mode .quickstart-popover p:not(.eyebrow) {
+  color: #b7cbc5;
+}
+
+body.dark-mode .quickstart-actions .secondary {
+  color: #edf7f4;
+  background: rgba(255, 255, 255, 0.1);
+}
+
 button,
 input,
 select,
@@ -209,6 +229,41 @@ body.sidebar-resizing .sidebar-resizer::before {
 .section-head,
 .card-topline {
   justify-content: space-between;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.guide-launch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: var(--forest);
+  background: rgba(255, 255, 255, 0.82);
+  font-weight: 820;
+  box-shadow: 0 12px 26px rgba(23, 33, 31, 0.08);
+}
+
+.guide-launch span {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: var(--forest);
+  font-size: 0.78rem;
+}
+
+.guide-launch:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 32px rgba(23, 33, 31, 0.12);
 }
 
 .brand-stack {
@@ -431,6 +486,77 @@ button:active {
 
 .proposal-note span {
   color: #f4d187;
+}
+
+.quickstart-helper[hidden] {
+  display: none;
+}
+
+.quickstart-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(16, 31, 28, 0.36);
+  backdrop-filter: blur(2px);
+}
+
+.quickstart-focus {
+  position: fixed;
+  z-index: 81;
+  border: 2px solid var(--gold);
+  border-radius: 14px;
+  pointer-events: none;
+  box-shadow: 0 0 0 9999px rgba(16, 31, 28, 0.24), 0 0 0 8px rgba(217, 164, 65, 0.16), 0 18px 48px rgba(16, 31, 28, 0.24);
+  transition: left 240ms var(--ease), top 240ms var(--ease), width 240ms var(--ease), height 240ms var(--ease);
+}
+
+.quickstart-popover {
+  position: fixed;
+  z-index: 82;
+  display: grid;
+  gap: 10px;
+  width: min(360px, calc(100vw - 32px));
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px;
+  color: var(--ink);
+  background: var(--panel);
+  box-shadow: 0 24px 60px rgba(16, 31, 28, 0.24);
+  transition: left 240ms var(--ease), top 240ms var(--ease);
+}
+
+.quickstart-popover h3,
+.quickstart-popover p {
+  margin: 0;
+}
+
+.quickstart-popover h3 {
+  font-size: 1.08rem;
+}
+
+.quickstart-popover p:not(.eyebrow) {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.quickstart-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.quickstart-actions button {
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: #ffffff;
+  background: var(--forest);
+  font-weight: 820;
+}
+
+.quickstart-actions .secondary {
+  color: var(--forest);
+  background: #eef5f2;
 }
 
 .menu-toggle {
@@ -1937,6 +2063,12 @@ body.reduce-motion .motion-reveal {
     flex-direction: column;
   }
 
+  .topbar-actions {
+    width: 100%;
+    align-items: stretch;
+    justify-content: space-between;
+  }
+
   .hero-grid,
   .split,
   .landing-preview,
@@ -2008,6 +2140,21 @@ body.reduce-motion .motion-reveal {
   .system-status {
     width: 100%;
     text-align: left;
+  }
+
+  .topbar-actions {
+    flex-direction: column;
+  }
+
+  .guide-launch {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .quickstart-popover {
+    left: 16px !important;
+    right: 16px;
+    width: auto;
   }
 
   .status-live {
