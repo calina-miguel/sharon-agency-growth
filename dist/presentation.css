@@ -67,8 +67,8 @@ button {
   gap: 10px;
 }
 
-.deck-controls span,
-.voice-controls span {
+.deck-controls > span,
+.voice-controls > #voice-status {
   min-width: 54px;
   color: var(--muted);
   font-size: 0.86rem;
@@ -80,11 +80,16 @@ button {
   justify-content: center;
   flex: 1;
   min-width: 0;
+  flex-wrap: nowrap;
 }
 
-.voice-controls span {
+.voice-controls > #voice-status {
   min-width: 124px;
+  max-width: 180px;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .voice-button {
@@ -457,7 +462,7 @@ li::before {
     padding: 0;
   }
 
-  .voice-controls span {
+  .voice-controls > #voice-status {
     flex: 0 0 auto;
     min-width: auto;
   }
