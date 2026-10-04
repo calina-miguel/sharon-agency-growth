@@ -116,7 +116,7 @@ function speakCurrentSlide({ continueTour = false } = {}) {
   resetPauseButton();
   voiceAudio.src = narrationAudioFiles[currentSlide];
   voiceAudio.currentTime = 0;
-  voiceAudio.onplay = () => setVoiceStatus(`Kokoro Voice ${currentSlide + 1} / ${slides.length}`);
+  voiceAudio.onplay = () => setVoiceStatus(`Playing ${currentSlide + 1} / ${slides.length}`);
   voiceAudio.onended = () => {
     if (tourMode && continueTour && currentSlide < slides.length - 1) {
       updateSlide(currentSlide + 1, { narrate: true });

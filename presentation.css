@@ -384,8 +384,8 @@ li::before {
 
 .cover-frame,
 .live-frame {
-  height: min(70vh, 720px);
-  min-height: 430px;
+  height: calc(100vh - 168px);
+  min-height: 560px;
   overflow: hidden;
   border: 1px solid rgba(23, 33, 31, 0.12);
   border-radius: 12px;
@@ -535,7 +535,7 @@ li::before {
   .cover-frame,
   .live-frame {
     min-height: 520px;
-    height: 68vh;
+    height: calc(100vh - 156px);
   }
 
 }
@@ -583,7 +583,7 @@ li::before {
 
   .cover-frame,
   .live-frame {
-    min-height: 560px;
+    min-height: calc(100vh - 172px);
   }
 
 }

@@ -116,6 +116,34 @@ body.dark-mode .quickstart-actions .secondary {
   background: rgba(255, 255, 255, 0.1);
 }
 
+body.dark-mode .approval-note {
+  color: #c8f2ea;
+  background: rgba(125, 214, 197, 0.11);
+  border-color: rgba(125, 214, 197, 0.26);
+}
+
+body.dark-mode .card-topline span {
+  color: #c8f2ea;
+  background: rgba(125, 214, 197, 0.12);
+}
+
+body.dark-mode .approval-card .draft-box {
+  color: #edf7f4;
+  background: rgba(125, 214, 197, 0.1);
+  border-color: rgba(125, 214, 197, 0.2);
+}
+
+body.dark-mode .approval-card .button-row button:not(.secondary) {
+  color: #08211d;
+  background: #87e4d4;
+}
+
+body.dark-mode .approval-card .button-row .secondary {
+  color: #dff5f0;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
 button,
 input,
 select,
@@ -241,6 +269,9 @@ body.sidebar-resizing .sidebar-resizer::before {
   display: inline-grid;
   flex: 0 0 auto;
   place-items: center;
+  position: absolute;
+  top: 14px;
+  right: 14px;
   width: 34px;
   height: 34px;
   border: 0;
@@ -671,9 +702,10 @@ h3 {
 }
 
 .system-status {
+  position: relative;
   display: grid;
   min-width: 190px;
-  padding: 18px;
+  padding: 18px 58px 18px 18px;
   text-align: right;
 }
 
@@ -1854,19 +1886,67 @@ textarea:focus {
   margin-top: 14px;
 }
 
+.approval-card .button-row {
+  gap: 10px;
+}
+
+.approval-card .button-row button {
+  min-width: 96px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  font-size: 0.94rem;
+}
+
+.approval-card .button-row button:not(.secondary) {
+  color: #ffffff;
+  background: var(--forest);
+}
+
 .button-row .secondary {
   color: var(--forest);
   background: #e4f0ed;
 }
 
 .approval-note {
+  display: inline-block;
+  width: fit-content;
+  max-width: min(100%, 46ch);
   margin: 0;
   border: 1px solid #c7d8d2;
-  border-radius: 999px;
-  padding: 9px 12px;
+  border-radius: 14px;
+  padding: 8px 12px;
   color: var(--forest);
   background: #e4f0ed;
+  line-height: 1.35;
   font-weight: 850;
+}
+
+body.dark-mode .approval-note {
+  color: #c8f2ea;
+  background: rgba(125, 214, 197, 0.11);
+  border-color: rgba(125, 214, 197, 0.26);
+}
+
+body.dark-mode .card-topline span {
+  color: #c8f2ea;
+  background: rgba(125, 214, 197, 0.12);
+}
+
+body.dark-mode .approval-card .draft-box {
+  color: #edf7f4;
+  background: rgba(125, 214, 197, 0.1);
+  border-color: rgba(125, 214, 197, 0.2);
+}
+
+body.dark-mode .approval-card .button-row button:not(.secondary) {
+  color: #08211d;
+  background: #87e4d4;
+}
+
+body.dark-mode .approval-card .button-row .secondary {
+  color: #dff5f0;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .pipeline {
@@ -2190,4 +2270,15 @@ body.reduce-motion .motion-reveal {
   .answer-stack button {
     width: 100%;
   }
+}
+
+body.dark-mode .approval-card .button-row button[type="button"]:not(.secondary) {
+  color: #08211d;
+  background: #87e4d4;
+}
+
+body.dark-mode .approval-card .button-row button[type="button"].secondary {
+  color: #dff5f0;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
 }
