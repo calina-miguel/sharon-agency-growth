@@ -52,6 +52,7 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 18px;
+  flex-wrap: wrap;
 }
 
 .brand-link {
@@ -78,9 +79,15 @@ button {
 
 .voice-controls {
   justify-content: center;
-  flex: 1;
+  flex: 1 1 520px;
   min-width: 0;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  padding: 6px;
+  border: 1px solid rgba(217, 226, 222, 0.78);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 12px 30px rgba(23, 33, 31, 0.08);
+  backdrop-filter: blur(14px);
 }
 
 .voice-controls > #voice-status {
@@ -179,9 +186,12 @@ button {
 }
 
 .icon-button {
+  min-height: 40px;
+  padding: 9px 13px;
   background: #ffffff;
   color: var(--forest);
   border: 1px solid var(--line);
+  box-shadow: 0 6px 16px rgba(23, 33, 31, 0.06);
 }
 
 .icon-button:hover,
@@ -555,17 +565,19 @@ li::before {
 
   .voice-controls {
     gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 2px;
+    flex: 0 1 auto;
+    justify-content: flex-start;
+    overflow: visible;
+    padding: 8px;
   }
 
   .voice-controls .icon-button {
     flex: 0 0 auto;
-    padding: 0;
+    padding: 9px 12px;
   }
 
   .voice-controls > #voice-status {
-    flex: 0 0 auto;
+    flex: 1 1 100%;
     min-width: auto;
   }
 

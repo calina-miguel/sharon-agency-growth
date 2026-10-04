@@ -101,19 +101,14 @@ body.dark-mode .guide-launch {
   background: transparent;
 }
 
-body.dark-mode .quickstart-popover {
-  color: #edf7f4;
+body.dark-mode .quickstart-card {
   background: #102d29;
   border-color: rgba(255, 255, 255, 0.12);
 }
 
-body.dark-mode .quickstart-popover p:not(.eyebrow) {
-  color: #b7cbc5;
-}
-
-body.dark-mode .quickstart-actions .secondary {
-  color: #edf7f4;
-  background: rgba(255, 255, 255, 0.1);
+body.dark-mode .quickstart-card span {
+  color: #09201c;
+  background: var(--forest);
 }
 
 body.dark-mode .approval-note {
@@ -525,75 +520,71 @@ button:active {
   color: #f4d187;
 }
 
-.quickstart-helper[hidden] {
-  display: none;
-}
-
-.quickstart-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 80;
-  background: rgba(16, 31, 28, 0.36);
-  backdrop-filter: blur(2px);
-}
-
-.quickstart-focus {
-  position: fixed;
-  z-index: 81;
-  border: 2px solid var(--gold);
-  border-radius: 14px;
-  pointer-events: none;
-  box-shadow: 0 0 0 9999px rgba(16, 31, 28, 0.24), 0 0 0 8px rgba(217, 164, 65, 0.16), 0 18px 48px rgba(16, 31, 28, 0.24);
-  transition: left 240ms var(--ease), top 240ms var(--ease), width 240ms var(--ease), height 240ms var(--ease);
-}
-
-.quickstart-popover {
-  position: fixed;
-  z-index: 82;
+.quickstart-page {
   display: grid;
-  gap: 10px;
-  width: min(360px, calc(100vw - 32px));
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 18px;
-  color: var(--ink);
-  background: var(--panel);
-  box-shadow: 0 24px 60px rgba(16, 31, 28, 0.24);
-  transition: left 240ms var(--ease), top 240ms var(--ease);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
 }
 
-.quickstart-popover h3,
-.quickstart-popover p {
+.quickstart-card {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-height: 238px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+  background: var(--panel);
+  box-shadow: 0 16px 34px rgba(23, 33, 31, 0.06);
+}
+
+.quickstart-card span {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  color: var(--forest);
+  background: #dff0eb;
+  font-weight: 850;
+}
+
+.quickstart-card h3,
+.quickstart-card p {
   margin: 0;
 }
 
-.quickstart-popover h3 {
+.quickstart-card h3 {
   font-size: 1.08rem;
 }
 
-.quickstart-popover p:not(.eyebrow) {
+.quickstart-card p {
   color: var(--muted);
   line-height: 1.5;
 }
 
-.quickstart-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  padding-top: 4px;
-}
-
-.quickstart-actions button {
+.quickstart-card button {
+  align-self: end;
+  margin-top: auto;
   border-radius: 8px;
-  padding: 9px 12px;
+  padding: 10px 12px;
   color: #ffffff;
   background: var(--forest);
   font-weight: 820;
+  transition: transform 180ms var(--ease), box-shadow 180ms var(--ease);
 }
 
-.quickstart-actions .secondary {
-  color: var(--forest);
-  background: #eef5f2;
+.quickstart-card button:hover,
+.quickstart-card button:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(23, 33, 31, 0.14);
+}
+
+.quickstart-highlight {
+  position: relative;
+  z-index: 3;
+  animation: quickstartPulse 2200ms var(--ease) 2;
+  box-shadow: 0 0 0 4px rgba(217, 164, 65, 0.32), 0 0 0 12px rgba(217, 164, 65, 0.12), var(--lift-shadow) !important;
 }
 
 .menu-toggle {
@@ -2062,6 +2053,17 @@ body.dark-mode .approval-card .button-row .secondary {
   }
 }
 
+@keyframes quickstartPulse {
+  0%,
+  100% {
+    outline: 0 solid rgba(217, 164, 65, 0);
+  }
+  42% {
+    outline: 3px solid rgba(217, 164, 65, 0.78);
+    outline-offset: 8px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -2180,7 +2182,8 @@ body.reduce-motion .motion-reveal {
   .engine-grid,
   .approval-grid,
   .score-grid,
-  .lead-manager-overview {
+  .lead-manager-overview,
+  .quickstart-page {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2199,7 +2202,8 @@ body.reduce-motion .motion-reveal {
   .engine-grid,
   .approval-grid,
   .score-grid,
-  .lead-manager-overview {
+  .lead-manager-overview,
+  .quickstart-page {
     grid-template-columns: 1fr;
   }
 
@@ -2235,12 +2239,6 @@ body.reduce-motion .motion-reveal {
 
   .guide-launch {
     width: 34px;
-  }
-
-  .quickstart-popover {
-    left: 16px !important;
-    right: 16px;
-    width: auto;
   }
 
   .status-live {

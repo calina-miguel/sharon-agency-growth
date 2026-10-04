@@ -7,7 +7,7 @@
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Lead Acquisition System</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="styles.css?v=20261004-11" />
+    <link rel="stylesheet" href="styles.css?v=20261004-12" />
   </head>
   <body>
     <aside class="sidebar" aria-label="Application navigation">
@@ -63,6 +63,7 @@
         <button class="nav-item" data-view="aeo">AEO Studio</button>
         <button class="nav-item" data-view="campaigns">Campaign Builder</button>
         <button class="nav-item" data-view="reporting">Reporting</button>
+        <button class="nav-item" data-view="quickstart">Quick Start Guide</button>
       </nav>
       <div class="proposal-note">
         <span>New Direction</span>
@@ -80,7 +81,7 @@
         </div>
         <div class="topbar-actions">
           <div class="system-status" aria-label="Automation status">
-            <button class="guide-launch" id="guide-launch" type="button" aria-label="Start quickstart guide" title="Start quickstart guide">
+            <button class="guide-launch" id="guide-launch" type="button" data-view="quickstart" aria-label="Open quick start guide" title="Open quick start guide">
               <span aria-hidden="true">?</span>
             </button>
             <span class="status-live">Live System</span>
@@ -656,23 +657,68 @@
           <div class="funnel" id="funnel"></div>
         </div>
       </section>
+
+      <section class="view" id="quickstart">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Quick Start Guide</p>
+            <h2>Learn The System By Opening Real Areas</h2>
+            <p>Use these guided steps to jump into the actual controls, records, and work areas inside the app. Each step opens the matching section and highlights the area to review.</p>
+          </div>
+        </div>
+        <div class="quickstart-page" id="quickstart-page" aria-label="Interactive quick start guide">
+          <article class="quickstart-card">
+            <span>01</span>
+            <h3>Command Center</h3>
+            <p>Review the two lead streams, live totals, and clickable cards that open stored leads.</p>
+            <button type="button" data-guide-view="overview" data-guide-target=".metric-grid">Highlight Command Center</button>
+          </article>
+          <article class="quickstart-card">
+            <span>02</span>
+            <h3>Lead Streams</h3>
+            <p>Open the customer and recruiting intake paths used to collect real campaign interest.</p>
+            <button type="button" data-guide-view="overview" data-guide-target=".hero-grid">Highlight Lead Streams</button>
+          </article>
+          <article class="quickstart-card">
+            <span>03</span>
+            <h3>Social Hub</h3>
+            <p>See where connected social accounts, content generation, publishing, and response capture live.</p>
+            <button type="button" data-guide-view="social" data-guide-target=".content-studio">Highlight Social Hub</button>
+          </article>
+          <article class="quickstart-card">
+            <span>04</span>
+            <h3>Lead Intake</h3>
+            <p>Review how captured ad clicks, forms, comments, and replies become scored records.</p>
+            <button type="button" data-guide-view="agent" data-guide-target="#chat-form">Highlight Intake</button>
+          </article>
+          <article class="quickstart-card">
+            <span>05</span>
+            <h3>Approval Queue</h3>
+            <p>Approve or reject recommendations before outreach, booking, or recruiting follow-up.</p>
+            <button type="button" data-guide-view="approval" data-guide-target="#approval-grid">Highlight Approval Queue</button>
+          </article>
+          <article class="quickstart-card">
+            <span>06</span>
+            <h3>Lead Manager</h3>
+            <p>Manage customer leads and agent candidates separately through status, flow, links, and reporting.</p>
+            <button type="button" data-guide-view="pipeline" data-guide-target=".lead-manager-panel">Highlight Lead Manager</button>
+          </article>
+          <article class="quickstart-card">
+            <span>07</span>
+            <h3>Schedule Follow-Up</h3>
+            <p>Set the calendar date, notes, outcome, and next action for approved leads.</p>
+            <button type="button" data-guide-view="schedule" data-guide-target=".schedule-panel">Highlight Schedule</button>
+          </article>
+          <article class="quickstart-card">
+            <span>08</span>
+            <h3>Reporting</h3>
+            <p>Open the scorecard and funnel that summarize lead volume, review quality, and movement.</p>
+            <button type="button" data-guide-view="reporting" data-guide-target="#score-grid">Highlight Reporting</button>
+          </article>
+        </div>
+      </section>
     </main>
 
-    <div class="quickstart-helper" id="quickstart-helper" hidden>
-      <div class="quickstart-backdrop" id="quickstart-backdrop"></div>
-      <div class="quickstart-focus" id="quickstart-focus" aria-hidden="true"></div>
-      <article class="quickstart-popover" id="quickstart-popover" role="dialog" aria-modal="false" aria-labelledby="quickstart-title">
-        <p class="eyebrow" id="quickstart-step">Quickstart</p>
-        <h3 id="quickstart-title">Start Here</h3>
-        <p id="quickstart-copy">Use this guide to learn the main workflow.</p>
-        <div class="quickstart-actions">
-          <button type="button" class="secondary" id="quickstart-skip">Close</button>
-          <button type="button" id="quickstart-prev">Back</button>
-          <button type="button" id="quickstart-next">Next</button>
-        </div>
-      </article>
-    </div>
-
-    <script src="app.js?v=20261004-08"></script>
+    <script src="app.js?v=20261004-09"></script>
   </body>
 </html>

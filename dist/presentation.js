@@ -3,6 +3,7 @@ const slideCount = document.querySelector("#slide-count");
 const progressBar = document.querySelector("#progress-bar");
 const dots = document.querySelector("#slide-dots");
 const playTourButton = document.querySelector("#play-tour");
+const startWalkthroughButton = document.querySelector("#start-walkthrough");
 const restartTourButton = document.querySelector("#restart-tour");
 const tourNextSlideButton = document.querySelector("#tour-next-slide");
 const voiceToggleButton = document.querySelector("#voice-toggle");
@@ -16,6 +17,8 @@ let tourMode = false;
 let audioMode = false;
 let guideTimer = 0;
 let guideResetTimer = 0;
+let activeCueSelectors = null;
+let narrationCueTimers = [];
 let voiceoverEnabled = true;
 
 const voiceAudio = new Audio();
@@ -37,7 +40,7 @@ const narrationScripts = [
   "AEO Studio helps the agency answer questions that buyers and agent candidates already ask online. The goal is to turn search questions into plain language content, campaign hooks, and routes to the right page, while keeping public answers reviewable.",
   "The Approval Queue is the control point. Each lead shows its type, score, summary, draft response, and recommended next step. The team can approve or reject before anything moves into follow up, booking, or recruiting action.",
   "Campaign Builder creates links and outreach copy for specific audiences. The user chooses the stream, audience, and offer, then gets a campaign URL and message copy that can be used in ads, posts, email, or referral outreach.",
-  "The app includes practical controls for daily use and presentation settings. The profile menu opens from the avatar, the sidebar resizes on desktop, the mobile menu collapses navigation, and light, dark, and reduced motion settings support different environments.",
+  "The app includes a dedicated Quick Start Guide page. Each guide card opens a real app section and highlights the actual controls, records, or work areas users should review. The app also keeps the profile menu, resizable sidebar, mobile navigation, light mode, dark mode, and reduced motion settings for daily use.",
   "Reporting gives the team a simple scorecard. It shows total captured leads, average fit score, pending approvals, approved opportunities, and the movement from capture to outcome. This helps the agency see whether campaigns are creating usable opportunities."
 ];
 
@@ -54,8 +57,45 @@ const demoTargets = {
   aeo: [".answer-stack button", ".aeo-signal-grid", ".aeo-layout"],
   approval: ["[data-approve]", ".approval-card", "#approval-grid"],
   campaigns: ["#generate-campaign", "#campaign-form"],
+  quickstart: [".quickstart-card button", ".quickstart-page"],
   reporting: [".score-card", "#score-grid", ".chart-panel"]
 };
+
+const narrationCues = [
+  [{ at: 0, selectors: [".app-title", ".topbar"] }, { at: 6500, selectors: [".live-frame", ".metric-grid"] }],
+  [{ at: 0, selectors: [".hero-grid"] }, { at: 7600, selectors: [".metric-grid"] }],
+  [{ at: 0, selectors: [".metric-link"] }, { at: 7000, selectors: [".schedule-card", ".metric-grid"] }],
+  [{ at: 0, selectors: [".engine-card"] }, { at: 7600, selectors: [".section-head button", ".engine-grid"] }],
+  [{ at: 0, selectors: ["#schedule-form"] }, { at: 6500, selectors: ["#schedule-form button", ".schedule-card"] }],
+  [{ at: 0, selectors: [".lead-manager-tabs"] }, { at: 7000, selectors: [".lead-card", ".lead-manager-panel"] }],
+  [{ at: 0, selectors: [".landing-preview"] }, { at: 6200, selectors: [".public-lead-form button", ".public-lead-form"] }],
+  [{ at: 0, selectors: [".landing-preview"] }, { at: 6200, selectors: [".public-lead-form button", ".public-lead-form"] }],
+  [{ at: 0, selectors: [".account-card"] }, { at: 7200, selectors: ["#generate-social-post", ".content-studio"] }],
+  [{ at: 0, selectors: ["#chat-form"] }, { at: 7000, selectors: ["#intake-summary"] }],
+  [{ at: 0, selectors: [".compliance-summary"] }, { at: 6500, selectors: ["#refresh-compliance", ".compliance-panel"] }],
+  [{ at: 0, selectors: [".answer-stack button"] }, { at: 7000, selectors: [".aeo-signal-grid", ".aeo-layout"] }],
+  [{ at: 0, selectors: [".approval-card"] }, { at: 7200, selectors: ["[data-approve]", "#approval-grid"] }],
+  [{ at: 0, selectors: ["#campaign-form"] }, { at: 6800, selectors: ["#generate-campaign", ".generated-url"] }],
+  [{ at: 0, selectors: [".quickstart-card button"] }, { at: 7200, selectors: [".quickstart-page"] }],
+  [{ at: 0, selectors: [".score-card"] }, { at: 7000, selectors: [".chart-panel", "#funnel"] }]
+];
+
+function clearNarrationCues() {
+  narrationCueTimers.forEach((timer) => window.clearTimeout(timer));
+  narrationCueTimers = [];
+  activeCueSelectors = null;
+}
+
+function scheduleNarrationCues() {
+  clearNarrationCues();
+  const cues = narrationCues[currentSlide] || [];
+  cues.forEach((cue) => {
+    narrationCueTimers.push(window.setTimeout(() => {
+      activeCueSelectors = cue.selectors;
+      scheduleDemoGuide(80);
+    }, cue.at));
+  });
+}
 
 function setIframeView(iframe, view) {
   if (!iframe || !view) return;
@@ -92,6 +132,7 @@ function resetPauseButton() {
 function stopVoiceover(status = "Voiceover Ready") {
   tourMode = false;
   audioMode = false;
+  clearNarrationCues();
   voiceAudio.pause();
   voiceAudio.removeAttribute("src");
   voiceAudio.load();
@@ -107,6 +148,7 @@ function useSpeechFallback({ continueTour = false } = {}) {
   }
 
   audioMode = false;
+  scheduleNarrationCues();
   window.speechSynthesis.cancel();
   resetPauseButton();
 
@@ -142,6 +184,7 @@ function speakCurrentSlide({ continueTour = false } = {}) {
     }
     return;
   }
+  scheduleNarrationCues();
   voiceAudio.pause();
   if (supportsVoiceover()) {
     window.speechSynthesis.cancel();
@@ -193,9 +236,10 @@ function resolveDemoTarget() {
   const activeSlide = slides[currentSlide];
   const activeView = activeSlide?.dataset.view;
   const iframe = activeSlide?.querySelector("iframe");
-  const iframeMatch = iframeTargetRect(iframe, demoTargets[activeView] || []);
+  const targetSelectors = activeCueSelectors || demoTargets[activeView] || [];
+  const iframeMatch = iframeTargetRect(iframe, targetSelectors);
   if (iframeMatch) return iframeMatch;
-  const target = activeSlide?.querySelector(".feature-focus") || activeSlide?.querySelector(".cover-actions button") || activeSlide?.querySelector(".feature-strip") || activeSlide?.querySelector(".live-frame") || activeSlide?.querySelector(".cover-frame");
+  const target = activeCueSelectors?.map((selector) => activeSlide?.querySelector(selector)).find(Boolean) || activeSlide?.querySelector(".feature-focus") || activeSlide?.querySelector(".cover-actions button") || activeSlide?.querySelector(".feature-strip") || activeSlide?.querySelector(".live-frame") || activeSlide?.querySelector(".cover-frame");
   return target ? { target } : null;
 }
 
@@ -279,6 +323,7 @@ function scheduleDemoGuide(delay = 0, settled = false) {
 }
 
 function updateSlide(index, options = {}) {
+  clearNarrationCues();
   currentSlide = Math.max(0, Math.min(index, slides.length - 1));
   slides.forEach((slide, slideIndex) => slide.classList.toggle("active", slideIndex === currentSlide));
   slideCount.textContent = `${currentSlide + 1} / ${slides.length}`;
@@ -302,10 +347,13 @@ slides.forEach((slide, index) => {
   dots.append(dot);
 });
 
-playTourButton?.addEventListener("click", () => {
+function startTour() {
   tourMode = true;
   speakCurrentSlide({ continueTour: true });
-});
+}
+
+playTourButton?.addEventListener("click", startTour);
+startWalkthroughButton?.addEventListener("click", startTour);
 
 voiceToggleButton?.addEventListener("click", () => {
   voiceoverEnabled = !voiceoverEnabled;

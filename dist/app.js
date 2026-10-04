@@ -950,111 +950,29 @@ function initAmbientParallax() {
   });
 }
 
-const quickstartSteps = [
-  {
-    view: "overview",
-    selector: ".topbar",
-    title: "Start With The Command Center",
-    copy: "This top area explains the system's purpose and shows the live total of buyer and recruiting leads in the workspace."
-  },
-  {
-    view: "overview",
-    selector: ".hero-grid",
-    title: "Choose A Lead Stream",
-    copy: "Use the two stream cards to scan buyer interest or agent recruiting interest. Each stream stays separate from the first click."
-  },
-  {
-    view: "overview",
-    selector: ".metric-grid",
-    title: "Open Stored Leads Quickly",
-    copy: "These cards are clickable shortcuts. They take users directly to the matching lead records, approval queue, or schedule."
-  },
-  {
-    view: "agent",
-    selector: "#chat-form",
-    title: "Send Interest To Intake",
-    copy: "Lead Intake receives real campaign signals from connected social and ad accounts, then turns clicks, forms, comments, and replies into scored records."
-  },
-  {
-    view: "approval",
-    selector: "#approval-grid",
-    title: "Review Before Action",
-    copy: "The Approval Queue is where a person approves or rejects the system's recommendation before outreach or scheduling."
-  },
-  {
-    view: "pipeline",
-    selector: ".lead-manager-panel",
-    title: "Manage Buyers And Agent Candidates",
-    copy: "Lead Manager separates customers from sales agents, including their stage, follow-up flow, campaign links, reporting, and content plan."
-  },
-  {
-    view: "social",
-    selector: ".content-studio",
-    title: "Create And Queue Social Content",
-    copy: "Social Hub can generate post sets, select enrolled accounts, and queue or publish content once campaign accounts are connected."
-  },
-  {
-    view: "schedule",
-    selector: ".schedule-panel",
-    title: "Schedule Follow-Up",
-    copy: "Use the schedule panel to pick a lead, set the date and time, add notes, and choose the next outcome."
-  }
-];
+let quickstartHighlightTimer = 0;
 
-let quickstartIndex = 0;
-
-function positionQuickstartStep() {
-  const helper = document.querySelector("#quickstart-helper");
-  if (!helper || helper.hidden) return;
-  const step = quickstartSteps[quickstartIndex];
-  const target = document.querySelector(step.selector);
-  const focus = document.querySelector("#quickstart-focus");
-  const popover = document.querySelector("#quickstart-popover");
-  if (!target || !focus || !popover) return;
-
-  const targetRect = target.getBoundingClientRect();
-  const pad = 10;
-  const focusLeft = Math.max(8, targetRect.left - pad);
-  const focusTop = Math.max(8, targetRect.top - pad);
-  const focusWidth = Math.min(window.innerWidth - focusLeft - 8, targetRect.width + pad * 2);
-  const focusHeight = Math.min(window.innerHeight - focusTop - 8, targetRect.height + pad * 2);
-  focus.style.left = `${focusLeft}px`;
-  focus.style.top = `${focusTop}px`;
-  focus.style.width = `${focusWidth}px`;
-  focus.style.height = `${focusHeight}px`;
-
-  const popoverRect = popover.getBoundingClientRect();
-  const spaceBelow = window.innerHeight - targetRect.bottom;
-  const preferredTop = spaceBelow > popoverRect.height + 28 ? targetRect.bottom + 18 : targetRect.top - popoverRect.height - 18;
-  const top = Math.max(16, Math.min(preferredTop, window.innerHeight - popoverRect.height - 16));
-  const left = Math.max(16, Math.min(targetRect.left, window.innerWidth - popoverRect.width - 16));
-  popover.style.left = `${left}px`;
-  popover.style.top = `${top}px`;
+function clearQuickstartHighlight() {
+  window.clearTimeout(quickstartHighlightTimer);
+  document.querySelectorAll(".quickstart-highlight").forEach((target) => target.classList.remove("quickstart-highlight"));
 }
 
-function renderQuickstartStep() {
-  const step = quickstartSteps[quickstartIndex];
-  if (step.view === "social") skipAccountPromptOnce = true;
-  showView(step.view);
-  document.querySelector("#quickstart-step").textContent = `Step ${quickstartIndex + 1} Of ${quickstartSteps.length}`;
-  document.querySelector("#quickstart-title").textContent = step.title;
-  document.querySelector("#quickstart-copy").textContent = step.copy;
-  document.querySelector("#quickstart-prev").disabled = quickstartIndex === 0;
-  document.querySelector("#quickstart-next").textContent = quickstartIndex === quickstartSteps.length - 1 ? "Finish" : "Next";
-  requestAnimationFrame(positionQuickstartStep);
-}
-
-function startQuickstart() {
-  const helper = document.querySelector("#quickstart-helper");
-  if (!helper) return;
-  quickstartIndex = 0;
-  helper.hidden = false;
-  renderQuickstartStep();
+function highlightGuideTarget(view, selector) {
+  if (!view || !selector) return;
+  if (view === "social") skipAccountPromptOnce = true;
+  showView(view);
+  clearQuickstartHighlight();
+  requestAnimationFrame(() => {
+    const target = document.querySelector(selector);
+    if (!target) return;
+    target.classList.add("quickstart-highlight");
+    target.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+    quickstartHighlightTimer = window.setTimeout(() => target.classList.remove("quickstart-highlight"), 4200);
+  });
 }
 
 function closeQuickstart() {
-  const helper = document.querySelector("#quickstart-helper");
-  if (helper) helper.hidden = true;
+  clearQuickstartHighlight();
 }
 
 document.querySelectorAll(".nav-item").forEach((button) => {
@@ -1087,23 +1005,9 @@ document.querySelector(".menu-toggle")?.addEventListener("click", () => {
   document.querySelector(".menu-toggle").setAttribute("aria-expanded", String(isOpen));
 });
 
-document.querySelector("#guide-launch")?.addEventListener("click", startQuickstart);
-document.querySelector("#quickstart-skip")?.addEventListener("click", closeQuickstart);
-document.querySelector("#quickstart-backdrop")?.addEventListener("click", closeQuickstart);
-document.querySelector("#quickstart-prev")?.addEventListener("click", () => {
-  quickstartIndex = Math.max(0, quickstartIndex - 1);
-  renderQuickstartStep();
+document.querySelectorAll("[data-guide-view]").forEach((button) => {
+  button.addEventListener("click", () => highlightGuideTarget(button.dataset.guideView, button.dataset.guideTarget));
 });
-document.querySelector("#quickstart-next")?.addEventListener("click", () => {
-  if (quickstartIndex >= quickstartSteps.length - 1) {
-    closeQuickstart();
-    return;
-  }
-  quickstartIndex += 1;
-  renderQuickstartStep();
-});
-window.addEventListener("resize", positionQuickstartStep);
-window.addEventListener("scroll", positionQuickstartStep, { passive: true });
 
 document.querySelector("#sidebar-resizer")?.addEventListener("pointerdown", (event) => {
   if (window.matchMedia("(max-width: 1100px)").matches) return;

@@ -7,7 +7,7 @@
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Lead Acquisition Presentation</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="presentation.css?v=20261004-09" />
+    <link rel="stylesheet" href="presentation.css?v=20261004-10" />
   </head>
   <body>
     <header class="deck-header">
@@ -32,7 +32,7 @@
           <p>A guided walkthrough of the full lead acquisition system: how it attracts insurance buyers, recruits sales agents, captures interest, reviews next steps, and tracks follow-up.</p>
           <div class="cover-actions">
             <a href="index.html" target="_blank" rel="noreferrer">Open Full System</a>
-            <button type="button" data-jump="1">Start walkthrough</button>
+            <button type="button" id="start-walkthrough">Start walkthrough</button>
           </div>
         </div>
         <div class="cover-frame">
@@ -278,21 +278,21 @@
         </div>
       </section>
 
-      <section class="slide feature-slide" data-view="overview" data-title="Interface Updates">
+      <section class="slide feature-slide" data-view="quickstart" data-title="Interface Updates">
         <div class="slide-copy">
           <p class="eyebrow">Interface Updates</p>
-          <h2>Usability And Presentation Readiness</h2>
-          <p>The interface includes practical controls for daily use and enough polish to present the system as a serious operating tool.</p>
+          <h2>Quick Start Guide And Daily Controls</h2>
+          <p>The interface includes a dedicated Quick Start Guide page that opens real app areas and highlights the exact controls users should review.</p>
           <ul>
+            <li>Quick Start Guide cards jump to actual app sections and highlight live controls in place</li>
             <li>Profile menu opens from the profile avatar or name and supports display-name and portrait changes</li>
             <li>Dark mode, light mode, and reduced motion settings support different presentation environments</li>
             <li>The sidebar is resizable on desktop and collapses into a mobile menu</li>
-            <li>The app includes browser security hardening, safer dynamic rendering, and sandboxed presentation frames</li>
           </ul>
-          <button class="feature-focus" type="button" data-view-target="overview">Show Interface</button>
+          <button class="feature-focus" type="button" data-view-target="quickstart">Show Quick Start Guide</button>
         </div>
         <div class="live-frame">
-          <iframe title="Interface updates" src="index.html?slide=overview" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
+          <iframe title="Interface updates" src="index.html?slide=quickstart" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
         </div>
       </section>
 
@@ -326,6 +326,6 @@
       <nav class="dots" id="slide-dots" aria-label="Slide shortcuts"></nav>
     </footer>
 
-    <script src="presentation.js?v=20261004-11"></script>
+    <script src="presentation.js?v=20261004-13"></script>
   </body>
 </html>
