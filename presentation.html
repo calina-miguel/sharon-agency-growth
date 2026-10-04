@@ -7,11 +7,18 @@
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Lead Acquisition Presentation</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="presentation.css?v=20261002-01" />
+    <link rel="stylesheet" href="presentation.css?v=20261004-01" />
   </head>
   <body>
     <header class="deck-header">
       <a class="brand-link" href="index.html" target="_blank" rel="noreferrer">Lead Acquisition System</a>
+      <div class="voice-controls" aria-label="Voiceover controls">
+        <button class="icon-button" id="play-tour" type="button">Play Tour</button>
+        <button class="icon-button" id="narrate-slide" type="button">Narrate Slide</button>
+        <button class="icon-button" id="pause-voice" type="button">Pause</button>
+        <button class="icon-button" id="stop-voice" type="button">Stop</button>
+        <span id="voice-status" aria-live="polite">Voiceover Ready</span>
+      </div>
       <div class="deck-controls" aria-label="Presentation controls">
         <button class="icon-button" id="prev-slide" type="button" aria-label="Previous slide">Back</button>
         <span id="slide-count" aria-live="polite">1 / 9</span>
@@ -315,6 +322,6 @@
       <nav class="dots" id="slide-dots" aria-label="Slide shortcuts"></nav>
     </footer>
 
-    <script src="presentation.js?v=20261002-01"></script>
+    <script src="presentation.js?v=20261004-01"></script>
   </body>
 </html>

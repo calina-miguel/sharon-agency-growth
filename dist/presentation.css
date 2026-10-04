@@ -60,18 +60,31 @@ button {
   text-decoration: none;
 }
 
-.deck-controls {
+.deck-controls,
+.voice-controls {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.deck-controls span {
+.deck-controls span,
+.voice-controls span {
   min-width: 54px;
   color: var(--muted);
   font-size: 0.86rem;
   font-weight: 800;
   text-align: center;
+}
+
+.voice-controls {
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.voice-controls span {
+  min-width: 124px;
+  text-align: left;
 }
 
 .icon-button,
@@ -318,6 +331,7 @@ li::before {
 
   .deck-header {
     top: 0;
+    flex-wrap: wrap;
   }
 
   .deck-footer {
@@ -353,9 +367,26 @@ li::before {
     padding: 16px 18px;
   }
 
-  .deck-controls {
+  .deck-controls,
+  .voice-controls {
     width: 100%;
     justify-content: space-between;
+  }
+
+  .voice-controls {
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .voice-controls .icon-button {
+    flex: 0 0 auto;
+    padding: 9px 11px;
+  }
+
+  .voice-controls span {
+    flex: 0 0 auto;
+    min-width: auto;
   }
 
   .slide {
