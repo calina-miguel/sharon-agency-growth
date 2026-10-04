@@ -5,6 +5,7 @@ const dots = document.querySelector("#slide-dots");
 const playTourButton = document.querySelector("#play-tour");
 const restartTourButton = document.querySelector("#restart-tour");
 const tourNextSlideButton = document.querySelector("#tour-next-slide");
+const voiceToggleButton = document.querySelector("#voice-toggle");
 const voiceStatus = document.querySelector("#voice-status");
 const demoGuide = document.querySelector("#demo-guide");
 const demoHighlight = document.querySelector("#demo-highlight");
@@ -14,6 +15,7 @@ let currentSlide = 0;
 let tourMode = false;
 let audioMode = false;
 let guideTimer = 0;
+let voiceoverEnabled = true;
 
 const voiceAudio = new Audio();
 voiceAudio.preload = "metadata";
@@ -49,6 +51,12 @@ function supportsVoiceover() {
 
 function setVoiceStatus(message) {
   if (voiceStatus) voiceStatus.textContent = message;
+}
+
+function updateVoiceToggle() {
+  if (!voiceToggleButton) return;
+  voiceToggleButton.textContent = voiceoverEnabled ? "Turn Voiceover Off" : "Turn Voiceover On";
+  voiceToggleButton.setAttribute("aria-pressed", String(voiceoverEnabled));
 }
 
 function getPreferredVoice() {
@@ -108,6 +116,13 @@ function useSpeechFallback({ continueTour = false } = {}) {
 }
 
 function speakCurrentSlide({ continueTour = false } = {}) {
+  if (!voiceoverEnabled) {
+    setVoiceStatus("Voiceover Off");
+    if (tourMode && continueTour && currentSlide < slides.length - 1) {
+      window.setTimeout(() => updateSlide(currentSlide + 1, { narrate: true }), 1300);
+    }
+    return;
+  }
   voiceAudio.pause();
   if (supportsVoiceover()) {
     window.speechSynthesis.cancel();
@@ -213,6 +228,16 @@ playTourButton?.addEventListener("click", () => {
   speakCurrentSlide({ continueTour: true });
 });
 
+voiceToggleButton?.addEventListener("click", () => {
+  voiceoverEnabled = !voiceoverEnabled;
+  if (!voiceoverEnabled) {
+    stopVoiceover("Voiceover Off");
+  } else {
+    setVoiceStatus("Voiceover Ready");
+  }
+  updateVoiceToggle();
+});
+
 restartTourButton?.addEventListener("click", () => {
   stopVoiceover("Voiceover Ready");
   updateSlide(0, { userInitiated: true });
@@ -255,4 +280,5 @@ if (supportsVoiceover()) {
 }
 
 window.addEventListener("resize", animateDemoGuide);
+updateVoiceToggle();
 updateSlide(0);
