@@ -16,6 +16,7 @@ const demoClick = document.querySelector("#demo-click");
 let currentSlide = 0;
 let tourMode = false;
 let audioMode = false;
+let playbackPaused = false;
 let guideTimer = 0;
 let guideResetTimer = 0;
 let activeCueSelectors = null;
@@ -131,19 +132,23 @@ function getPreferredVoice() {
   return englishVoices.find((voice) => /natural|premium|microsoft|google|samantha|daniel/i.test(voice.name)) || englishVoices[0] || voices[0] || null;
 }
 
-function resetPauseButton() {
-  return;
+function updatePlayButton() {
+  if (!playTourButton) return;
+  const isPlaying = tourMode && !playbackPaused;
+  playTourButton.textContent = isPlaying ? "Pause" : "Play";
+  playTourButton.setAttribute("aria-pressed", String(isPlaying));
 }
 
 function stopVoiceover(status = "Voiceover Ready") {
   tourMode = false;
   audioMode = false;
+  playbackPaused = false;
   clearNarrationCues();
   voiceAudio.pause();
   voiceAudio.removeAttribute("src");
   voiceAudio.load();
   if (supportsVoiceover()) window.speechSynthesis.cancel();
-  resetPauseButton();
+  updatePlayButton();
   setVoiceStatus(status);
 }
 
@@ -154,9 +159,10 @@ function useSpeechFallback({ continueTour = false } = {}) {
   }
 
   audioMode = false;
+  playbackPaused = false;
   scheduleNarrationCues();
   window.speechSynthesis.cancel();
-  resetPauseButton();
+  updatePlayButton();
 
   const title = slides[currentSlide]?.dataset.title || `Slide ${currentSlide + 1}`;
   const scriptSet = window.matchMedia("(max-width: 900px)").matches ? mobileNarrationScripts : narrationScripts;
@@ -175,8 +181,9 @@ function useSpeechFallback({ continueTour = false } = {}) {
       return;
     }
     tourMode = false;
+    playbackPaused = false;
     setVoiceStatus("Voiceover Complete");
-    resetPauseButton();
+    updatePlayButton();
   };
   utterance.onerror = () => stopVoiceover("Voiceover Stopped");
 
@@ -197,7 +204,8 @@ function speakCurrentSlide({ continueTour = false } = {}) {
     window.speechSynthesis.cancel();
   }
   audioMode = true;
-  resetPauseButton();
+  playbackPaused = false;
+  updatePlayButton();
   const audioSet = window.matchMedia("(max-width: 900px)").matches ? mobileNarrationAudioFiles : narrationAudioFiles;
   voiceAudio.src = audioSet[currentSlide];
   voiceAudio.currentTime = 0;
@@ -208,8 +216,9 @@ function speakCurrentSlide({ continueTour = false } = {}) {
       return;
     }
     tourMode = false;
+    playbackPaused = false;
     setVoiceStatus("Voiceover Complete");
-    resetPauseButton();
+    updatePlayButton();
   };
   voiceAudio.onerror = () => useSpeechFallback({ continueTour });
   voiceAudio.play().catch(() => useSpeechFallback({ continueTour }));
@@ -373,7 +382,34 @@ slides.forEach((slide, index) => {
 });
 
 function startTour() {
+  if (tourMode && !playbackPaused) {
+    playbackPaused = true;
+    clearNarrationCues();
+    voiceAudio.pause();
+    if (!audioMode && supportsVoiceover()) window.speechSynthesis.pause();
+    setVoiceStatus("Voiceover Paused");
+    updatePlayButton();
+    return;
+  }
+
+  if (tourMode && playbackPaused) {
+    playbackPaused = false;
+    scheduleNarrationCues();
+    if (audioMode && voiceAudio.src) {
+      voiceAudio.play().catch(() => useSpeechFallback({ continueTour: true }));
+    } else if (supportsVoiceover() && window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+    } else {
+      speakCurrentSlide({ continueTour: true });
+    }
+    setVoiceStatus(`Playing ${currentSlide + 1} / ${slides.length}`);
+    updatePlayButton();
+    return;
+  }
+
   tourMode = true;
+  playbackPaused = false;
+  updatePlayButton();
   speakCurrentSlide({ continueTour: true });
 }
 
@@ -438,4 +474,5 @@ if (supportsVoiceover()) {
 
 window.addEventListener("resize", animateDemoGuide);
 updateVoiceToggle();
+updatePlayButton();
 updateSlide(0);
