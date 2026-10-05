@@ -1,9 +1,9 @@
 {
-  "lastChecked": "2026-10-04T18:01:32.808Z",
+  "lastChecked": "2026-10-05T11:33:34.602Z",
   "summary": {
-    "status": "Review Needed",
-    "changedCount": 1,
-    "note": "1 monitored source changed since the last run. Review before updating acquisition copy or automation."
+    "status": "No Source Changes Detected",
+    "changedCount": 0,
+    "note": "No monitored source changes were detected. Continue routing new tactics through human compliance review."
   },
   "recommendations": [
     "Separate insurance customer acquisition from sales agent recruiting so each page, ad, and consent path has a clear purpose.",
@@ -129,7 +129,7 @@
       "status": "Watched",
       "title": "Complying with the Telemarketing Sales Rule | Federal Trade Commission",
       "hash": "ca2bd82ca576c169",
-      "changedSinceLastRun": true,
+      "changedSinceLastRun": false,
       "matchedTopics": [
         "telemarketing",
         "lead generator",
