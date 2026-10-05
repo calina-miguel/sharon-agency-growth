@@ -5,6 +5,7 @@ const dots = document.querySelector("#slide-dots");
 const playTourButton = document.querySelector("#play-tour");
 const startWalkthroughButton = document.querySelector("#start-walkthrough");
 const restartTourButton = document.querySelector("#restart-tour");
+const tourPrevSlideButton = document.querySelector("#tour-prev-slide");
 const tourNextSlideButton = document.querySelector("#tour-next-slide");
 const voiceToggleButton = document.querySelector("#voice-toggle");
 const voiceStatus = document.querySelector("#voice-status");
@@ -350,6 +351,7 @@ function updateSlide(index, options = {}) {
   currentSlide = Math.max(0, Math.min(index, slides.length - 1));
   slides.forEach((slide, slideIndex) => slide.classList.toggle("active", slideIndex === currentSlide));
   slideCount.textContent = `${currentSlide + 1} / ${slides.length}`;
+  if (tourPrevSlideButton) tourPrevSlideButton.disabled = currentSlide === 0;
   if (tourNextSlideButton) tourNextSlideButton.disabled = currentSlide === slides.length - 1;
   progressBar.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
   dots.querySelectorAll("button").forEach((button, dotIndex) => button.classList.toggle("active", dotIndex === currentSlide));
@@ -396,6 +398,11 @@ restartTourButton?.addEventListener("click", () => {
 tourNextSlideButton?.addEventListener("click", () => {
   stopVoiceover("Voiceover Ready");
   updateSlide(currentSlide + 1, { userInitiated: true });
+});
+
+tourPrevSlideButton?.addEventListener("click", () => {
+  stopVoiceover("Voiceover Ready");
+  updateSlide(currentSlide - 1, { userInitiated: true });
 });
 
 document.querySelectorAll("[data-jump]").forEach((button) => {
