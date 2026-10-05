@@ -516,6 +516,12 @@ button:active {
   text-transform: uppercase;
 }
 
+.topbar .eyebrow,
+.section-head .eyebrow,
+.landing-copy > .eyebrow {
+  font-size: 0.9rem;
+}
+
 .proposal-note span {
   color: #f4d187;
 }

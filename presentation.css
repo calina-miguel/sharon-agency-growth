@@ -353,6 +353,11 @@ button {
   text-transform: uppercase;
 }
 
+.cover-copy > .eyebrow,
+.slide-copy > .eyebrow {
+  font-size: 0.95rem;
+}
+
 h1,
 h2 {
   margin: 0;
