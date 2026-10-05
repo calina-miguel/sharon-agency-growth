@@ -209,6 +209,18 @@ button {
   transform: translateY(-1px);
 }
 
+.voice-controls .icon-button:hover,
+.voice-controls .icon-button:focus-visible {
+  background: #e8f4f1;
+  color: #0f3f36;
+}
+
+.voice-controls .icon-button:active {
+  background: #cfe8e1;
+  color: #0b332c;
+  transform: translateY(0) scale(0.98);
+}
+
 .demo-guide {
   position: fixed;
   inset: 0;
