@@ -87,7 +87,7 @@ button {
   min-width: 0;
   flex-wrap: wrap;
   max-width: min(760px, calc(100vw - 56px));
-  padding: 5px;
+  padding: 8px 10px;
   border: 1px solid rgba(217, 226, 222, 0.78);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.9);
@@ -578,7 +578,7 @@ li::before {
     max-width: none;
     justify-content: center;
     overflow: visible;
-    padding: 5px;
+    padding: 8px;
     border-radius: 14px;
   }
 
