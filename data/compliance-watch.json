@@ -1,9 +1,9 @@
 {
-  "lastChecked": "2026-10-05T11:33:34.602Z",
+  "lastChecked": "2026-10-06T11:31:12.249Z",
   "summary": {
-    "status": "No Source Changes Detected",
-    "changedCount": 0,
-    "note": "No monitored source changes were detected. Continue routing new tactics through human compliance review."
+    "status": "Review Needed",
+    "changedCount": 2,
+    "note": "2 monitored sources changed since the last run. Review before updating acquisition copy or automation."
   },
   "recommendations": [
     "Separate insurance customer acquisition from sales agent recruiting so each page, ad, and consent path has a clear purpose.",
@@ -80,8 +80,8 @@
       ],
       "status": "Watched",
       "title": "Social Media | FINRA.org",
-      "hash": "96b62887885be274",
-      "changedSinceLastRun": false,
+      "hash": "80d6bb70cab98c4f",
+      "changedSinceLastRun": true,
       "matchedTopics": [
         "social media",
         "communications",
@@ -128,8 +128,8 @@
       ],
       "status": "Watched",
       "title": "Complying with the Telemarketing Sales Rule | Federal Trade Commission",
-      "hash": "ca2bd82ca576c169",
-      "changedSinceLastRun": false,
+      "hash": "5af83a2cf988326e",
+      "changedSinceLastRun": true,
       "matchedTopics": [
         "telemarketing",
         "lead generator",
