@@ -19,7 +19,8 @@ let audioMode = false;
 let playbackPaused = false;
 let guideTimer = 0;
 let guideResetTimer = 0;
-let guideRefineTimer = 0;
+let guideRefineTimers = [];
+let activeGuideToken = 0;
 let activeCueSelectors = null;
 let narrationCueTimers = [];
 let voiceoverEnabled = true;
@@ -91,8 +92,11 @@ const narrationCues = [
 function clearNarrationCues() {
   narrationCueTimers.forEach((timer) => window.clearTimeout(timer));
   narrationCueTimers = [];
-  window.clearTimeout(guideRefineTimer);
+  guideRefineTimers.forEach((timer) => window.clearTimeout(timer));
+  guideRefineTimers = [];
+  activeGuideToken += 1;
   activeCueSelectors = null;
+  hideDemoGuide();
 }
 
 function scheduleNarrationCues() {
@@ -238,8 +242,32 @@ function setDemoBox(element, rect, pad = 8) {
   element.style.height = `${height}px`;
 }
 
+function hideDemoGuide() {
+  if (!demoGuide) return;
+  demoGuide.classList.add("is-hidden");
+  demoHighlight?.classList.remove("is-active");
+  demoCursor?.classList.remove("is-active", "is-clicking");
+  demoClick?.classList.remove("is-active");
+  if (demoHighlight) {
+    demoHighlight.removeAttribute("data-cue-id");
+    demoHighlight.style.left = "-9999px";
+    demoHighlight.style.top = "-9999px";
+    demoHighlight.style.width = "0px";
+    demoHighlight.style.height = "0px";
+  }
+  if (demoCursor) {
+    demoCursor.style.left = "-9999px";
+    demoCursor.style.top = "-9999px";
+  }
+  if (demoClick) {
+    demoClick.style.left = "-9999px";
+    demoClick.style.top = "-9999px";
+  }
+}
+
 function placeDemoGuide(match) {
   const rect = screenRectForTarget(match);
+  if (!rect) return null;
   const startX = Math.max(24, rect.left - 72);
   const startY = Math.max(86, rect.top - 34);
   const endX = rect.left + Math.min(rect.width - 12, Math.max(20, rect.width * 0.72));
@@ -255,12 +283,18 @@ function placeDemoGuide(match) {
 }
 
 function refineDemoGuide(match) {
-  window.clearTimeout(guideRefineTimer);
+  guideRefineTimers.forEach((timer) => window.clearTimeout(timer));
+  guideRefineTimers = [];
   if (!match?.iframe) return;
-  guideRefineTimer = window.setTimeout(() => {
+  const guideToken = activeGuideToken;
+  const refineDelays = [140, 360, 760];
+  const runRefine = () => {
     try {
+      if (guideToken !== activeGuideToken) return;
       if (!document.contains(match.iframe) || !match.target.isConnected) return;
-      const { endX, endY } = placeDemoGuide(match);
+      const placement = placeDemoGuide(match);
+      if (!placement) return;
+      const { endX, endY } = placement;
       demoCursor.style.left = `${endX}px`;
       demoCursor.style.top = `${endY}px`;
       demoClick.style.left = `${endX}px`;
@@ -268,7 +302,10 @@ function refineDemoGuide(match) {
     } catch {
       // If the embedded view changed, the next cue will place the guide again.
     }
-  }, 220);
+  };
+  refineDelays.forEach((delay) => {
+    guideRefineTimers.push(window.setTimeout(runRefine, delay));
+  });
 }
 
 function iframeTargetRect(iframe, selectors = [], options = {}) {
@@ -310,19 +347,23 @@ function screenRectForTarget(match) {
   const contentTop = iframeRect.top + borderTop;
   const contentRight = iframeRect.right - (Number.parseFloat(iframeStyle.borderRightWidth) || 0);
   const contentBottom = iframeRect.bottom - (Number.parseFloat(iframeStyle.borderBottomWidth) || 0);
-  const left = Math.max(contentLeft + targetRect.left, contentLeft + 6);
-  const top = Math.max(contentTop + targetRect.top, contentTop + 6);
-  const right = Math.min(contentLeft + targetRect.right, contentRight - 6);
-  const bottom = Math.min(contentTop + targetRect.bottom, contentBottom - 6);
+  const contentWidth = Math.max(1, contentRight - contentLeft);
+  const contentHeight = Math.max(1, contentBottom - contentTop);
+  const iframeWindow = match.iframe.contentWindow;
+  const iframeDoc = iframeWindow?.document;
+  const viewport = iframeWindow?.visualViewport;
+  const layoutWidth = viewport?.width || iframeDoc?.documentElement?.clientWidth || match.iframe.clientWidth || contentWidth;
+  const layoutHeight = viewport?.height || iframeDoc?.documentElement?.clientHeight || match.iframe.clientHeight || contentHeight;
+  const viewportLeft = viewport?.offsetLeft || 0;
+  const viewportTop = viewport?.offsetTop || 0;
+  const scaleX = contentWidth / Math.max(1, layoutWidth);
+  const scaleY = contentHeight / Math.max(1, layoutHeight);
+  const left = Math.max(contentLeft + ((targetRect.left - viewportLeft) * scaleX), contentLeft + 6);
+  const top = Math.max(contentTop + ((targetRect.top - viewportTop) * scaleY), contentTop + 6);
+  const right = Math.min(contentLeft + ((targetRect.right - viewportLeft) * scaleX), contentRight - 6);
+  const bottom = Math.min(contentTop + ((targetRect.bottom - viewportTop) * scaleY), contentBottom - 6);
   if (right <= left || bottom <= top) {
-    return {
-      left: contentLeft + iframeRect.width * 0.18,
-      top: contentTop + iframeRect.height * 0.28,
-      width: iframeRect.width * 0.64,
-      height: Math.min(iframeRect.height * 0.34, 220),
-      right: contentLeft + iframeRect.width * 0.82,
-      bottom: contentTop + iframeRect.height * 0.62
-    };
+    return null;
   }
   return {
     left,
@@ -349,11 +390,14 @@ function markIframeTarget(match) {
 
 function animateDemoGuide(settled = false) {
   window.clearTimeout(guideTimer);
-  window.clearTimeout(guideRefineTimer);
+  guideRefineTimers.forEach((timer) => window.clearTimeout(timer));
+  guideRefineTimers = [];
+  const guideToken = activeGuideToken + 1;
+  activeGuideToken = guideToken;
   if (!demoGuide || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const match = resolveDemoTarget({ scroll: !settled, instant: !!activeCueSelectors });
   if (!match || !demoHighlight || !demoCursor || !demoClick) {
-    demoGuide.classList.add("is-hidden");
+    hideDemoGuide();
     return;
   }
 
@@ -369,9 +413,16 @@ function animateDemoGuide(settled = false) {
   demoCursor.classList.remove("is-active", "is-clicking");
   demoClick.classList.remove("is-active");
   if (match.cueId) demoHighlight.dataset.cueId = match.cueId;
-  const { endX, endY } = placeDemoGuide(match);
+  const placement = placeDemoGuide(match);
+  if (!placement) {
+    hideDemoGuide();
+    if (!settled) guideTimer = window.setTimeout(() => animateDemoGuide(true), 260);
+    return;
+  }
+  const { endX, endY } = placement;
 
   requestAnimationFrame(() => {
+    if (guideToken !== activeGuideToken) return;
     demoHighlight.classList.add("is-active");
     demoCursor.classList.add("is-active");
     demoCursor.style.left = `${endX}px`;
