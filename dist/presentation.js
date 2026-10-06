@@ -19,6 +19,7 @@ let audioMode = false;
 let playbackPaused = false;
 let guideTimer = 0;
 let guideResetTimer = 0;
+let guideRefineTimer = 0;
 let activeCueSelectors = null;
 let narrationCueTimers = [];
 let voiceoverEnabled = true;
@@ -52,44 +53,45 @@ const mobileNarrationScripts = [...narrationScripts];
 mobileNarrationScripts[0] = "Welcome to the Lead Acquisition System. This guided tour explains how the app helps an agency attract insurance buyers, recruit sales agents, review every lead, and track follow up from one workspace. Use the live preview at the bottom as the tour moves through each section.";
 
 const demoTargets = {
-  overview: [".metric-link", ".hero-panel button", ".metric-grid"],
-  engines: [".engine-card", ".section-head button", ".engine-grid"],
-  schedule: ["#schedule-form button", "#schedule-form", ".schedule-card"],
-  pipeline: [".lead-manager-tabs", ".lead-card", ".lead-manager-panel"],
-  "customer-page": [".public-lead-form button", ".public-lead-form", ".landing-preview"],
-  "recruit-page": [".public-lead-form button", ".public-lead-form", ".landing-preview"],
-  social: ["#generate-social-post", "#sync-social", ".account-card"],
-  agent: ["#chat-form", "#intake-summary"],
-  compliance: ["#refresh-compliance", ".compliance-panel", ".compliance-layout"],
-  aeo: [".answer-stack button", ".aeo-signal-grid", ".aeo-layout"],
-  approval: ["[data-approve]", ".approval-card", "#approval-grid"],
-  campaigns: ["#generate-campaign", "#campaign-form"],
-  quickstart: [".quickstart-card button", ".quickstart-page"],
-  reporting: [".score-card", "#score-grid", ".chart-panel"]
+  overview: { id: "overview-metrics", selectors: [".metric-grid", ".metric-link"] },
+  engines: { id: "engine-cards", selectors: [".engine-grid", ".engine-card"] },
+  schedule: { id: "schedule-form", selectors: ["#schedule-form", ".schedule-card"] },
+  pipeline: { id: "pipeline-cards", selectors: [".lead-manager-panel", ".lead-card"] },
+  "customer-page": { id: "customer-form", selectors: [".public-lead-form", ".landing-preview"] },
+  "recruit-page": { id: "recruit-form", selectors: [".public-lead-form", ".landing-preview"] },
+  social: { id: "social-accounts", selectors: [".account-card", "#sync-social"] },
+  agent: { id: "intake-form", selectors: ["#chat-form", "#intake-summary"] },
+  compliance: { id: "compliance-panel", selectors: [".compliance-panel", ".compliance-summary"] },
+  aeo: { id: "aeo-answers", selectors: [".answer-stack button", ".aeo-layout"] },
+  approval: { id: "approval-card", selectors: [".approval-card", "#approval-grid"] },
+  campaigns: { id: "campaign-form", selectors: ["#campaign-form", "#generate-campaign"] },
+  quickstart: { id: "quickstart-cards", selectors: [".quickstart-page", ".quickstart-card button"] },
+  reporting: { id: "reporting-scorecards", selectors: ["#score-grid", ".score-card"] }
 };
 
 const narrationCues = [
-  [{ at: 0, selectors: [".app-title", ".topbar"] }, { at: 6500, selectors: [".live-frame", ".metric-grid"] }],
-  [{ at: 0, selectors: [".hero-grid"] }, { at: 7600, selectors: [".metric-grid"] }],
-  [{ at: 0, selectors: [".metric-link"] }, { at: 7000, selectors: [".schedule-card", ".metric-grid"] }],
-  [{ at: 0, selectors: [".engine-card"] }, { at: 7600, selectors: [".section-head button", ".engine-grid"] }],
-  [{ at: 0, selectors: ["#schedule-form"] }, { at: 6500, selectors: ["#schedule-form button", ".schedule-card"] }],
-  [{ at: 0, selectors: [".lead-manager-tabs"] }, { at: 7000, selectors: [".lead-card", ".lead-manager-panel"] }],
-  [{ at: 0, selectors: [".landing-preview"] }, { at: 6200, selectors: [".public-lead-form button", ".public-lead-form"] }],
-  [{ at: 0, selectors: [".landing-preview"] }, { at: 6200, selectors: [".public-lead-form button", ".public-lead-form"] }],
-  [{ at: 0, selectors: [".account-card"] }, { at: 7200, selectors: ["#generate-social-post", ".content-studio"] }],
-  [{ at: 0, selectors: ["#chat-form"] }, { at: 7000, selectors: ["#intake-summary"] }],
-  [{ at: 0, selectors: [".compliance-summary"] }, { at: 6500, selectors: ["#refresh-compliance", ".compliance-panel"] }],
-  [{ at: 0, selectors: [".answer-stack button"] }, { at: 7000, selectors: [".aeo-signal-grid", ".aeo-layout"] }],
-  [{ at: 0, selectors: [".approval-card"] }, { at: 7200, selectors: ["[data-approve]", "#approval-grid"] }],
-  [{ at: 0, selectors: ["#campaign-form"] }, { at: 6800, selectors: ["#generate-campaign", ".generated-url"] }],
-  [{ at: 0, selectors: [".quickstart-card button"] }, { at: 7200, selectors: [".quickstart-page"] }],
-  [{ at: 0, selectors: [".score-card"] }, { at: 7000, selectors: [".chart-panel", "#funnel"] }]
+  [{ at: 0, id: "app-title", selectors: [".app-title", ".topbar"] }, { at: 6500, id: "overview-metrics", selectors: [".metric-grid", ".metric-link"] }],
+  [{ at: 0, id: "lead-streams", selectors: [".hero-grid"] }, { at: 7600, id: "lead-shortcuts", selectors: [".metric-grid"] }],
+  [{ at: 0, id: "metric-cards", selectors: [".metric-grid", ".metric-link"] }, { at: 7000, id: "schedule-cards", selectors: [".schedule-card", ".metric-grid"] }],
+  [{ at: 0, id: "engine-cards", selectors: [".engine-grid", ".engine-card"] }, { at: 7600, id: "engine-actions", selectors: [".section-head button", ".engine-grid"] }],
+  [{ at: 0, id: "schedule-form", selectors: ["#schedule-form"] }, { at: 6500, id: "schedule-save", selectors: ["#schedule-form button", ".schedule-card"] }],
+  [{ at: 0, id: "lead-manager-tabs", selectors: [".lead-manager-tabs"] }, { at: 7000, id: "lead-manager-cards", selectors: [".lead-manager-panel", ".lead-card"] }],
+  [{ at: 0, id: "customer-page", selectors: [".landing-preview"] }, { at: 6200, id: "customer-form", selectors: [".public-lead-form", ".public-lead-form button"] }],
+  [{ at: 0, id: "recruit-page", selectors: [".landing-preview"] }, { at: 6200, id: "recruit-form", selectors: [".public-lead-form", ".public-lead-form button"] }],
+  [{ at: 0, id: "social-accounts", selectors: [".account-card"] }, { at: 7200, id: "social-studio", selectors: [".content-studio", "#generate-social-post"] }],
+  [{ at: 0, id: "intake-form", selectors: ["#chat-form"] }, { at: 7000, id: "intake-summary", selectors: ["#intake-summary"] }],
+  [{ at: 0, id: "compliance-summary", selectors: [".compliance-summary"] }, { at: 6500, id: "compliance-panel", selectors: [".compliance-panel", "#refresh-compliance"] }],
+  [{ at: 0, id: "aeo-question", selectors: [".answer-stack button"] }, { at: 7000, id: "aeo-layout", selectors: [".aeo-layout", ".aeo-signal-grid"] }],
+  [{ at: 0, id: "approval-card", selectors: [".approval-card"] }, { at: 7200, id: "approve-button", selectors: ["[data-approve]", "#approval-grid"] }],
+  [{ at: 0, id: "campaign-form", selectors: ["#campaign-form"] }, { at: 6800, id: "campaign-output", selectors: [".generated-url", "#generate-campaign"] }],
+  [{ at: 0, id: "quickstart-button", selectors: [".quickstart-card button"] }, { at: 7200, id: "quickstart-page", selectors: [".quickstart-page"] }],
+  [{ at: 0, id: "score-grid", selectors: ["#score-grid", ".score-card"] }, { at: 7000, id: "funnel-chart", selectors: [".chart-panel", "#funnel"] }]
 ];
 
 function clearNarrationCues() {
   narrationCueTimers.forEach((timer) => window.clearTimeout(timer));
   narrationCueTimers = [];
+  window.clearTimeout(guideRefineTimer);
   activeCueSelectors = null;
 }
 
@@ -98,7 +100,7 @@ function scheduleNarrationCues() {
   const cues = narrationCues[currentSlide] || [];
   cues.forEach((cue) => {
     narrationCueTimers.push(window.setTimeout(() => {
-      activeCueSelectors = cue.selectors;
+      activeCueSelectors = cue;
       scheduleDemoGuide(80);
     }, cue.at));
   });
@@ -236,6 +238,39 @@ function setDemoBox(element, rect, pad = 8) {
   element.style.height = `${height}px`;
 }
 
+function placeDemoGuide(match) {
+  const rect = screenRectForTarget(match);
+  const startX = Math.max(24, rect.left - 72);
+  const startY = Math.max(86, rect.top - 34);
+  const endX = rect.left + Math.min(rect.width - 12, Math.max(20, rect.width * 0.72));
+  const endY = rect.top + Math.min(rect.height - 12, Math.max(18, rect.height * 0.52));
+
+  setDemoBox(demoHighlight, rect, match.iframe ? 0 : 10);
+  demoCursor.style.left = `${startX}px`;
+  demoCursor.style.top = `${startY}px`;
+  demoClick.style.left = `${endX}px`;
+  demoClick.style.top = `${endY}px`;
+
+  return { endX, endY };
+}
+
+function refineDemoGuide(match) {
+  window.clearTimeout(guideRefineTimer);
+  if (!match?.iframe) return;
+  guideRefineTimer = window.setTimeout(() => {
+    try {
+      if (!document.contains(match.iframe) || !match.target.isConnected) return;
+      const { endX, endY } = placeDemoGuide(match);
+      demoCursor.style.left = `${endX}px`;
+      demoCursor.style.top = `${endY}px`;
+      demoClick.style.left = `${endX}px`;
+      demoClick.style.top = `${endY}px`;
+    } catch {
+      // If the embedded view changed, the next cue will place the guide again.
+    }
+  }, 220);
+}
+
 function iframeTargetRect(iframe, selectors = [], options = {}) {
   try {
     if (!iframe?.contentWindow?.document) return null;
@@ -256,29 +291,37 @@ function resolveDemoTarget(options = {}) {
   const activeSlide = slides[currentSlide];
   const activeView = activeSlide?.dataset.view;
   const iframe = activeSlide?.querySelector("iframe");
-  const targetSelectors = activeCueSelectors || demoTargets[activeView] || [];
+  const targetCue = activeCueSelectors || demoTargets[activeView] || {};
+  const targetSelectors = Array.isArray(targetCue) ? targetCue : targetCue.selectors || [];
   const iframeMatch = iframeTargetRect(iframe, targetSelectors, options);
-  if (iframeMatch) return iframeMatch;
-  const target = activeCueSelectors?.map((selector) => activeSlide?.querySelector(selector)).find(Boolean) || activeSlide?.querySelector(".feature-focus") || activeSlide?.querySelector(".cover-actions button") || activeSlide?.querySelector(".feature-strip") || activeSlide?.querySelector(".live-frame") || activeSlide?.querySelector(".cover-frame");
-  return target ? { target } : null;
+  if (iframeMatch) return { ...iframeMatch, cueId: targetCue.id || activeView };
+  const target = targetSelectors.map((selector) => activeSlide?.querySelector(selector)).find(Boolean) || activeSlide?.querySelector(".feature-focus") || activeSlide?.querySelector(".cover-actions button") || activeSlide?.querySelector(".feature-strip") || activeSlide?.querySelector(".live-frame") || activeSlide?.querySelector(".cover-frame");
+  return target ? { target, cueId: targetCue.id || activeView } : null;
 }
 
 function screenRectForTarget(match) {
   const targetRect = match.target.getBoundingClientRect();
   if (!match.iframe) return targetRect;
   const iframeRect = match.iframe.getBoundingClientRect();
-  const left = Math.max(iframeRect.left + targetRect.left, iframeRect.left + 8);
-  const top = Math.max(iframeRect.top + targetRect.top, iframeRect.top + 8);
-  const right = Math.min(iframeRect.left + targetRect.right, iframeRect.right - 8);
-  const bottom = Math.min(iframeRect.top + targetRect.bottom, iframeRect.bottom - 8);
+  const iframeStyle = window.getComputedStyle(match.iframe);
+  const borderLeft = Number.parseFloat(iframeStyle.borderLeftWidth) || 0;
+  const borderTop = Number.parseFloat(iframeStyle.borderTopWidth) || 0;
+  const contentLeft = iframeRect.left + borderLeft;
+  const contentTop = iframeRect.top + borderTop;
+  const contentRight = iframeRect.right - (Number.parseFloat(iframeStyle.borderRightWidth) || 0);
+  const contentBottom = iframeRect.bottom - (Number.parseFloat(iframeStyle.borderBottomWidth) || 0);
+  const left = Math.max(contentLeft + targetRect.left, contentLeft + 6);
+  const top = Math.max(contentTop + targetRect.top, contentTop + 6);
+  const right = Math.min(contentLeft + targetRect.right, contentRight - 6);
+  const bottom = Math.min(contentTop + targetRect.bottom, contentBottom - 6);
   if (right <= left || bottom <= top) {
     return {
-      left: iframeRect.left + iframeRect.width * 0.18,
-      top: iframeRect.top + iframeRect.height * 0.28,
+      left: contentLeft + iframeRect.width * 0.18,
+      top: contentTop + iframeRect.height * 0.28,
       width: iframeRect.width * 0.64,
       height: Math.min(iframeRect.height * 0.34, 220),
-      right: iframeRect.left + iframeRect.width * 0.82,
-      bottom: iframeRect.top + iframeRect.height * 0.62
+      right: contentLeft + iframeRect.width * 0.82,
+      bottom: contentTop + iframeRect.height * 0.62
     };
   }
   return {
@@ -297,6 +340,7 @@ function markIframeTarget(match) {
     const doc = match.iframe.contentWindow.document;
     doc.querySelectorAll(".presentation-cue-focus").forEach((node) => node.classList.remove("presentation-cue-focus"));
     match.target.classList.add("presentation-cue-focus");
+    if (match.cueId) match.target.dataset.presentationCue = match.cueId;
     window.setTimeout(() => match.target.classList.remove("presentation-cue-focus"), 2600);
   } catch {
     // The overlay still works even if the embedded page cannot be marked.
@@ -305,6 +349,7 @@ function markIframeTarget(match) {
 
 function animateDemoGuide(settled = false) {
   window.clearTimeout(guideTimer);
+  window.clearTimeout(guideRefineTimer);
   if (!demoGuide || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const match = resolveDemoTarget({ scroll: !settled, instant: !!activeCueSelectors });
   if (!match || !demoHighlight || !demoCursor || !demoClick) {
@@ -319,20 +364,12 @@ function animateDemoGuide(settled = false) {
 
   demoGuide.classList.remove("is-hidden");
   markIframeTarget(match);
-  const rect = screenRectForTarget(match);
-  const startX = Math.max(24, rect.left - 72);
-  const startY = Math.max(86, rect.top - 34);
-  const endX = rect.left + Math.min(rect.width - 12, Math.max(20, rect.width * 0.72));
-  const endY = rect.top + Math.min(rect.height - 12, Math.max(18, rect.height * 0.52));
 
   demoHighlight.classList.remove("is-active");
   demoCursor.classList.remove("is-active", "is-clicking");
   demoClick.classList.remove("is-active");
-  setDemoBox(demoHighlight, rect, match.iframe ? 0 : 10);
-  demoCursor.style.left = `${startX}px`;
-  demoCursor.style.top = `${startY}px`;
-  demoClick.style.left = `${endX}px`;
-  demoClick.style.top = `${endY}px`;
+  if (match.cueId) demoHighlight.dataset.cueId = match.cueId;
+  const { endX, endY } = placeDemoGuide(match);
 
   requestAnimationFrame(() => {
     demoHighlight.classList.add("is-active");
@@ -340,6 +377,7 @@ function animateDemoGuide(settled = false) {
     demoCursor.style.left = `${endX}px`;
     demoCursor.style.top = `${endY}px`;
   });
+  refineDemoGuide(match);
 
   guideTimer = window.setTimeout(() => {
     demoCursor.classList.add("is-clicking");
