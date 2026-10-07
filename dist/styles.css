@@ -647,6 +647,8 @@ button:active {
   position: relative;
   z-index: 3;
   animation: quickstartPulse 2200ms var(--ease) 2;
+  outline: 3px solid rgba(217, 164, 65, 0.78);
+  outline-offset: 8px;
   box-shadow: 0 0 0 4px rgba(217, 164, 65, 0.32), 0 0 0 12px rgba(217, 164, 65, 0.12), var(--lift-shadow) !important;
 }
 

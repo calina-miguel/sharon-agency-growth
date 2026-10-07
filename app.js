@@ -994,7 +994,6 @@ function highlightGuideTarget(view, selector) {
     if (!target) return;
     target.classList.add("quickstart-highlight");
     target.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
-    quickstartHighlightTimer = window.setTimeout(() => target.classList.remove("quickstart-highlight"), 4200);
   });
 }
 
