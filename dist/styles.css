@@ -61,7 +61,11 @@ body::before {
     radial-gradient(circle at calc(18% - var(--parallax-x, 0px)) calc(82% - var(--parallax-y, 0px)), rgba(20, 117, 109, 0.11), transparent 28vw),
     linear-gradient(135deg, rgba(255, 255, 255, 0.34), transparent 42%);
   content: "";
-  transform: translate3d(calc(var(--parallax-x, 0px) * 0.16), calc(var(--parallax-y, 0px) * 0.16), 0);
+  transform: translate3d(
+    calc(var(--parallax-x, 0px) * 0.16),
+    calc((var(--parallax-y, 0px) * 0.16) + var(--bg-scroll-parallax, 0px)),
+    0
+  );
   transition: transform 700ms var(--spring), background-position 700ms var(--spring);
 }
 
@@ -791,6 +795,32 @@ h3 {
 .view.active {
   display: block;
   animation: viewIn 520ms var(--spring) both;
+}
+
+.view.active > .hero-grid,
+.view.active > .metric-grid,
+.view.active > .band,
+.view.active > .section-head,
+.view.active > .acquisition-plan,
+.view.active > .engine-grid,
+.view.active > .agent-layout,
+.view.active > .approval-grid,
+.view.active > .lead-manager-tabs,
+.view.active > .lead-manager-panel,
+.view.active > .schedule-layout,
+.view.active > .social-layout,
+.view.active > .publish-panel,
+.view.active > .content-studio,
+.view.active > .compliance-layout,
+.view.active > .aeo-layout,
+.view.active > .campaign-builder,
+.view.active > .score-grid,
+.view.active > .chart-panel,
+.view.active > .quickstart-page,
+.landing-preview {
+  transform: translate3d(0, var(--fg-scroll-parallax, 0px), 0);
+  transition: transform 360ms var(--ease);
+  will-change: transform;
 }
 
 .motion-reveal {
@@ -2191,9 +2221,35 @@ body.reduce-motion *::after {
 body.reduce-motion {
   --parallax-x: 0px;
   --parallax-y: 0px;
+  --bg-scroll-parallax: 0px;
+  --fg-scroll-parallax: 0px;
 }
 
 body.reduce-motion::before {
+  transform: none !important;
+}
+
+body.reduce-motion .view.active > .hero-grid,
+body.reduce-motion .view.active > .metric-grid,
+body.reduce-motion .view.active > .band,
+body.reduce-motion .view.active > .section-head,
+body.reduce-motion .view.active > .acquisition-plan,
+body.reduce-motion .view.active > .engine-grid,
+body.reduce-motion .view.active > .agent-layout,
+body.reduce-motion .view.active > .approval-grid,
+body.reduce-motion .view.active > .lead-manager-tabs,
+body.reduce-motion .view.active > .lead-manager-panel,
+body.reduce-motion .view.active > .schedule-layout,
+body.reduce-motion .view.active > .social-layout,
+body.reduce-motion .view.active > .publish-panel,
+body.reduce-motion .view.active > .content-studio,
+body.reduce-motion .view.active > .compliance-layout,
+body.reduce-motion .view.active > .aeo-layout,
+body.reduce-motion .view.active > .campaign-builder,
+body.reduce-motion .view.active > .score-grid,
+body.reduce-motion .view.active > .chart-panel,
+body.reduce-motion .view.active > .quickstart-page,
+body.reduce-motion .landing-preview {
   transform: none !important;
 }
 

@@ -888,6 +888,8 @@ function setReducedMotionPreference(enabled) {
   if (enabled) {
     document.documentElement.style.setProperty("--parallax-x", "0px");
     document.documentElement.style.setProperty("--parallax-y", "0px");
+    document.documentElement.style.setProperty("--bg-scroll-parallax", "0px");
+    document.documentElement.style.setProperty("--fg-scroll-parallax", "0px");
   }
 }
 
@@ -938,22 +940,41 @@ function initAmbientParallax() {
   let frame = 0;
   let nextX = 0;
   let nextY = 0;
+  let nextBgScroll = 0;
+  let nextFgScroll = 0;
   const setParallax = () => {
     document.documentElement.style.setProperty("--parallax-x", `${nextX.toFixed(2)}px`);
     document.documentElement.style.setProperty("--parallax-y", `${nextY.toFixed(2)}px`);
+    document.documentElement.style.setProperty("--bg-scroll-parallax", `${nextBgScroll.toFixed(2)}px`);
+    document.documentElement.style.setProperty("--fg-scroll-parallax", `${nextFgScroll.toFixed(2)}px`);
     frame = 0;
+  };
+  const queueParallax = () => {
+    if (!frame) frame = requestAnimationFrame(setParallax);
+  };
+  const updateScrollParallax = () => {
+    if (document.body.classList.contains("reduce-motion")) return;
+    const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+    const progress = Math.min(Math.max(scrollY / maxScroll, 0), 1);
+    nextBgScroll = -progress * 72;
+    nextFgScroll = progress * 18;
+    queueParallax();
   };
   window.addEventListener("pointermove", (event) => {
     if (document.body.classList.contains("reduce-motion")) return;
     nextX = ((event.clientX / Math.max(window.innerWidth, 1)) - 0.5) * 34;
     nextY = ((event.clientY / Math.max(window.innerHeight, 1)) - 0.5) * 34;
-    if (!frame) frame = requestAnimationFrame(setParallax);
+    queueParallax();
   }, { passive: true });
   window.addEventListener("pointerleave", () => {
     nextX = 0;
     nextY = 0;
-    if (!frame) frame = requestAnimationFrame(setParallax);
+    queueParallax();
   });
+  window.addEventListener("scroll", updateScrollParallax, { passive: true });
+  window.addEventListener("resize", updateScrollParallax, { passive: true });
+  updateScrollParallax();
 }
 
 let quickstartHighlightTimer = 0;
