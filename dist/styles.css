@@ -831,7 +831,7 @@ body.presentation-embed .view {
 
 body.presentation-embed .topbar {
   gap: clamp(18px, 2.5vw, 28px);
-  padding: clamp(4px, 0.8vw, 8px) clamp(2px, 0.6vw, 8px) 0;
+  padding: clamp(22px, 3.5vw, 32px);
 }
 
 body.presentation-embed .hero-grid,
