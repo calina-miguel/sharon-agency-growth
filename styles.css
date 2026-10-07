@@ -298,6 +298,12 @@ body.sidebar-resizing .sidebar-resizer::before {
   gap: 14px;
 }
 
+.topbar,
+.section-head {
+  padding: 1.5em;
+  border-radius: 10px;
+}
+
 .sidebar-head,
 .topbar,
 .section-head,
@@ -2301,8 +2307,6 @@ body.reduce-motion .motion-reveal {
   .section-head {
     align-items: flex-start;
     flex-direction: column;
-    padding: 1.5em;
-    border-radius: 10px;
   }
 
   .topbar-actions {
