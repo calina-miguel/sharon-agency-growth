@@ -456,8 +456,7 @@ body.sidebar-resizing .sidebar-resizer::before {
   display: none;
 }
 
-.brand small,
-.proposal-note p {
+.brand small {
   color: #b7cbc5;
 }
 
@@ -558,13 +557,6 @@ button:active {
   transform: scale(0.985);
 }
 
-.proposal-note {
-  margin-top: auto;
-  padding-top: 18px;
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
-}
-
-.proposal-note span,
 .eyebrow {
   color: var(--teal);
   font-size: 0.78rem;
@@ -577,10 +569,6 @@ button:active {
 .section-head .eyebrow,
 .landing-copy > .eyebrow {
   font-size: 0.9rem;
-}
-
-.proposal-note span {
-  color: #f4d187;
 }
 
 .quickstart-page {
@@ -2291,18 +2279,13 @@ body.reduce-motion .motion-reveal {
     margin-left: 0;
   }
 
-  .sidebar nav,
-  .sidebar .proposal-note {
+  .sidebar nav {
     display: none;
   }
 
   .sidebar.menu-open nav {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .sidebar.menu-open .proposal-note {
-    display: block;
   }
 
   .topbar,
