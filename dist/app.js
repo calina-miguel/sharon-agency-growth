@@ -233,6 +233,12 @@ function requestedView() {
   return params.get("presentationView") || params.get("slide") || params.get("view") || params.get("presentation");
 }
 
+function applyEmbedMode() {
+  const params = new URLSearchParams(window.location.search);
+  const isPresentationEmbed = params.has("presentationView") || params.has("slide") || params.has("presentation");
+  document.body.classList.toggle("presentation-embed", isPresentationEmbed);
+}
+
 function leadTypeLabel(type) {
   return type === "customer" ? "Insurance Customer" : "Sales Agent";
 }
@@ -1288,6 +1294,7 @@ restoreSidebarWidth();
 setSimType("customer");
 renderCampaign();
 refresh();
+applyEmbedMode();
 loadComplianceWatch();
 showView(requestedView() || "overview");
 initMotionReveal();

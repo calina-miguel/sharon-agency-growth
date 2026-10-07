@@ -72,6 +72,10 @@ body.dark-mode::before {
     linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 42%);
 }
 
+body.presentation-embed {
+  --embed-pad: clamp(18px, 3.25vw, 32px);
+}
+
 body.dark-mode .sidebar {
   background: #091311;
 }
@@ -696,6 +700,11 @@ main {
   animation: contentEnter 520ms var(--spring) 90ms both;
 }
 
+body.presentation-embed main {
+  padding: var(--embed-pad);
+  overflow: visible;
+}
+
 h1,
 h2,
 h3,
@@ -814,6 +823,28 @@ h3 {
   min-height: 300px;
   padding: 28px;
   overflow: hidden;
+}
+
+body.presentation-embed .view {
+  margin-top: clamp(22px, 3vw, 32px);
+}
+
+body.presentation-embed .topbar {
+  gap: clamp(18px, 2.5vw, 28px);
+  padding: clamp(4px, 0.8vw, 8px) clamp(2px, 0.6vw, 8px) 0;
+}
+
+body.presentation-embed .hero-grid,
+body.presentation-embed .metric-grid,
+body.presentation-embed .engine-grid,
+body.presentation-embed .approval-grid,
+body.presentation-embed .score-grid {
+  width: 100%;
+}
+
+body.presentation-embed .hero-panel {
+  min-width: 0;
+  padding: clamp(22px, 3.5vw, 32px);
 }
 
 .hero-panel::after {
