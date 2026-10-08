@@ -3033,7 +3033,9 @@ body.dark-mode .approval-card .button-row button[type="button"].secondary {
 
   .mobile-floating-toggle {
     display: grid !important;
-    place-items: center !important;
+    align-content: center !important;
+    justify-items: center !important;
+    gap: 5px !important;
     justify-self: end !important;
     width: 52px !important;
     min-width: 52px !important;
@@ -3053,6 +3055,11 @@ body.dark-mode .approval-card .button-row button[type="button"].secondary {
     height: 2px;
     border-radius: 99px;
     background: currentColor;
+  }
+
+  .mobile-floating-toggle span:first-child,
+  .mobile-floating-toggle span:last-child {
+    width: 14px;
   }
 
   .mobile-floating-panel {
