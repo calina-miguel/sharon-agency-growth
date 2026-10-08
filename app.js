@@ -1034,6 +1034,7 @@ function updateMobileFloatingNavVisibility() {
   if (!mobileNav) return;
   const threshold = Math.max(360, window.innerHeight * 0.45);
   const isVisible = window.scrollY > threshold;
+  document.body.classList.toggle("mobile-scrolled", window.matchMedia("(max-width: 1100px)").matches && window.scrollY > 84);
   mobileNav.classList.toggle("is-visible", isVisible);
   if (!isVisible) {
     mobileNav.classList.remove("open");

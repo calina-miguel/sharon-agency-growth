@@ -2833,6 +2833,51 @@ body.reduce-motion .motion-reveal {
     flex: 1 1 100%;
     white-space: normal;
   }
+
+  body.mobile-scrolled .sidebar {
+    gap: 14px;
+    padding-block: 12px;
+  }
+
+  body.mobile-scrolled .app-title {
+    gap: 10px;
+    padding-bottom: 10px;
+  }
+
+  body.mobile-scrolled .app-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+
+  body.mobile-scrolled .app-kicker {
+    min-width: 0;
+    font-size: 0.88rem;
+    line-height: 1.08;
+  }
+
+  body.mobile-scrolled .brand {
+    min-height: 30px;
+    gap: 8px;
+  }
+
+  body.mobile-scrolled .brand-mark {
+    width: 30px;
+    height: 30px;
+    font-size: 0.72rem;
+  }
+
+  body.mobile-scrolled .brand strong {
+    font-size: 0.9rem;
+  }
+
+  body.mobile-scrolled .theme-toggle,
+  body.mobile-scrolled .menu-toggle {
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+    min-height: 38px;
+  }
 }
 
 .mobile-floating-nav {
@@ -3035,23 +3080,23 @@ body.dark-mode .approval-card .button-row button[type="button"].secondary {
     display: grid !important;
     align-content: center !important;
     justify-items: center !important;
-    gap: 5px !important;
+    gap: 4px !important;
     justify-self: end !important;
-    width: 52px !important;
-    min-width: 52px !important;
-    height: 52px !important;
-    min-height: 52px !important;
-    border: 1px solid rgba(210, 210, 215, 0.82) !important;
-    border-radius: 18px !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    border: 0 !important;
+    border-radius: 8px !important;
     padding: 0 !important;
     color: #ffffff !important;
-    background: #102d29 !important;
-    box-shadow: 0 16px 34px rgba(16, 45, 41, 0.24) !important;
+    background: #21352f !important;
+    box-shadow: 0 14px 28px rgba(16, 45, 41, 0.18) !important;
   }
 
   .mobile-floating-toggle span {
     display: block;
-    width: 18px;
+    width: 20px;
     height: 2px;
     border-radius: 99px;
     background: currentColor;
@@ -3059,7 +3104,7 @@ body.dark-mode .approval-card .button-row button[type="button"].secondary {
 
   .mobile-floating-toggle span:first-child,
   .mobile-floating-toggle span:last-child {
-    width: 14px;
+    width: 20px;
   }
 
   .mobile-floating-panel {
