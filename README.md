@@ -2,7 +2,7 @@
 
 Standalone web project for a life insurance lead acquisition system. This folder is its own git repository and is intended to be published as its own GitHub repository and GitHub Pages site.
 
-## Included demos
+## Included Areas
 
 - Campaign overview dashboard
 - Focused consultation landing page
@@ -41,4 +41,4 @@ This project is ready for GitHub Pages.
 3. In the repository settings, set Pages to use GitHub Actions.
 4. The included workflow publishes the static site after every push to `main`.
 
-No backend, database, or external service is required for the current demo.
+No backend, database, or external service is required for the current static system.

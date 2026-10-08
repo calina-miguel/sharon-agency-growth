@@ -436,14 +436,16 @@ body.sidebar-resizing .sidebar-resizer::before {
   place-items: center;
   width: 54px;
   height: 54px;
-  border: 1px solid rgba(223, 234, 230, 0.22);
-  border-radius: 8px;
-  color: #102d29;
-  background: linear-gradient(135deg, var(--gold), #f2d891);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
-  font-size: 1rem;
-  font-weight: 650;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
   animation: logoPop 680ms var(--spring) both;
+}
+
+.app-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .app-kicker {
@@ -467,10 +469,13 @@ body.sidebar-resizing .sidebar-resizer::before {
 
 .profile-menu {
   position: relative;
+  justify-self: start;
+  width: 100%;
 }
 
 .profile-trigger {
-  width: 100%;
+  width: auto;
+  justify-content: flex-start;
   color: inherit;
   background: transparent;
   text-align: left;
@@ -598,6 +603,7 @@ nav {
 
 .nav-item {
   width: 100%;
+  justify-content: flex-start;
   padding: 12px 14px;
   border-radius: 8px;
   color: #e7efec;
@@ -2250,6 +2256,116 @@ textarea:focus {
   color: #214944;
   background: rgba(242, 242, 247, 0.92);
   border: 1px solid rgba(210, 210, 215, 0.78);
+}
+
+/* LOCKED ALIGNMENT + SPACING SYSTEM
+   Do not loosen, recenter, or repad these app-wide UI rules unless explicitly requested. */
+.sidebar nav,
+.nav-item,
+.profile-trigger {
+  text-align: left;
+}
+
+.nav-item {
+  min-height: 44px;
+  padding: 12px 18px;
+  border-radius: 12px;
+}
+
+.system-status,
+.metric,
+.hero-panel,
+.band,
+.engine-card,
+.chat-panel,
+.intake-summary,
+.approval-card,
+.pipeline-column,
+.manager-form,
+.generated-link-panel,
+.score-card,
+.chart-panel,
+.empty-state,
+.lead-manager-head,
+.manager-module,
+.publish-panel,
+.content-studio,
+.compliance-summary,
+.compliance-panel,
+.aeo-panel,
+.source-card,
+.social-account-card,
+.social-detail,
+.post-preview-panel,
+.posting-log-panel,
+.quickstart-card {
+  border-radius: 14px;
+}
+
+.metric,
+.hero-panel,
+.band,
+.engine-card,
+.chat-panel,
+.intake-summary,
+.approval-card,
+.pipeline-column,
+.manager-form,
+.generated-link-panel,
+.score-card,
+.chart-panel,
+.empty-state,
+.lead-manager-head,
+.manager-module,
+.publish-panel,
+.content-studio,
+.compliance-summary,
+.compliance-panel,
+.aeo-panel,
+.source-card,
+.social-account-card,
+.social-detail,
+.post-preview-panel,
+.posting-log-panel,
+.quickstart-card {
+  padding: clamp(18px, 2.2vw, 24px);
+}
+
+.hero-panel button,
+.section-head button,
+.chat-form button,
+.intake-summary button,
+.public-lead-form button,
+.schedule-form button,
+.manager-form button,
+.generated-link-panel button,
+.publish-head button,
+.publish-panel > button,
+.publish-grid button,
+.content-form button,
+.account-prompt-card button,
+.button-row button,
+.segmented-control button,
+.lead-manager-tabs button {
+  min-height: 44px;
+  padding: 11px 18px;
+  line-height: 1.18;
+}
+
+.segmented-control,
+.lead-manager-tabs {
+  padding: 5px;
+}
+
+.manager-module p,
+.manager-module li,
+.hero-panel p:not(.eyebrow),
+.engine-card p,
+.band p,
+.approval-card p,
+.intake-summary p,
+.empty-state p {
+  line-height: 1.6;
 }
 
 body.dark-mode .button-row .secondary,

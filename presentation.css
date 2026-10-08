@@ -68,9 +68,18 @@ button {
 }
 
 .brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   color: var(--forest);
   font-weight: 600;
   text-decoration: none;
+}
+
+.brand-link img {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
 }
 
 .deck-controls,
@@ -237,22 +246,50 @@ button {
   box-shadow: none;
 }
 
+/* LOCKED PRESENTATION SPACING SYSTEM
+   Keep controls, cards, and text proportions stable unless explicitly requested. */
+.icon-button,
+.cover-actions a,
+.cover-actions button,
+.feature-focus {
+  min-height: 42px;
+  border-radius: 12px;
+  padding: 11px 18px;
+  line-height: 1.18;
+}
+
+.feature-strip article,
+.cover-frame,
+.live-frame {
+  border-radius: 14px;
+}
+
+.feature-strip article {
+  padding: clamp(18px, 2vw, 24px);
+}
+
+.slide-copy p,
+.cover-copy p,
+li {
+  line-height: 1.58;
+}
+
 .mobile-slide-nav {
   display: none;
 }
 
-.demo-guide {
+.tour-guide {
   position: fixed;
   inset: 0;
   z-index: 18;
   pointer-events: none;
 }
 
-.demo-guide.is-hidden {
+.tour-guide.is-hidden {
   display: none;
 }
 
-.demo-highlight {
+.tour-highlight {
   position: fixed;
   border: 2px solid var(--gold);
   border-radius: 14px;
@@ -261,12 +298,12 @@ button {
   transition: left 360ms var(--ease), top 360ms var(--ease), width 360ms var(--ease), height 360ms var(--ease), opacity 180ms var(--ease);
 }
 
-.demo-highlight.is-active {
+.tour-highlight.is-active {
   opacity: 1;
   animation: guidePulse 1800ms var(--ease) infinite;
 }
 
-.demo-cursor {
+.tour-cursor {
   position: fixed;
   width: 22px;
   height: 22px;
@@ -275,7 +312,7 @@ button {
   transition: left 620ms var(--ease), top 620ms var(--ease), opacity 180ms var(--ease), transform 180ms var(--ease);
 }
 
-.demo-cursor::before {
+.tour-cursor::before {
   content: "";
   position: absolute;
   left: 2px;
@@ -287,7 +324,7 @@ button {
   filter: drop-shadow(0 3px 5px rgba(23, 33, 31, 0.34));
 }
 
-.demo-cursor::after {
+.tour-cursor::after {
   content: "";
   position: absolute;
   left: 7px;
@@ -300,15 +337,15 @@ button {
   box-shadow: 0 3px 5px rgba(23, 33, 31, 0.24);
 }
 
-.demo-cursor.is-active {
+.tour-cursor.is-active {
   opacity: 1;
 }
 
-.demo-cursor.is-clicking {
+.tour-cursor.is-clicking {
   transform: translate(-4px, -2px) scale(0.88);
 }
 
-.demo-click {
+.tour-click {
   position: fixed;
   width: 12px;
   height: 12px;
@@ -318,7 +355,7 @@ button {
   transform: translate(-50%, -50%) scale(0.6);
 }
 
-.demo-click.is-active {
+.tour-click.is-active {
   animation: clickRipple 620ms var(--ease);
 }
 
@@ -709,7 +746,7 @@ li::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .demo-guide {
+  .tour-guide {
     display: none;
   }
 

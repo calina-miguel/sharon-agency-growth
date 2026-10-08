@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title>Lead Acquisition System</title>
+  <defs>
+    <linearGradient id="bg" x1="10" x2="54" y1="8" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5D77A"/>
+      <stop offset="1" stop-color="#D8A642"/>
+    </linearGradient>
+    <linearGradient id="line" x1="15" x2="49" y1="18" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0C342F"/>
+      <stop offset="1" stop-color="#176E64"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="17" fill="url(#bg)"/>
+  <path fill="#102D29" d="M18.5 43.5V20.2h5.8v18.4h9.1v4.9H18.5Z"/>
+  <path fill="url(#line)" d="M42.5 20.2 53 43.5h-6.1l-1.8-4.4h-9.8l-1.8 4.4h-6l10.5-23.3h4.5Zm.9 14.5-3.2-7.8-3.2 7.8h6.4Z"/>
+  <path fill="none" stroke="#102D29" stroke-linecap="round" stroke-width="3.2" d="M18 17.5h28"/>
+</svg>

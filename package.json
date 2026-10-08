@@ -1,8 +1,8 @@
 {
-  "name": "sharon-agency-growth-demos",
+  "name": "lead-acquisition-system",
   "version": "1.0.0",
   "private": true,
-  "description": "Standalone GitHub Pages-ready demo suite for Sharon's 90-day life insurance agency growth pilot.",
+  "description": "Standalone GitHub Pages-ready lead acquisition system for life insurance customer and recruiting workflows.",
   "scripts": {
     "build": "node scripts/build-static.mjs",
     "start": "python -m http.server 5177",

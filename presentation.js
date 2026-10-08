@@ -13,10 +13,10 @@ const mobileTourPlayButton = document.querySelector("#mobile-tour-play");
 const mobileTourNextButton = document.querySelector("#mobile-tour-next");
 const voiceToggleButton = document.querySelector("#voice-toggle");
 const voiceStatus = document.querySelector("#voice-status");
-const demoGuide = document.querySelector("#demo-guide");
-const demoHighlight = document.querySelector("#demo-highlight");
-const demoCursor = document.querySelector("#demo-cursor");
-const demoClick = document.querySelector("#demo-click");
+const tourGuide = document.querySelector("#tour-guide");
+const tourHighlight = document.querySelector("#tour-highlight");
+const tourCursor = document.querySelector("#tour-cursor");
+const tourClick = document.querySelector("#tour-click");
 let currentSlide = 0;
 let tourMode = false;
 let audioMode = false;
@@ -57,7 +57,7 @@ const narrationScripts = [
 const mobileNarrationScripts = [...narrationScripts];
 mobileNarrationScripts[0] = "Welcome to the Lead Acquisition System. This guided tour explains how the app helps an agency attract insurance buyers, recruit sales agents, review every lead, and track follow up from one workspace. Use the live preview at the bottom as the tour moves through each section.";
 
-const demoTargets = {
+const tourTargets = {
   overview: { id: "overview-metrics", selectors: [".metric-grid", ".metric-link"] },
   engines: { id: "engine-cards", selectors: [".engine-grid", ".engine-card"] },
   schedule: { id: "schedule-form", selectors: ["#schedule-form", ".schedule-card"] },
@@ -100,7 +100,7 @@ function clearNarrationCues() {
   guideRefineTimers = [];
   activeGuideToken += 1;
   activeCueSelectors = null;
-  hideDemoGuide();
+  hideTourGuide();
 }
 
 function scheduleNarrationCues() {
@@ -109,7 +109,7 @@ function scheduleNarrationCues() {
   cues.forEach((cue) => {
     narrationCueTimers.push(window.setTimeout(() => {
       activeCueSelectors = cue;
-      scheduleDemoGuide(80);
+      scheduleTourGuide(80);
     }, cue.at));
   });
 }
@@ -117,7 +117,7 @@ function scheduleNarrationCues() {
 function setIframeView(iframe, view) {
   if (!iframe || !view) return;
   const nextSrc = `index.html?presentationView=${encodeURIComponent(view)}&v=${Date.now()}`;
-  iframe.addEventListener("load", () => scheduleDemoGuide(520), { once: true });
+  iframe.addEventListener("load", () => scheduleTourGuide(520), { once: true });
   iframe.src = nextSrc;
 }
 
@@ -236,7 +236,7 @@ function speakCurrentSlide({ continueTour = false } = {}) {
   voiceAudio.play().catch(() => useSpeechFallback({ continueTour }));
 }
 
-function setDemoBox(element, rect, pad = 8) {
+function setTourBox(element, rect, pad = 8) {
   if (!element || !rect) return;
   const left = Math.max(8, rect.left - pad);
   const top = Math.max(8, rect.top - pad);
@@ -248,30 +248,30 @@ function setDemoBox(element, rect, pad = 8) {
   element.style.height = `${height}px`;
 }
 
-function hideDemoGuide() {
-  if (!demoGuide) return;
-  demoGuide.classList.add("is-hidden");
-  demoHighlight?.classList.remove("is-active");
-  demoCursor?.classList.remove("is-active", "is-clicking");
-  demoClick?.classList.remove("is-active");
-  if (demoHighlight) {
-    demoHighlight.removeAttribute("data-cue-id");
-    demoHighlight.style.left = "-9999px";
-    demoHighlight.style.top = "-9999px";
-    demoHighlight.style.width = "0px";
-    demoHighlight.style.height = "0px";
+function hideTourGuide() {
+  if (!tourGuide) return;
+  tourGuide.classList.add("is-hidden");
+  tourHighlight?.classList.remove("is-active");
+  tourCursor?.classList.remove("is-active", "is-clicking");
+  tourClick?.classList.remove("is-active");
+  if (tourHighlight) {
+    tourHighlight.removeAttribute("data-cue-id");
+    tourHighlight.style.left = "-9999px";
+    tourHighlight.style.top = "-9999px";
+    tourHighlight.style.width = "0px";
+    tourHighlight.style.height = "0px";
   }
-  if (demoCursor) {
-    demoCursor.style.left = "-9999px";
-    demoCursor.style.top = "-9999px";
+  if (tourCursor) {
+    tourCursor.style.left = "-9999px";
+    tourCursor.style.top = "-9999px";
   }
-  if (demoClick) {
-    demoClick.style.left = "-9999px";
-    demoClick.style.top = "-9999px";
+  if (tourClick) {
+    tourClick.style.left = "-9999px";
+    tourClick.style.top = "-9999px";
   }
 }
 
-function placeDemoGuide(match) {
+function placeTourGuide(match) {
   const rect = screenRectForTarget(match);
   if (!rect) return null;
   const startX = Math.max(24, rect.left - 72);
@@ -279,16 +279,16 @@ function placeDemoGuide(match) {
   const endX = rect.left + Math.min(rect.width - 12, Math.max(20, rect.width * 0.72));
   const endY = rect.top + Math.min(rect.height - 12, Math.max(18, rect.height * 0.52));
 
-  setDemoBox(demoHighlight, rect, match.iframe ? 0 : 10);
-  demoCursor.style.left = `${startX}px`;
-  demoCursor.style.top = `${startY}px`;
-  demoClick.style.left = `${endX}px`;
-  demoClick.style.top = `${endY}px`;
+  setTourBox(tourHighlight, rect, match.iframe ? 0 : 10);
+  tourCursor.style.left = `${startX}px`;
+  tourCursor.style.top = `${startY}px`;
+  tourClick.style.left = `${endX}px`;
+  tourClick.style.top = `${endY}px`;
 
   return { endX, endY };
 }
 
-function refineDemoGuide(match) {
+function refineTourGuide(match) {
   guideRefineTimers.forEach((timer) => window.clearTimeout(timer));
   guideRefineTimers = [];
   if (!match?.iframe) return;
@@ -298,13 +298,13 @@ function refineDemoGuide(match) {
     try {
       if (guideToken !== activeGuideToken) return;
       if (!document.contains(match.iframe) || !match.target.isConnected) return;
-      const placement = placeDemoGuide(match);
+      const placement = placeTourGuide(match);
       if (!placement) return;
       const { endX, endY } = placement;
-      demoCursor.style.left = `${endX}px`;
-      demoCursor.style.top = `${endY}px`;
-      demoClick.style.left = `${endX}px`;
-      demoClick.style.top = `${endY}px`;
+      tourCursor.style.left = `${endX}px`;
+      tourCursor.style.top = `${endY}px`;
+      tourClick.style.left = `${endX}px`;
+      tourClick.style.top = `${endY}px`;
     } catch {
       // If the embedded view changed, the next cue will place the guide again.
     }
@@ -330,11 +330,11 @@ function iframeTargetRect(iframe, selectors = [], options = {}) {
   }
 }
 
-function resolveDemoTarget(options = {}) {
+function resolveTourTarget(options = {}) {
   const activeSlide = slides[currentSlide];
   const activeView = activeSlide?.dataset.view;
   const iframe = activeSlide?.querySelector("iframe");
-  const targetCue = activeCueSelectors || demoTargets[activeView] || {};
+  const targetCue = activeCueSelectors || tourTargets[activeView] || {};
   const targetSelectors = Array.isArray(targetCue) ? targetCue : targetCue.selectors || [];
   const iframeMatch = iframeTargetRect(iframe, targetSelectors, options);
   if (iframeMatch) return { ...iframeMatch, cueId: targetCue.id || activeView };
@@ -394,60 +394,60 @@ function markIframeTarget(match) {
   }
 }
 
-function animateDemoGuide(settled = false) {
+function animateTourGuide(settled = false) {
   window.clearTimeout(guideTimer);
   guideRefineTimers.forEach((timer) => window.clearTimeout(timer));
   guideRefineTimers = [];
   const guideToken = activeGuideToken + 1;
   activeGuideToken = guideToken;
-  if (!demoGuide || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const match = resolveDemoTarget({ scroll: !settled, instant: !!activeCueSelectors });
-  if (!match || !demoHighlight || !demoCursor || !demoClick) {
-    hideDemoGuide();
+  if (!tourGuide || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const match = resolveTourTarget({ scroll: !settled, instant: !!activeCueSelectors });
+  if (!match || !tourHighlight || !tourCursor || !tourClick) {
+    hideTourGuide();
     return;
   }
 
   if (match.iframe && !settled) {
-    scheduleDemoGuide(activeCueSelectors ? 720 : 560, true);
+    scheduleTourGuide(activeCueSelectors ? 720 : 560, true);
     return;
   }
 
-  demoGuide.classList.remove("is-hidden");
+  tourGuide.classList.remove("is-hidden");
   markIframeTarget(match);
 
-  demoHighlight.classList.remove("is-active");
-  demoCursor.classList.remove("is-active", "is-clicking");
-  demoClick.classList.remove("is-active");
-  if (match.cueId) demoHighlight.dataset.cueId = match.cueId;
-  const placement = placeDemoGuide(match);
+  tourHighlight.classList.remove("is-active");
+  tourCursor.classList.remove("is-active", "is-clicking");
+  tourClick.classList.remove("is-active");
+  if (match.cueId) tourHighlight.dataset.cueId = match.cueId;
+  const placement = placeTourGuide(match);
   if (!placement) {
-    hideDemoGuide();
-    if (!settled) guideTimer = window.setTimeout(() => animateDemoGuide(true), 260);
+    hideTourGuide();
+    if (!settled) guideTimer = window.setTimeout(() => animateTourGuide(true), 260);
     return;
   }
   const { endX, endY } = placement;
 
   requestAnimationFrame(() => {
     if (guideToken !== activeGuideToken) return;
-    demoHighlight.classList.add("is-active");
-    demoCursor.classList.add("is-active");
-    demoCursor.style.left = `${endX}px`;
-    demoCursor.style.top = `${endY}px`;
+    tourHighlight.classList.add("is-active");
+    tourCursor.classList.add("is-active");
+    tourCursor.style.left = `${endX}px`;
+    tourCursor.style.top = `${endY}px`;
   });
-  refineDemoGuide(match);
+  refineTourGuide(match);
 
   guideTimer = window.setTimeout(() => {
-    demoCursor.classList.add("is-clicking");
-    demoClick.classList.remove("is-active");
-    void demoClick.offsetWidth;
-    demoClick.classList.add("is-active");
+    tourCursor.classList.add("is-clicking");
+    tourClick.classList.remove("is-active");
+    void tourClick.offsetWidth;
+    tourClick.classList.add("is-active");
   }, 760);
-  window.setTimeout(() => demoCursor?.classList.remove("is-clicking"), 1120);
+  window.setTimeout(() => tourCursor?.classList.remove("is-clicking"), 1120);
 }
 
-function scheduleDemoGuide(delay = 0, settled = false) {
+function scheduleTourGuide(delay = 0, settled = false) {
   window.clearTimeout(guideResetTimer);
-  guideResetTimer = window.setTimeout(() => animateDemoGuide(settled), delay);
+  guideResetTimer = window.setTimeout(() => animateTourGuide(settled), delay);
 }
 
 function updateSlide(index, options = {}) {
@@ -464,7 +464,7 @@ function updateSlide(index, options = {}) {
   const activeSlide = slides[currentSlide];
   const activeView = activeSlide.dataset.view;
   activeSlide.querySelectorAll("iframe").forEach((iframe) => setIframeView(iframe, activeView || "overview"));
-  scheduleDemoGuide(180);
+  scheduleTourGuide(180);
   if (options.narrate || (tourMode && options.userInitiated)) {
     speakCurrentSlide({ continueTour: tourMode });
   }
@@ -585,7 +585,7 @@ if (supportsVoiceover()) {
   setVoiceStatus("Voiceover Not Supported");
 }
 
-window.addEventListener("resize", animateDemoGuide);
+window.addEventListener("resize", animateTourGuide);
 updateVoiceToggle();
 updatePlayButton();
 updateSlide(0);
