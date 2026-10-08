@@ -2834,6 +2834,16 @@ body.reduce-motion .motion-reveal {
     white-space: normal;
   }
 
+  .profile-menu {
+    justify-self: start !important;
+  }
+
+  .profile-trigger,
+  .profile-trigger.brand {
+    padding-inline: 0 !important;
+    transform: none !important;
+  }
+
   body.mobile-scrolled .sidebar {
     gap: 14px;
     padding-block: 12px;
