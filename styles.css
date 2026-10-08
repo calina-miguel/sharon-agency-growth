@@ -103,6 +103,10 @@ body.dark-mode .status-live {
   background: #19342f;
 }
 
+body.dark-mode .schedule-card strong {
+  color: #edf7f4;
+}
+
 body.dark-mode .profile-dropdown {
   background: #0d1c19;
 }
