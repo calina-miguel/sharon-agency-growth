@@ -23,7 +23,7 @@
 
 body.dark-mode {
   --ink: #eff6f3;
-  --muted: #a9bab4;
+  --muted: #bfd0cc;
   --paper: #121b19;
   --panel: #12211f;
   --line: #27403b;
@@ -190,8 +190,13 @@ body.dark-mode .metric small,
 body.dark-mode .score-card small,
 body.dark-mode .approval-card small,
 body.dark-mode .manager-module p,
+body.dark-mode .manager-module li,
 body.dark-mode .recommendation-list p,
 body.dark-mode .source-card p,
+body.dark-mode .engine-card li,
+body.dark-mode .landing-copy li,
+body.dark-mode .topic-list li,
+body.dark-mode .publish-grid li,
 body.dark-mode .schedule-card p,
 body.dark-mode .schedule-card small,
 body.dark-mode .publish-grid p,
