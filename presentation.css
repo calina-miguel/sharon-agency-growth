@@ -36,8 +36,14 @@ a {
 }
 
 button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   border: 0;
   cursor: pointer;
+  line-height: 1.15;
+  text-align: center;
 }
 
 .deck-header,
@@ -186,7 +192,7 @@ button {
 .cover-actions button,
 .feature-focus {
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 10px 16px;
   background: var(--forest);
   color: #ffffff;
   font-weight: 850;
@@ -196,7 +202,7 @@ button {
 
 .icon-button {
   min-height: 32px;
-  padding: 7px 10px;
+  padding: 8px 12px;
   background: #ffffff;
   color: var(--forest);
   border: 1px solid var(--line);
@@ -621,8 +627,8 @@ li::before {
 
   .voice-controls .icon-button {
     flex: 0 0 auto;
-    min-height: 30px;
-    padding: 6px 8px;
+    min-height: 34px;
+    padding: 8px 10px;
     font-size: 0.72rem;
   }
 

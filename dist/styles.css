@@ -179,9 +179,15 @@ textarea {
 
 button {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   border: 0;
   cursor: pointer;
   overflow: hidden;
+  line-height: 1.15;
+  text-align: center;
   transform: translateZ(0);
   transition:
     background-color 180ms var(--ease),
@@ -923,14 +929,35 @@ body.presentation-embed .hero-panel {
 .chat-form button,
 .intake-summary button,
 .public-lead-form button,
+.publish-head button,
+.publish-panel > button,
+.publish-grid button,
+.content-form button,
+.account-prompt-card button,
 .button-row button,
 .segmented-control button {
   min-height: 42px;
   border-radius: 8px;
-  padding: 0 14px;
+  padding: 10px 16px;
   color: #ffffff;
   background: var(--forest);
   font-weight: 850;
+}
+
+body.dark-mode .hero-panel button,
+body.dark-mode .section-head button,
+body.dark-mode .chat-form button,
+body.dark-mode .intake-summary button,
+body.dark-mode .public-lead-form button,
+body.dark-mode .publish-head button,
+body.dark-mode .publish-panel > button,
+body.dark-mode .publish-grid button,
+body.dark-mode .content-form button,
+body.dark-mode .account-prompt-card button,
+body.dark-mode .button-row button:not(.secondary),
+body.dark-mode .segmented-control button.active {
+  color: #08211d;
+  background: #87e4d4;
 }
 
 .landing-preview {
@@ -1169,7 +1196,7 @@ body.dark-mode .lead-manager-tabs button {
 
 body.dark-mode .segmented-control button.active,
 body.dark-mode .lead-manager-tabs button.active {
-  color: #ffffff;
+  color: #08211d;
   background: #7dd6c5;
 }
 
@@ -1560,7 +1587,7 @@ body.dark-mode .lead-manager-tabs button.active {
 .publish-head button {
   min-height: 42px;
   border-radius: 8px;
-  padding: 0 14px;
+  padding: 10px 16px;
   color: #ffffff;
   background: var(--forest);
   font-weight: 850;
@@ -1584,7 +1611,7 @@ body.dark-mode .lead-manager-tabs button.active {
   min-height: 40px;
   margin-top: 12px;
   border-radius: 8px;
-  padding: 0 12px;
+  padding: 10px 14px;
   color: #ffffff;
   background: var(--forest);
   font-weight: 850;
@@ -1815,7 +1842,7 @@ body.modal-open {
   min-height: 38px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 0 13px;
+  padding: 9px 15px;
   color: var(--forest);
   background: #ffffff;
   font-weight: 850;
@@ -1825,6 +1852,18 @@ body.modal-open {
   color: #ffffff;
   border-color: var(--forest);
   background: var(--forest);
+}
+
+body.dark-mode .social-tabs button {
+  color: #2d8a82;
+  border-color: rgba(237, 247, 244, 0.18);
+  background: #edf7f4;
+}
+
+body.dark-mode .social-tabs button.active {
+  color: #08211d;
+  border-color: #87e4d4;
+  background: #87e4d4;
 }
 
 .social-heading {
@@ -1905,6 +1944,39 @@ body.modal-open {
 .social-recommendation p {
   margin: 8px 0 0;
   color: var(--muted);
+}
+
+body.dark-mode .social-total,
+body.dark-mode .social-stat-grid article,
+body.dark-mode .social-recommendation,
+body.dark-mode .post-preview-card,
+body.dark-mode .posting-log article,
+body.dark-mode .account-checks label,
+body.dark-mode .draft-box,
+body.dark-mode .generated-url {
+  color: #edf7f4;
+  background: #17342f;
+  border-color: rgba(125, 214, 197, 0.22);
+}
+
+body.dark-mode .social-total p,
+body.dark-mode .social-stat-grid span,
+body.dark-mode .social-bars span,
+body.dark-mode .social-recommendation p,
+body.dark-mode .post-preview-card p,
+body.dark-mode .posting-log p,
+body.dark-mode .account-checks small {
+  color: #c2d6d1;
+}
+
+body.dark-mode .social-heading span,
+body.dark-mode .channel-route span,
+body.dark-mode .publish-grid span,
+body.dark-mode .posting-log article span,
+body.dark-mode .topic-list span,
+body.dark-mode .card-topline span {
+  color: #08211d;
+  background: #dff5f0;
 }
 
 .chat-window {
@@ -2055,6 +2127,14 @@ textarea:focus {
 .button-row .secondary {
   color: var(--forest);
   background: #e4f0ed;
+}
+
+body.dark-mode .button-row .secondary,
+body.dark-mode .content-form button.secondary,
+body.dark-mode .account-prompt-card button.secondary {
+  color: #dff5f0;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .approval-note {
