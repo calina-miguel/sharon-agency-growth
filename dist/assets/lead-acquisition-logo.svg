@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
-  <title>Lead Acquisition System</title>
+  <title>Sharon Martin</title>
   <defs>
     <linearGradient id="bg" x1="10" x2="54" y1="8" y2="58" gradientUnits="userSpaceOnUse">
       <stop stop-color="#F5D77A"/>
@@ -11,7 +11,6 @@
     </linearGradient>
   </defs>
   <rect width="64" height="64" rx="17" fill="url(#bg)"/>
-  <path fill="#102D29" d="M18.5 43.5V20.2h5.8v18.4h9.1v4.9H18.5Z"/>
-  <path fill="url(#line)" d="M42.5 20.2 53 43.5h-6.1l-1.8-4.4h-9.8l-1.8 4.4h-6l10.5-23.3h4.5Zm.9 14.5-3.2-7.8-3.2 7.8h6.4Z"/>
-  <path fill="none" stroke="#102D29" stroke-linecap="round" stroke-width="3.2" d="M18 17.5h28"/>
+  <text x="32" y="39.5" fill="#102D29" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" font-size="21" font-weight="800" letter-spacing="-1.4" text-anchor="middle">SM</text>
+  <path fill="none" stroke="url(#line)" stroke-linecap="round" stroke-width="3" d="M19 45.5h26"/>
 </svg>
