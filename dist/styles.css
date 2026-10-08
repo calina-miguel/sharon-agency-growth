@@ -739,11 +739,15 @@ button:active {
   display: grid;
   flex: 0 0 auto;
   place-items: center;
+  min-width: 36px;
+  min-height: 36px;
   width: 36px;
   height: 36px;
+  aspect-ratio: 1;
   margin-left: auto;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
+  padding: 0;
   color: #f8fbf8;
   background: rgba(255, 255, 255, 0.1);
   font-size: 1rem;
