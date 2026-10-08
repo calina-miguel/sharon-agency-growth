@@ -222,6 +222,7 @@ function showView(id) {
   if (!validViewIds.has(id)) return;
   document.querySelectorAll(".view").forEach((view) => view.classList.toggle("active", view.id === id));
   document.querySelectorAll(".nav-item").forEach((item) => item.classList.toggle("active", item.dataset.view === id));
+  document.querySelectorAll("[data-floating-view]").forEach((item) => item.classList.toggle("active", item.dataset.floatingView === id));
   document.querySelector(".sidebar")?.classList.remove("menu-open");
   document.querySelector(".menu-toggle")?.setAttribute("aria-expanded", "false");
   if (id === "social" && !hasConnectedSocialAccounts() && !skipAccountPromptOnce) showAccountPrompt();
@@ -1007,6 +1008,10 @@ document.querySelectorAll(".nav-item").forEach((button) => {
 
 document.querySelectorAll("button[data-view]:not(.nav-item)").forEach((button) => {
   button.addEventListener("click", () => showView(button.dataset.view));
+});
+
+document.querySelectorAll("[data-floating-view]").forEach((button) => {
+  button.addEventListener("click", () => showView(button.dataset.floatingView));
 });
 
 document.querySelectorAll("[data-metric-view]").forEach((card) => {

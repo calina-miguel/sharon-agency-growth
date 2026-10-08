@@ -7,6 +7,10 @@ const startWalkthroughButton = document.querySelector("#start-walkthrough");
 const restartTourButton = document.querySelector("#restart-tour");
 const tourPrevSlideButton = document.querySelector("#tour-prev-slide");
 const tourNextSlideButton = document.querySelector("#tour-next-slide");
+const mobileTourStartButton = document.querySelector("#mobile-tour-start");
+const mobileTourPrevButton = document.querySelector("#mobile-tour-prev");
+const mobileTourPlayButton = document.querySelector("#mobile-tour-play");
+const mobileTourNextButton = document.querySelector("#mobile-tour-next");
 const voiceToggleButton = document.querySelector("#voice-toggle");
 const voiceStatus = document.querySelector("#voice-status");
 const demoGuide = document.querySelector("#demo-guide");
@@ -139,10 +143,12 @@ function getPreferredVoice() {
 }
 
 function updatePlayButton() {
-  if (!playTourButton) return;
   const isPlaying = tourMode && !playbackPaused;
-  playTourButton.textContent = isPlaying ? "Pause" : "Play";
-  playTourButton.setAttribute("aria-pressed", String(isPlaying));
+  [playTourButton, mobileTourPlayButton].forEach((button) => {
+    if (!button) return;
+    button.textContent = isPlaying ? "Pause" : "Play";
+    button.setAttribute("aria-pressed", String(isPlaying));
+  });
 }
 
 function stopVoiceover(status = "Voiceover Ready") {
@@ -451,6 +457,8 @@ function updateSlide(index, options = {}) {
   slideCount.textContent = `${currentSlide + 1} / ${slides.length}`;
   if (tourPrevSlideButton) tourPrevSlideButton.disabled = currentSlide === 0;
   if (tourNextSlideButton) tourNextSlideButton.disabled = currentSlide === slides.length - 1;
+  if (mobileTourPrevButton) mobileTourPrevButton.disabled = currentSlide === 0;
+  if (mobileTourNextButton) mobileTourNextButton.disabled = currentSlide === slides.length - 1;
   progressBar.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
   dots.querySelectorAll("button").forEach((button, dotIndex) => button.classList.toggle("active", dotIndex === currentSlide));
   const activeSlide = slides[currentSlide];
@@ -504,6 +512,7 @@ function startTour() {
 
 playTourButton?.addEventListener("click", startTour);
 startWalkthroughButton?.addEventListener("click", startTour);
+mobileTourPlayButton?.addEventListener("click", startTour);
 
 voiceToggleButton?.addEventListener("click", () => {
   voiceoverEnabled = !voiceoverEnabled;
@@ -520,12 +529,27 @@ restartTourButton?.addEventListener("click", () => {
   updateSlide(0, { userInitiated: true });
 });
 
+mobileTourStartButton?.addEventListener("click", () => {
+  stopVoiceover("Voiceover Ready");
+  updateSlide(0, { userInitiated: true });
+});
+
 tourNextSlideButton?.addEventListener("click", () => {
   stopVoiceover("Voiceover Ready");
   updateSlide(currentSlide + 1, { userInitiated: true });
 });
 
+mobileTourNextButton?.addEventListener("click", () => {
+  stopVoiceover("Voiceover Ready");
+  updateSlide(currentSlide + 1, { userInitiated: true });
+});
+
 tourPrevSlideButton?.addEventListener("click", () => {
+  stopVoiceover("Voiceover Ready");
+  updateSlide(currentSlide - 1, { userInitiated: true });
+});
+
+mobileTourPrevButton?.addEventListener("click", () => {
   stopVoiceover("Voiceover Ready");
   updateSlide(currentSlide - 1, { userInitiated: true });
 });

@@ -88,8 +88,14 @@ body.dark-mode input,
 body.dark-mode select,
 body.dark-mode textarea {
   border-color: #27403b;
-  color: var(--ink);
+  color: #edf7f4;
   background: #0f1d1a;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #8da5a0;
 }
 
 body.dark-mode .draft-box,
@@ -141,6 +147,16 @@ body.dark-mode .approval-card .draft-box {
   color: #edf7f4;
   background: rgba(125, 214, 197, 0.1);
   border-color: rgba(125, 214, 197, 0.2);
+}
+
+body.dark-mode .chat-message.inbound {
+  color: #edf7f4;
+  background: rgba(125, 214, 197, 0.12);
+  border: 1px solid rgba(125, 214, 197, 0.18);
+}
+
+body.dark-mode .chat-message.inbound span {
+  color: #87e4d4;
 }
 
 body.dark-mode .approval-card .button-row button:not(.secondary) {
@@ -1138,6 +1154,23 @@ body.presentation-embed .hero-panel {
 .lead-manager-tabs button.active {
   color: #ffffff;
   background: var(--forest);
+}
+
+body.dark-mode .segmented-control,
+body.dark-mode .lead-manager-tabs {
+  background: #edf7f4;
+  border-color: rgba(125, 214, 197, 0.3);
+}
+
+body.dark-mode .segmented-control button,
+body.dark-mode .lead-manager-tabs button {
+  color: #2d8a82;
+}
+
+body.dark-mode .segmented-control button.active,
+body.dark-mode .lead-manager-tabs button.active {
+  color: #ffffff;
+  background: #7dd6c5;
 }
 
 .lead-manager-tabs {
@@ -2340,6 +2373,10 @@ body.reduce-motion .motion-reveal {
 }
 
 @media (max-width: 640px) {
+  body:not(.presentation-embed) {
+    padding-bottom: 88px;
+  }
+
   main,
   .sidebar {
     padding: 18px;
@@ -2419,6 +2456,62 @@ body.reduce-motion .motion-reveal {
   .button-row button {
     flex: 1 1 100%;
     white-space: normal;
+  }
+}
+
+.mobile-floating-nav {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  body:not(.presentation-embed) .mobile-floating-nav {
+    position: fixed;
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    left: 12px;
+    z-index: 70;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px;
+    padding: 8px;
+    border: 1px solid rgba(210, 210, 215, 0.9);
+    border-radius: 20px;
+    background: rgba(251, 252, 251, 0.88);
+    box-shadow: 0 18px 46px rgba(16, 45, 41, 0.18);
+    backdrop-filter: blur(18px);
+  }
+
+  .mobile-floating-nav button {
+    min-width: 0;
+    min-height: 40px;
+    padding: 8px 5px;
+    border-radius: 14px;
+    color: #536460;
+    background: transparent;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .mobile-floating-nav button.active {
+    color: #ffffff;
+    background: #102d29;
+    box-shadow: 0 8px 20px rgba(16, 45, 41, 0.22);
+  }
+
+  body.dark-mode .mobile-floating-nav {
+    border-color: rgba(125, 214, 197, 0.2);
+    background: rgba(11, 24, 21, 0.9);
+  }
+
+  body.dark-mode .mobile-floating-nav button {
+    color: #c2d6d1;
+  }
+
+  body.dark-mode .mobile-floating-nav button.active {
+    color: #08211d;
+    background: #87e4d4;
   }
 }
 

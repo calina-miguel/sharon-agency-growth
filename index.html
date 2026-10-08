@@ -7,7 +7,7 @@
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Lead Acquisition System</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="styles.css?v=20261008-01" />
+    <link rel="stylesheet" href="styles.css?v=20261008-02" />
   </head>
   <body>
     <aside class="sidebar" aria-label="Application navigation">
@@ -715,6 +715,15 @@
       </section>
     </main>
 
-    <script src="app.js?v=20261007-03"></script>
+    <nav class="mobile-floating-nav" aria-label="Mobile quick navigation">
+      <button class="active" type="button" data-floating-view="overview">Home</button>
+      <button type="button" data-floating-view="agent">Intake</button>
+      <button type="button" data-floating-view="approval">Review</button>
+      <button type="button" data-floating-view="pipeline">Leads</button>
+      <button type="button" data-floating-view="schedule">Schedule</button>
+      <button type="button" data-floating-view="social">Social</button>
+    </nav>
+
+    <script src="app.js?v=20261008-01"></script>
   </body>
 </html>
