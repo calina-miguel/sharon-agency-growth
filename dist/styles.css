@@ -24,7 +24,7 @@
 body.dark-mode {
   --ink: #eff6f3;
   --muted: #a9bab4;
-  --paper: #0d1917;
+  --paper: #121b19;
   --panel: #12211f;
   --line: #27403b;
   --forest: #7dd6c5;
@@ -81,9 +81,9 @@ body::before {
 
 body.dark-mode::before {
   background:
-    radial-gradient(circle at calc(80% + var(--parallax-x, 0px)) calc(12% + var(--parallax-y, 0px)), rgba(227, 185, 95, 0.12), transparent 24vw),
-    radial-gradient(circle at calc(18% - var(--parallax-x, 0px)) calc(82% - var(--parallax-y, 0px)), rgba(86, 183, 170, 0.12), transparent 28vw),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 42%);
+    radial-gradient(circle at calc(82% + var(--parallax-x, 0px)) calc(10% + var(--parallax-y, 0px)), rgba(227, 185, 95, 0.045), transparent 26vw),
+    radial-gradient(circle at calc(14% - var(--parallax-x, 0px)) calc(86% - var(--parallax-y, 0px)), rgba(86, 183, 170, 0.055), transparent 30vw),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.018), transparent 44%);
 }
 
 body.presentation-embed {
