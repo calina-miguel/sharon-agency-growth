@@ -110,7 +110,7 @@ body.dark-mode textarea::placeholder {
 
 body.dark-mode .draft-box,
 body.dark-mode .generated-url,
-body.dark-mode .workflow-map span,
+body.dark-mode .workflow-map button,
 body.dark-mode .mini-stats span,
 body.dark-mode .lead-manager-stats span,
 body.dark-mode .schedule-date-chip,
@@ -1162,18 +1162,38 @@ body.dark-mode .landing-copy li {
   gap: 10px;
 }
 
-.workflow-map span {
+.workflow-map button {
+  width: 100%;
+  justify-content: flex-start;
+  min-height: 46px;
   border-left: 4px solid var(--teal);
   border-radius: 6px;
   padding: 12px 14px;
+  color: var(--ink);
   background: #eef6f3;
   font-weight: 600;
+  text-align: left;
 }
 
-body.dark-mode .workflow-map span {
+.workflow-map button:hover,
+.workflow-map button:focus-visible {
+  border-left-color: var(--gold);
+  color: #ffffff;
+  background: #102d29;
+  transform: translateX(3px);
+}
+
+body.dark-mode .workflow-map button {
   color: #edf7f4;
   background: #17342f;
   border-left-color: #87e4d4;
+}
+
+body.dark-mode .workflow-map button:hover,
+body.dark-mode .workflow-map button:focus-visible {
+  color: #08211d;
+  background: #d9f3ed;
+  border-left-color: var(--gold);
 }
 
 .engine-grid {
