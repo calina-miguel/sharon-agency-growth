@@ -104,6 +104,7 @@ const state = {
   ]
 };
 let skipAccountPromptOnce = false;
+let pipelineDrag = null;
 
 const socialAccounts = {
   facebook: {
@@ -519,13 +520,13 @@ function renderStageColumns(type, stages) {
     const cards = state.leads
       .filter((lead) => lead.type === type && lead.status === "Approved" && leadStageGroup(lead) === stage)
       .map((lead) => `
-        <article class="lead-card">
+        <article class="lead-card" data-lead-card="${lead.id}" role="button" tabindex="0" aria-label="Move ${escapeHTML(lead.name)} between ${type === "customer" ? "customer" : "sales agent"} lead stages">
           <strong>${escapeHTML(lead.name)}</strong>
           <p>${escapeHTML(lead.summary)}</p>
           <small>${escapeHTML(lead.source)}</small>
         </article>
       `).join("");
-    return `<section class="pipeline-column"><h4>${stage}</h4>${cards || "<p class='fineprint'>No leads in this stage.</p>"}</section>`;
+    return `<section class="pipeline-column" data-pipeline-stage="${escapeHTML(stage)}"><h4>${stage}</h4>${cards || "<p class='fineprint'>No leads in this stage.</p>"}</section>`;
   }).join("");
 }
 
@@ -1011,7 +1012,43 @@ document.querySelectorAll("button[data-view]:not(.nav-item)").forEach((button) =
 });
 
 document.querySelectorAll("[data-floating-view]").forEach((button) => {
-  button.addEventListener("click", () => showView(button.dataset.floatingView));
+  button.addEventListener("click", () => {
+    showView(button.dataset.floatingView);
+    const mobileNav = document.querySelector(".mobile-floating-nav");
+    const mobileToggle = document.querySelector("#mobile-floating-toggle");
+    mobileNav?.classList.remove("open");
+    mobileToggle?.setAttribute("aria-expanded", "false");
+  });
+});
+
+document.querySelector("#mobile-floating-toggle")?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  const mobileNav = document.querySelector(".mobile-floating-nav");
+  const isOpen = mobileNav?.classList.toggle("open");
+  event.currentTarget.setAttribute("aria-expanded", String(Boolean(isOpen)));
+});
+
+function updateMobileFloatingNavVisibility() {
+  const mobileNav = document.querySelector(".mobile-floating-nav");
+  if (!mobileNav) return;
+  const threshold = Math.max(360, window.innerHeight * 0.45);
+  const isVisible = window.scrollY > threshold;
+  mobileNav.classList.toggle("is-visible", isVisible);
+  if (!isVisible) {
+    mobileNav.classList.remove("open");
+    document.querySelector("#mobile-floating-toggle")?.setAttribute("aria-expanded", "false");
+  }
+}
+
+window.addEventListener("scroll", updateMobileFloatingNavVisibility, { passive: true });
+window.addEventListener("resize", updateMobileFloatingNavVisibility);
+updateMobileFloatingNavVisibility();
+
+document.addEventListener("click", (event) => {
+  const mobileNav = document.querySelector(".mobile-floating-nav");
+  if (!mobileNav || mobileNav.contains(event.target)) return;
+  mobileNav.classList.remove("open");
+  document.querySelector("#mobile-floating-toggle")?.setAttribute("aria-expanded", "false");
 });
 
 document.querySelectorAll("[data-metric-view]").forEach((card) => {
@@ -1028,6 +1065,49 @@ document.querySelectorAll("[data-metric-view]").forEach((card) => {
     }
   });
 });
+
+function finishPipelineDrag(event) {
+  if (!pipelineDrag) return;
+  const { card, leadId } = pipelineDrag;
+  card.releasePointerCapture?.(event.pointerId);
+  card.classList.remove("dragging");
+  card.style.transform = "";
+  document.body.classList.remove("pipeline-dragging");
+  const stageColumn = document.elementFromPoint(event.clientX, event.clientY)?.closest("[data-pipeline-stage]");
+  const targetStage = stageColumn?.dataset.pipelineStage;
+  const lead = state.leads.find((item) => String(item.id) === String(leadId));
+  if (targetStage && lead && lead.status === "Approved") {
+    lead.stage = targetStage;
+    renderPipeline();
+  }
+  pipelineDrag = null;
+}
+
+document.querySelector("#lead-manager-pipeline")?.addEventListener("pointerdown", (event) => {
+  const card = event.target.closest("[data-lead-card]");
+  if (!card) return;
+  event.preventDefault();
+  card.setPointerCapture?.(event.pointerId);
+  pipelineDrag = {
+    card,
+    leadId: card.dataset.leadCard,
+    startX: event.clientX,
+    startY: event.clientY
+  };
+  card.classList.add("dragging");
+  document.body.classList.add("pipeline-dragging");
+});
+
+window.addEventListener("pointermove", (event) => {
+  if (!pipelineDrag) return;
+  event.preventDefault();
+  const dx = event.clientX - pipelineDrag.startX;
+  const dy = event.clientY - pipelineDrag.startY;
+  pipelineDrag.card.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.02)`;
+});
+
+window.addEventListener("pointerup", finishPipelineDrag);
+window.addEventListener("pointercancel", finishPipelineDrag);
 
 document.querySelector(".menu-toggle")?.addEventListener("click", () => {
   const sidebar = document.querySelector(".sidebar");

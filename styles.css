@@ -2441,6 +2441,21 @@ body.dark-mode .approval-card .button-row .secondary {
   border-radius: 8px;
   padding: 12px;
   background: #fbfcfb;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.lead-card.dragging {
+  position: relative;
+  z-index: 20;
+  cursor: grabbing;
+  box-shadow: 0 18px 42px rgba(16, 45, 41, 0.22);
+}
+
+body.pipeline-dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .lead-card p {
@@ -2843,4 +2858,210 @@ body.dark-mode .approval-card .button-row button[type="button"].secondary {
   color: #dff5f0;
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* LOCKED LEFT-ALIGNMENT GUARANTEE
+   Keep profile identity and primary navigation left-aligned unless explicitly requested. */
+.sidebar,
+.sidebar-header,
+.profile-menu,
+.profile-trigger,
+.profile-trigger.brand,
+.sidebar nav,
+.sidebar .nav-item {
+  text-align: left !important;
+}
+
+.profile-menu,
+.sidebar nav {
+  justify-self: stretch !important;
+  justify-items: stretch !important;
+  align-items: stretch !important;
+  width: 100% !important;
+}
+
+.profile-trigger,
+.profile-trigger.brand {
+  justify-content: flex-start !important;
+  justify-self: start !important;
+  width: auto !important;
+}
+
+.sidebar .nav-item {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+
+/* LOCKED RESIZABLE SIDEBAR FLOW
+   Sidebar contents must fluidly track the dragged sidebar width. */
+.sidebar {
+  width: var(--sidebar-width, 320px);
+  min-width: 220px;
+  max-width: 460px;
+  padding-inline: clamp(16px, calc(var(--sidebar-width, 320px) * 0.075), 28px) !important;
+  container-type: inline-size;
+}
+
+.sidebar-head,
+.app-title,
+.brand-stack,
+.profile-menu,
+.sidebar nav {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.app-title {
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+
+.app-kicker,
+.brand strong,
+.sidebar .nav-item {
+  overflow-wrap: anywhere;
+}
+
+.sidebar .nav-item {
+  width: 100% !important;
+  min-width: 0 !important;
+  padding-inline: clamp(12px, calc(var(--sidebar-width, 320px) * 0.052), 20px) !important;
+}
+
+@container (max-width: 270px) {
+  .app-title {
+    gap: 10px;
+  }
+
+  .app-logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+  }
+
+  .app-kicker {
+    min-width: 0;
+    font-size: 0.92rem;
+  }
+
+  .sidebar .nav-item {
+    min-height: 40px;
+    font-size: 0.92rem;
+  }
+}
+
+@media (max-width: 1100px) {
+  .sidebar {
+    width: 100% !important;
+    max-width: none;
+  }
+}
+
+/* LOCKED MOBILE FLOATING MENU
+   Compact bottom-right launcher only; menu items are shown after tapping the launcher. */
+@media (max-width: 760px) {
+  body:not(.presentation-embed) .mobile-floating-nav {
+    right: max(14px, env(safe-area-inset-right)) !important;
+    bottom: calc(14px + env(safe-area-inset-bottom)) !important;
+    left: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    width: auto !important;
+    max-width: calc(100vw - 28px) !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 18px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(18px) scale(0.96) !important;
+    transition: opacity 180ms var(--ease), transform 220ms var(--spring) !important;
+  }
+
+  body:not(.presentation-embed) .mobile-floating-nav.is-visible,
+  body:not(.presentation-embed) .mobile-floating-nav.open {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateY(0) scale(1) !important;
+  }
+
+  .mobile-floating-toggle {
+    display: grid !important;
+    place-items: center !important;
+    justify-self: end !important;
+    width: 52px !important;
+    min-width: 52px !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    border: 1px solid rgba(210, 210, 215, 0.82) !important;
+    border-radius: 18px !important;
+    padding: 0 !important;
+    color: #ffffff !important;
+    background: #102d29 !important;
+    box-shadow: 0 16px 34px rgba(16, 45, 41, 0.24) !important;
+  }
+
+  .mobile-floating-toggle span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 99px;
+    background: currentColor;
+  }
+
+  .mobile-floating-panel {
+    position: absolute;
+    right: 0;
+    bottom: 62px;
+    display: grid;
+    gap: 7px;
+    width: min(180px, calc(100vw - 28px));
+    border: 1px solid rgba(210, 210, 215, 0.86);
+    border-radius: 18px;
+    padding: 8px;
+    background: rgba(251, 252, 251, 0.94);
+    box-shadow: 0 22px 54px rgba(16, 45, 41, 0.22);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px) scale(0.96);
+    transform-origin: right bottom;
+    transition: opacity 180ms var(--ease), transform 220ms var(--spring);
+    backdrop-filter: blur(18px);
+  }
+
+  .mobile-floating-nav.open .mobile-floating-panel {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+  }
+
+  .mobile-floating-panel button {
+    justify-content: flex-start !important;
+    min-height: 38px !important;
+    padding: 9px 12px !important;
+    border-radius: 12px !important;
+    color: #1c3c37 !important;
+    background: transparent !important;
+    font-size: 0.8rem !important;
+    font-weight: 550 !important;
+    text-align: left !important;
+  }
+
+  .mobile-floating-panel button.active {
+    color: #ffffff !important;
+    background: #102d29 !important;
+  }
+
+  body.dark-mode .mobile-floating-panel {
+    border-color: rgba(125, 214, 197, 0.2);
+    background: rgba(11, 24, 21, 0.94);
+  }
+
+  body.dark-mode .mobile-floating-panel button {
+    color: #e8f2ee !important;
+  }
 }

@@ -716,14 +716,21 @@
     </main>
 
     <nav class="mobile-floating-nav" aria-label="Mobile quick navigation">
-      <button class="active" type="button" data-floating-view="overview">Home</button>
-      <button type="button" data-floating-view="agent">Intake</button>
-      <button type="button" data-floating-view="approval">Review</button>
-      <button type="button" data-floating-view="pipeline">Leads</button>
-      <button type="button" data-floating-view="schedule">Schedule</button>
-      <button type="button" data-floating-view="social">Social</button>
+      <button class="mobile-floating-toggle" id="mobile-floating-toggle" type="button" aria-expanded="false" aria-controls="mobile-floating-panel">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="mobile-floating-panel" id="mobile-floating-panel">
+        <button class="active" type="button" data-floating-view="overview">Home</button>
+        <button type="button" data-floating-view="agent">Intake</button>
+        <button type="button" data-floating-view="approval">Review</button>
+        <button type="button" data-floating-view="pipeline">Leads</button>
+        <button type="button" data-floating-view="schedule">Schedule</button>
+        <button type="button" data-floating-view="social">Social</button>
+      </div>
     </nav>
 
-    <script src="app.js?v=20261008-01"></script>
+    <script src="app.js?v=20261008-02"></script>
   </body>
 </html>

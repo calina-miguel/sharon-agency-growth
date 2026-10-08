@@ -327,12 +327,19 @@
     </footer>
 
     <nav class="mobile-slide-nav" aria-label="Mobile presentation navigation">
-      <button type="button" id="mobile-tour-start">Start</button>
-      <button type="button" id="mobile-tour-prev">Prev</button>
-      <button type="button" id="mobile-tour-play" aria-pressed="false">Play</button>
-      <button type="button" id="mobile-tour-next">Next</button>
+      <button class="mobile-slide-toggle" id="mobile-slide-toggle" type="button" aria-expanded="false" aria-controls="mobile-slide-panel">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="mobile-slide-panel" id="mobile-slide-panel">
+        <button type="button" id="mobile-tour-start">Start</button>
+        <button type="button" id="mobile-tour-prev">Prev</button>
+        <button type="button" id="mobile-tour-play" aria-pressed="false">Play</button>
+        <button type="button" id="mobile-tour-next">Next</button>
+      </div>
     </nav>
 
-    <script src="presentation.js?v=20261008-01"></script>
+    <script src="presentation.js?v=20261008-02"></script>
   </body>
 </html>

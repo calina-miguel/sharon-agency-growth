@@ -11,6 +11,7 @@ const mobileTourStartButton = document.querySelector("#mobile-tour-start");
 const mobileTourPrevButton = document.querySelector("#mobile-tour-prev");
 const mobileTourPlayButton = document.querySelector("#mobile-tour-play");
 const mobileTourNextButton = document.querySelector("#mobile-tour-next");
+const mobileSlideToggle = document.querySelector("#mobile-slide-toggle");
 const voiceToggleButton = document.querySelector("#voice-toggle");
 const voiceStatus = document.querySelector("#voice-status");
 const tourGuide = document.querySelector("#tour-guide");
@@ -510,9 +511,31 @@ function startTour() {
   speakCurrentSlide({ continueTour: true });
 }
 
+function closeMobileSlideNav() {
+  const mobileNav = document.querySelector(".mobile-slide-nav");
+  mobileNav?.classList.remove("open");
+  mobileSlideToggle?.setAttribute("aria-expanded", "false");
+}
+
+function updateMobileSlideNavVisibility() {
+  const mobileNav = document.querySelector(".mobile-slide-nav");
+  if (!mobileNav) return;
+  const threshold = Math.max(360, window.innerHeight * 0.45);
+  const isVisible = window.scrollY > threshold;
+  mobileNav.classList.toggle("is-visible", isVisible);
+  if (!isVisible) closeMobileSlideNav();
+}
+
+window.addEventListener("scroll", updateMobileSlideNavVisibility, { passive: true });
+window.addEventListener("resize", updateMobileSlideNavVisibility);
+updateMobileSlideNavVisibility();
+
 playTourButton?.addEventListener("click", startTour);
 startWalkthroughButton?.addEventListener("click", startTour);
-mobileTourPlayButton?.addEventListener("click", startTour);
+mobileTourPlayButton?.addEventListener("click", () => {
+  closeMobileSlideNav();
+  startTour();
+});
 
 voiceToggleButton?.addEventListener("click", () => {
   voiceoverEnabled = !voiceoverEnabled;
@@ -530,6 +553,7 @@ restartTourButton?.addEventListener("click", () => {
 });
 
 mobileTourStartButton?.addEventListener("click", () => {
+  closeMobileSlideNav();
   stopVoiceover("Voiceover Ready");
   updateSlide(0, { userInitiated: true });
 });
@@ -540,6 +564,7 @@ tourNextSlideButton?.addEventListener("click", () => {
 });
 
 mobileTourNextButton?.addEventListener("click", () => {
+  closeMobileSlideNav();
   stopVoiceover("Voiceover Ready");
   updateSlide(currentSlide + 1, { userInitiated: true });
 });
@@ -550,8 +575,22 @@ tourPrevSlideButton?.addEventListener("click", () => {
 });
 
 mobileTourPrevButton?.addEventListener("click", () => {
+  closeMobileSlideNav();
   stopVoiceover("Voiceover Ready");
   updateSlide(currentSlide - 1, { userInitiated: true });
+});
+
+mobileSlideToggle?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  const mobileNav = document.querySelector(".mobile-slide-nav");
+  const isOpen = mobileNav?.classList.toggle("open");
+  event.currentTarget.setAttribute("aria-expanded", String(Boolean(isOpen)));
+});
+
+document.addEventListener("click", (event) => {
+  const mobileNav = document.querySelector(".mobile-slide-nav");
+  if (!mobileNav || mobileNav.contains(event.target)) return;
+  closeMobileSlideNav();
 });
 
 document.querySelectorAll("[data-jump]").forEach((button) => {
