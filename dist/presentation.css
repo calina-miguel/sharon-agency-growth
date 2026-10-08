@@ -407,7 +407,7 @@ ul {
 li {
   position: relative;
   padding-left: 24px;
-  color: #35423e;
+  color: #465551;
   font-size: clamp(0.98rem, 1.12vw, 1.14rem);
   line-height: 1.42;
 }

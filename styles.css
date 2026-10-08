@@ -161,13 +161,39 @@ body.dark-mode .chat-message.inbound span {
 
 body.dark-mode .approval-card .button-row button:not(.secondary) {
   color: #08211d;
-  background: #87e4d4;
+  background: #bfeee5;
 }
 
 body.dark-mode .approval-card .button-row .secondary {
   color: #dff5f0;
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.18);
+}
+
+body.dark-mode .hero-panel p:not(.eyebrow),
+body.dark-mode .engine-card p,
+body.dark-mode .band p,
+body.dark-mode .approval-card p,
+body.dark-mode .intake-summary p,
+body.dark-mode .empty-state p,
+body.dark-mode .metric small,
+body.dark-mode .score-card small,
+body.dark-mode .approval-card small,
+body.dark-mode .manager-module p,
+body.dark-mode .recommendation-list p,
+body.dark-mode .source-card p,
+body.dark-mode .schedule-card p,
+body.dark-mode .schedule-card small,
+body.dark-mode .publish-grid p,
+body.dark-mode .post-preview-card p,
+body.dark-mode .posting-log p,
+body.dark-mode .social-stat-grid span,
+body.dark-mode .social-bars span,
+body.dark-mode .social-recommendation p,
+body.dark-mode .account-card small,
+body.dark-mode .account-checks small,
+body.dark-mode label {
+  color: #d9e8e4;
 }
 
 button,
@@ -957,7 +983,7 @@ body.dark-mode .account-prompt-card button,
 body.dark-mode .button-row button:not(.secondary),
 body.dark-mode .segmented-control button.active {
   color: #08211d;
-  background: #87e4d4;
+  background: #bfeee5;
 }
 
 .landing-preview {
@@ -1011,6 +1037,23 @@ body.dark-mode .segmented-control button.active {
   color: var(--ink);
   background: rgba(255, 255, 255, 0.94);
   box-shadow: var(--shadow);
+}
+
+body.dark-mode .public-lead-form {
+  color: #edf7f4;
+  background: rgba(18, 33, 31, 0.96);
+  border-color: rgba(125, 214, 197, 0.22);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+}
+
+body.dark-mode .public-lead-form h3,
+body.dark-mode .public-lead-form label {
+  color: #edf7f4;
+}
+
+body.dark-mode .landing-copy p:not(.eyebrow),
+body.dark-mode .landing-copy li {
+  color: #f2faf7;
 }
 
 .metric-grid,
@@ -1079,6 +1122,12 @@ body.dark-mode .segmented-control button.active {
   padding: 12px 14px;
   background: #eef6f3;
   font-weight: 850;
+}
+
+body.dark-mode .workflow-map span {
+  color: #edf7f4;
+  background: #17342f;
+  border-left-color: #87e4d4;
 }
 
 .engine-grid {
@@ -1862,8 +1911,8 @@ body.dark-mode .social-tabs button {
 
 body.dark-mode .social-tabs button.active {
   color: #08211d;
-  border-color: #87e4d4;
-  background: #87e4d4;
+  border-color: #bfeee5;
+  background: #bfeee5;
 }
 
 .social-heading {
@@ -1953,7 +2002,10 @@ body.dark-mode .post-preview-card,
 body.dark-mode .posting-log article,
 body.dark-mode .account-checks label,
 body.dark-mode .draft-box,
-body.dark-mode .generated-url {
+body.dark-mode .generated-url,
+body.dark-mode .lead-card,
+body.dark-mode .empty-state,
+body.dark-mode .source-card {
   color: #edf7f4;
   background: #17342f;
   border-color: rgba(125, 214, 197, 0.22);
@@ -1965,7 +2017,10 @@ body.dark-mode .social-bars span,
 body.dark-mode .social-recommendation p,
 body.dark-mode .post-preview-card p,
 body.dark-mode .posting-log p,
-body.dark-mode .account-checks small {
+body.dark-mode .account-checks small,
+body.dark-mode .lead-card p,
+body.dark-mode .empty-state p,
+body.dark-mode .source-card p {
   color: #c2d6d1;
 }
 
@@ -2591,13 +2646,13 @@ body.reduce-motion .motion-reveal {
 
   body.dark-mode .mobile-floating-nav button.active {
     color: #08211d;
-    background: #87e4d4;
+    background: #bfeee5;
   }
 }
 
 body.dark-mode .approval-card .button-row button[type="button"]:not(.secondary) {
   color: #08211d;
-  background: #87e4d4;
+  background: #bfeee5;
 }
 
 body.dark-mode .approval-card .button-row button[type="button"].secondary {
