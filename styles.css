@@ -1642,7 +1642,8 @@ body.dark-mode .manager-module > span {
 
 .schedule-card strong,
 .schedule-card p,
-.schedule-card small {
+.schedule-card small,
+.schedule-card em {
   display: block;
 }
 
@@ -1655,6 +1656,18 @@ body.dark-mode .manager-module > span {
 .schedule-card small {
   color: var(--teal);
   font-weight: 600;
+}
+
+.schedule-card em {
+  margin-top: 8px;
+  color: var(--forest);
+  font-size: 0.78rem;
+  font-style: normal;
+  font-weight: 650;
+}
+
+body.dark-mode .schedule-card em {
+  color: #87e4d4;
 }
 
 .schedule-form {

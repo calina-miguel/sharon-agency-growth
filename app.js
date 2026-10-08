@@ -452,12 +452,13 @@ function renderSchedule() {
   document.querySelector("#schedule-list").innerHTML = sortedLeads.map((lead) => {
     const date = formatScheduleDate(lead.followUpDate);
     return `
-      <button class="schedule-card ${lead.id === state.selectedScheduleId ? "active" : ""}" type="button" data-schedule-lead="${lead.id}">
+      <button class="schedule-card ${lead.id === state.selectedScheduleId ? "active" : ""}" type="button" data-schedule-lead="${lead.id}" aria-label="Open schedule details for ${escapeHTML(lead.name)}">
         <span class="schedule-date-chip"><span>${date.month}</span>${date.day}</span>
         <span>
           <strong>${escapeHTML(lead.name)}</strong>
           <p>${leadTypeLabel(lead.type)} · ${lead.followUpTime || "Set time"}</p>
           <small>${escapeHTML(lead.outcome || lead.status)}</small>
+          <em>View Details</em>
         </span>
       </button>
     `;
@@ -1247,6 +1248,9 @@ document.querySelector("#schedule-list")?.addEventListener("click", (event) => {
   if (!card) return;
   state.selectedScheduleId = Number(card.dataset.scheduleLead);
   renderSchedule();
+  const detailsPanel = document.querySelector("#schedule-form");
+  detailsPanel?.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+  window.setTimeout(() => document.querySelector("#schedule-outcome")?.focus({ preventScroll: true }), 260);
 });
 
 document.querySelector("#schedule-lead")?.addEventListener("change", (event) => {
