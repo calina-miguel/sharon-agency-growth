@@ -1,5 +1,5 @@
 {
-  "lastChecked": "2026-10-08T11:33:12.705Z",
+  "lastChecked": "2026-10-09T11:30:58.482Z",
   "summary": {
     "status": "Review Needed",
     "changedCount": 2,
@@ -128,7 +128,7 @@
       ],
       "status": "Watched",
       "title": "Complying with the Telemarketing Sales Rule | Federal Trade Commission",
-      "hash": "3ea6a100e1f5db07",
+      "hash": "9f2151bf5f53307d",
       "changedSinceLastRun": true,
       "matchedTopics": [
         "telemarketing",
@@ -152,7 +152,7 @@
       ],
       "status": "Watched",
       "title": "The lead-generation bait-and-switch | Consumer Advice",
-      "hash": "24a20aa89ae067ce",
+      "hash": "5c8bf65d3778fe19",
       "changedSinceLastRun": true,
       "matchedTopics": [
         "bait-and-switch",
