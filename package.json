@@ -5,6 +5,7 @@
   "description": "Standalone GitHub Pages-ready lead acquisition system for life insurance customer and recruiting workflows.",
   "scripts": {
     "build": "node scripts/build-static.mjs",
+    "render:presentation-video": "node scripts/render-presentation-video.mjs",
     "start": "python -m http.server 5177",
     "serve": "python -m http.server 5177"
   }
