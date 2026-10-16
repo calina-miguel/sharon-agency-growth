@@ -1,5 +1,5 @@
 {
-  "lastChecked": "2026-10-15T11:47:01.685Z",
+  "lastChecked": "2026-10-16T11:46:12.664Z",
   "summary": {
     "status": "Review Needed",
     "changedCount": 2,
@@ -81,7 +81,7 @@
       "status": "Watched",
       "title": "Social Media | FINRA.org",
       "hash": "a1a0f113bbb1df37",
-      "changedSinceLastRun": true,
+      "changedSinceLastRun": false,
       "matchedTopics": [
         "social media",
         "communications",
@@ -128,7 +128,7 @@
       ],
       "status": "Watched",
       "title": "Complying with the Telemarketing Sales Rule | Federal Trade Commission",
-      "hash": "9384e56d1ec18f76",
+      "hash": "68a370908e4fdfc8",
       "changedSinceLastRun": true,
       "matchedTopics": [
         "telemarketing",
@@ -152,8 +152,8 @@
       ],
       "status": "Watched",
       "title": "The lead-generation bait-and-switch | Consumer Advice",
-      "hash": "2796b4b10367a6e0",
-      "changedSinceLastRun": false,
+      "hash": "7de73007b5b1c9ba",
+      "changedSinceLastRun": true,
       "matchedTopics": [
         "bait-and-switch",
         "unwanted calls",
