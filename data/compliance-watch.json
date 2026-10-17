@@ -1,9 +1,9 @@
 {
-  "lastChecked": "2026-10-16T11:46:12.664Z",
+  "lastChecked": "2026-10-17T11:41:07.547Z",
   "summary": {
-    "status": "Review Needed",
-    "changedCount": 2,
-    "note": "2 monitored sources changed since the last run. Review before updating acquisition copy or automation."
+    "status": "No Source Changes Detected",
+    "changedCount": 0,
+    "note": "No monitored source changes were detected. Continue routing new tactics through human compliance review."
   },
   "recommendations": [
     "Separate insurance customer acquisition from sales agent recruiting so each page, ad, and consent path has a clear purpose.",
@@ -129,7 +129,7 @@
       "status": "Watched",
       "title": "Complying with the Telemarketing Sales Rule | Federal Trade Commission",
       "hash": "68a370908e4fdfc8",
-      "changedSinceLastRun": true,
+      "changedSinceLastRun": false,
       "matchedTopics": [
         "telemarketing",
         "lead generator",
@@ -153,7 +153,7 @@
       "status": "Watched",
       "title": "The lead-generation bait-and-switch | Consumer Advice",
       "hash": "7de73007b5b1c9ba",
-      "changedSinceLastRun": true,
+      "changedSinceLastRun": false,
       "matchedTopics": [
         "bait-and-switch",
         "unwanted calls",
