@@ -1,9 +1,9 @@
 {
-  "lastChecked": "2026-11-02T12:04:35.308Z",
+  "lastChecked": "2026-11-03T11:58:19.623Z",
   "summary": {
-    "status": "No Source Changes Detected",
-    "changedCount": 0,
-    "note": "No monitored source changes were detected. Continue routing new tactics through human compliance review."
+    "status": "Review Needed",
+    "changedCount": 4,
+    "note": "4 monitored sources changed since the last run. Review before updating acquisition copy or automation."
   },
   "recommendations": [
     "Separate insurance customer acquisition from sales agent recruiting so each page, ad, and consent path has a clear purpose.",
@@ -80,8 +80,8 @@
       ],
       "status": "Watched",
       "title": "Social Media | FINRA.org",
-      "hash": "9d3d0ad1285b35e2",
-      "changedSinceLastRun": false,
+      "hash": "a1a0f113bbb1df37",
+      "changedSinceLastRun": true,
       "matchedTopics": [
         "social media",
         "communications",
@@ -89,7 +89,7 @@
         "balanced",
         "approval"
       ],
-      "snippet": "Social Media | FINRA.org Skip to main content FINRA.org will undergo scheduled maintenance Sunday, Nov. 1, from 8 p.m. to Monday, Nov. 2, 4 a.m. ET, with a brief five-minute outage during this window. FINRA Utility Menu About Us Careers BrokerCheck Data Media"
+      "snippet": "Social Media | FINRA.org Skip to main content FINRA Utility Menu About Us Careers BrokerCheck Data Media Center For Firms For the Public FINRA DATA FINRA Data provides non-commercial use of data, specifically the ability to save data views and create and manag"
     },
     {
       "name": "FINRA Advertising Filing Guide",
@@ -104,8 +104,8 @@
       ],
       "status": "Watched",
       "title": "What and When to File with Advertising Regulation | FINRA.org",
-      "hash": "d7125a9776244c43",
-      "changedSinceLastRun": false,
+      "hash": "5bf8c6a49abce623",
+      "changedSinceLastRun": true,
       "matchedTopics": [
         "retail communications",
         "public media",
@@ -128,8 +128,8 @@
       ],
       "status": "Watched",
       "title": "Complying with the Telemarketing Sales Rule | Federal Trade Commission",
-      "hash": "150f7ed24bc2315e",
-      "changedSinceLastRun": false,
+      "hash": "f28aa385fa658371",
+      "changedSinceLastRun": true,
       "matchedTopics": [
         "telemarketing",
         "lead generator",
@@ -152,8 +152,8 @@
       ],
       "status": "Watched",
       "title": "The lead-generation bait-and-switch | Consumer Advice",
-      "hash": "7403c2192c8336c2",
-      "changedSinceLastRun": false,
+      "hash": "8eaf984188166813",
+      "changedSinceLastRun": true,
       "matchedTopics": [
         "bait-and-switch",
         "unwanted calls",
