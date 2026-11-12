@@ -1,9 +1,9 @@
 {
-  "lastChecked": "2026-11-11T12:06:35.196Z",
+  "lastChecked": "2026-11-12T12:09:19.278Z",
   "summary": {
     "status": "Review Needed",
-    "changedCount": 2,
-    "note": "2 monitored sources changed since the last run. Review before updating acquisition copy or automation."
+    "changedCount": 1,
+    "note": "1 monitored source changed since the last run. Review before updating acquisition copy or automation."
   },
   "recommendations": [
     "Separate insurance customer acquisition from sales agent recruiting so each page, ad, and consent path has a clear purpose.",
@@ -129,7 +129,7 @@
       "status": "Watched",
       "title": "Complying with the Telemarketing Sales Rule | Federal Trade Commission",
       "hash": "92a90baa5dc8edbf",
-      "changedSinceLastRun": true,
+      "changedSinceLastRun": false,
       "matchedTopics": [
         "telemarketing",
         "lead generator",
@@ -150,17 +150,14 @@
         "phone numbers",
         "consumer"
       ],
-      "status": "Watched",
-      "title": "The lead-generation bait-and-switch | Consumer Advice",
-      "hash": "1a6ad1e08abb0581",
+      "status": "HTTP 503",
+      "title": "FTC's Consumer Center",
+      "hash": "b7b4da11c185e4e5",
       "changedSinceLastRun": true,
       "matchedTopics": [
-        "bait-and-switch",
-        "unwanted calls",
-        "phone numbers",
         "consumer"
       ],
-      "snippet": "The lead-generation bait-and-switch | Consumer Advice Skip to main content An official website of the United States government Here’s how you know Here's how you know The .gov means it’s official. Federal government websites often end in .gov or .mil. Before s"
+      "snippet": "FTC's Consumer Center Sorry, consumer.ftc.gov is down for maintenance. It will be back up shortly."
     },
     {
       "name": "FCC TCPA Lead Generation Consent",
