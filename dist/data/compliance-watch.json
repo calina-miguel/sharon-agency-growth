@@ -1,9 +1,9 @@
 {
-  "lastChecked": "2026-11-16T12:26:32.016Z",
+  "lastChecked": "2026-11-17T12:01:33.994Z",
   "summary": {
-    "status": "No Source Changes Detected",
-    "changedCount": 0,
-    "note": "No monitored source changes were detected. Continue routing new tactics through human compliance review."
+    "status": "Review Needed",
+    "changedCount": 1,
+    "note": "1 monitored source changed since the last run. Review before updating acquisition copy or automation."
   },
   "recommendations": [
     "Separate insurance customer acquisition from sales agent recruiting so each page, ad, and consent path has a clear purpose.",
@@ -152,8 +152,8 @@
       ],
       "status": "Watched",
       "title": "The lead-generation bait-and-switch | Consumer Advice",
-      "hash": "e150a78fd38a7347",
-      "changedSinceLastRun": false,
+      "hash": "c378ffc340286f94",
+      "changedSinceLastRun": true,
       "matchedTopics": [
         "bait-and-switch",
         "unwanted calls",
