@@ -1,9 +1,9 @@
 {
-  "lastChecked": "2026-11-19T12:11:55.222Z",
+  "lastChecked": "2026-11-20T12:10:17.197Z",
   "summary": {
     "status": "Review Needed",
-    "changedCount": 1,
-    "note": "1 monitored source changed since the last run. Review before updating acquisition copy or automation."
+    "changedCount": 3,
+    "note": "3 monitored sources changed since the last run. Review before updating acquisition copy or automation."
   },
   "recommendations": [
     "Separate insurance customer acquisition from sales agent recruiting so each page, ad, and consent path has a clear purpose.",
@@ -80,8 +80,8 @@
       ],
       "status": "Watched",
       "title": "Social Media | FINRA.org",
-      "hash": "a1a0f113bbb1df37",
-      "changedSinceLastRun": false,
+      "hash": "de47ca7312310e52",
+      "changedSinceLastRun": true,
       "matchedTopics": [
         "social media",
         "communications",
@@ -128,8 +128,8 @@
       ],
       "status": "Watched",
       "title": "Complying with the Telemarketing Sales Rule | Federal Trade Commission",
-      "hash": "5bc050b6492269dc",
-      "changedSinceLastRun": false,
+      "hash": "9c84a9c92f87c567",
+      "changedSinceLastRun": true,
       "matchedTopics": [
         "telemarketing",
         "lead generator",
@@ -152,7 +152,7 @@
       ],
       "status": "Watched",
       "title": "The lead-generation bait-and-switch | Consumer Advice",
-      "hash": "a9bbd4d984bd8a62",
+      "hash": "b1abb93d4306ff52",
       "changedSinceLastRun": true,
       "matchedTopics": [
         "bait-and-switch",
